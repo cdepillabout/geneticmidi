@@ -1,4 +1,4 @@
-package genetic;
+package geneticmidi;
 
 public class OneMaxIndividual extends BitString<OneMaxIndividual> implements Individual<OneMaxIndividual> {
 

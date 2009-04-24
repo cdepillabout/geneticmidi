@@ -1,4 +1,4 @@
-package genetic;
+package geneticmidi;
 
 import java.util.Random;
 

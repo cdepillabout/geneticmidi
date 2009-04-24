@@ -16,29 +16,27 @@ import java.io.File;
 
 public class PlayMidi {
 
-	static Synthesizer synth;
-
-	static long MICROSECONDS_PER_MINUTE = 60000000;
+	//static Synthesizer synth;
 
 	public static void main(String[] args) {
 
 		Sequencer sequencer;
-		Transmitter	seqTrans;
-		Receiver synthRcvr;
-		Track [] tracks;
+		//Transmitter	seqTrans;
+		//Receiver synthRcvr;
+		//Track [] tracks;
 
 
 		try {
 			// get the transmitter for the sequencer
 			sequencer = MidiSystem.getSequencer();
-			seqTrans = sequencer.getTransmitter();
+			//seqTrans = sequencer.getTransmitter();
 
 			// get the receiver for the sythesizer
-			synth = MidiSystem.getSynthesizer();
-			synthRcvr = synth.getReceiver(); 
+			//synth = MidiSystem.getSynthesizer();
+			//synthRcvr = synth.getReceiver(); 
 
 			// hook the transmitter and the receiver together
-			seqTrans.setReceiver(synthRcvr);	
+			//seqTrans.setReceiver(synthRcvr);	
 
 			//File myMidiFile = new File("../midi_files/Freestyler.mid");
 			File myMidiFile = new File("midi_files/test.mid");
@@ -47,38 +45,9 @@ public class PlayMidi {
 			// load it into my sequencer.
 			Sequence mySeq = MidiSystem.getSequence(myMidiFile);
 
-			System.out.println("Sequence Division Type: " + mySeq.getDivisionType());
-			System.out.println("Sequence Resolution: " + mySeq.getResolution());
-			System.out.println("Sequence Microsecond Length: " + 
-					mySeq.getMicrosecondLength());
-			System.out.println("Sequence Tick Length: " + mySeq.getTickLength());
-			System.out.println("Sequence Tracks: " + mySeq.getTracks().length);
-			System.out.println();
+			System.out.println(DebugMidi.sequenceInfoToString(mySeq));
 
-			tracks = mySeq.getTracks();
-
-			for (int i = 0; i < tracks.length; i++)
-			{
-				System.out.println("Track " + i + ":");
-
-				for (int j = 0; j < tracks[i].size(); j++)
-				{
-					MidiEvent midiEvent = tracks[i].get(j);
-					MidiMessage midiMessage = midiEvent.getMessage();
-
-					System.out.print("Event " + j + ": Tick " + 
-							midiEvent.getTick() + "  (" + 
-							DebugMidi.eventTypeToString(midiMessage.getStatus()) 
-							+ ")");
-					
-					System.out.println("  " + 
-							DebugMidi.eventToString(midiMessage.getStatus(), 
-								midiMessage.getLength(), 
-								midiMessage.getMessage()));
-				}
-
-				System.out.println();
-			}
+			System.out.println(DebugMidi.sequenceEventsToString(mySeq));
 
 			sequencer.setSequence(mySeq);
 			sequencer.open();

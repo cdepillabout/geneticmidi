@@ -1,10 +1,83 @@
 
 package geneticmidi;
 
+import javax.sound.midi.Track;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiMessage;
 
 public class DebugMidi {
 
 	static long MICROSECONDS_PER_MINUTE = 60000000;
+
+	public static String sequenceInfoToString(Sequence sequence)
+	{
+		String result = "";
+
+		result += "Sequence Division Type: " + sequence.getDivisionType() + "\n";
+		result += "Sequence Resolution: " + sequence.getResolution() + "\n";
+		result += "Sequence Microsecond Length: " + sequence.getMicrosecondLength() + "\n";
+		result += "Sequence Tick Length: " + sequence.getTickLength() + "\n";
+		result += "Sequence Tracks: " + sequence.getTracks().length + "\n";
+
+		return result;
+	}
+
+	public static String sequenceEventsToString(Sequence sequence)
+	{
+		String result = "";
+
+		Track[] tracks = sequence.getTracks();
+
+		for (int i = 0; i < tracks.length; i++)
+		{
+			result += "Track " + i + ":" + "\n";
+			result += trackEventsToString(tracks[i]);
+			result += "\n";
+		}
+
+		return result;
+	}
+
+	public static String trackEventsToString(Track track)
+	{
+		String result = "";
+
+		for (int i = 0; i < track.size(); i++)
+		{
+			MidiEvent midiEvent = track.get(i);
+
+			result += "Event " + i + ": ";
+			result += midiEventToString(midiEvent) + "\n";
+		}
+
+		return result;
+
+	}
+
+	public static String midiEventToString(MidiEvent midiEvent)
+	{
+		String result = "";
+
+		MidiMessage midiMessage = midiEvent.getMessage();
+
+		result += "Tick " + midiEvent.getTick() + "  (" + 
+			DebugMidi.eventTypeToString(midiMessage.getStatus()) 
+			+ ")";
+
+		result += "  " + 
+			DebugMidi.midiMessageToString(midiMessage.getStatus(), 
+					midiMessage.getLength(), 
+					midiMessage.getMessage());
+
+			//System.out.println("getStatus() = " + midiMessage.getStatus());
+			//System.out.println("getLength() = " + midiMessage.getLength());
+			//System.out.println("getMessage() = " + midiMessage.getMessage());
+
+		return result;
+	}
+
+
 
 	/**
 	 * Return the midi event type from a status value from a MidiEvent.
@@ -62,7 +135,7 @@ public class DebugMidi {
 	 * bytes.  bytes should be an array of bytes returned from
 	 * the getMessage() method of the MidiMessage class.
 	 */
-	public static String eventToString(int value, int length, byte [] bytes)
+	public static String midiMessageToString(int value, int length, byte [] bytes)
 	{
 		String result = "";
 
@@ -90,7 +163,6 @@ public class DebugMidi {
 		// Note On
 		else if (value >= 144 && value < 160)
 		{
-
 			return getInfoNoteEvent(bytes[1], bytes[2]);
 		}
 		// Note Aftertouch
@@ -251,6 +323,7 @@ public class DebugMidi {
 
 			// Set Tempo
 			case 81:
+				// System.out.println(java.util.Arrays.toString(bytes));
 				// Make sure the length is 3
 				assert (bytes[2] == 3);
 				metaString = "Set Tempo (BPM): ";
@@ -259,6 +332,7 @@ public class DebugMidi {
 
 			// Set Time Signature
 			case 88:
+				//System.out.println(java.util.Arrays.toString(bytes));
 				// Make sure the length is 4
 				assert (bytes[2] == 4);
 				metaString += "Numerator: " + bytes[3] + ", ";

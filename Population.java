@@ -1,4 +1,4 @@
-package genetic;
+package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 

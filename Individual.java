@@ -1,4 +1,4 @@
-package genetic;
+package geneticmidi;
 
 /**
  * An individual in a genetic algorithm.

@@ -1,4 +1,4 @@
-package genetic;
+package geneticmidi;
 
 import static org.junit.Assert.*;
 
