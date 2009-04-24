@@ -4,6 +4,9 @@ package geneticmidi;
 public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public MidiIndividual() {
+		System.out.println(DebugMidi.sequenceEventsToString(
+					IdealSequence.getIdealSequence()));
+
 
 	}
 
@@ -30,7 +33,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 
 	public static void main(String[] args) {
-		//FlowerBed bed = new FlowerBed();
+		MidiIndividual midiIndv = new MidiIndividual();
 		//System.out.println("fitness: " + bed.fitness());
 	}
 
