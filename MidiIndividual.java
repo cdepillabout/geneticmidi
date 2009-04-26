@@ -46,8 +46,10 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 
 	public double fitness() {
-		Note [] notes = IdealSequence.getNotes();
+		//Note [] notes = IdealSequence.getNotes();
 
+
+		return -100;
 	}
 
 

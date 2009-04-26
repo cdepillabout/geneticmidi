@@ -11,8 +11,8 @@ public class Note
 {
 	Track track;
 
-	int startTick;
-	int lengthTicks;
+	long startTick;
+	long lengthTicks;
 	int channel;
 	int note;
 	int velocity;
@@ -20,7 +20,7 @@ public class Note
 	MidiEvent noteOnEvent;
 	MidiEvent noteOffEvent;
 
-	public Note (int startTick, int lengthTicks, int channel, int note, int velocity)
+	public Note (long startTick, long lengthTicks, int channel, int note, int velocity)
 	{
 		this.startTick = startTick;
 		this.lengthTicks = lengthTicks;
@@ -33,7 +33,20 @@ public class Note
 				channel, note, 127);
 	}
 
-	public Note (Track track, int startTick, int lengthTicks, 
+	public Note (long startTick, long lengthTicks, int channel, String note, int velocity)
+	{
+		this(startTick, lengthTicks, channel, MidiHelper.getValueFromNote(note), velocity);
+	}
+
+	public Note (Track track, long startTick, long lengthTicks, 
+			int channel, String note, int velocity)
+	{
+		this(track, startTick, lengthTicks, channel, 
+				MidiHelper.getValueFromNote(note), velocity);
+
+	}
+
+	public Note (Track track, long startTick, long lengthTicks, 
 			int channel, int note, int velocity)
 	{
 		this(startTick, lengthTicks, channel, note, velocity);
@@ -42,6 +55,21 @@ public class Note
 
 		this.track.add(noteOnEvent);
 		this.track.add(noteOffEvent);
+	}
+
+	public String toString()
+	{
+		String result = "";
+
+		result += "Note: track=" + track + ", ";
+		result += "start=" + startTick + ", ";
+		result += "length=" + lengthTicks + ", ";
+		result += "channel=" + channel + ", ";
+		result += "value=" + note + " (" + 
+			MidiHelper.getNoteFromValue(note) + "), ";
+		result += "velocity=" + velocity;
+
+		return result;
 	}
 
 }

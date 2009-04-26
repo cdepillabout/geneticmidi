@@ -62,44 +62,20 @@ public class IdealSequence {
 
 */
 
+			
+			new Note(myTrack1, 0, 480, 0, "C4", 100);
+			new Note(myTrack1, 480, 480, 0, "E4", 100);
+			new Note(myTrack1, 960, 480, 0, "G4", 100);
+			new Note(myTrack1, 1440, 480, 0, "C5", 100);
+			
 
+			/*
+			new Note(myTrack1, 0, 1102, 0, "C4", 100);
+			new Note(myTrack1, 0, 480, 0, "E4", 100);
+			new Note(myTrack1, 1550, 20, 0, "G4", 100);
+			new Note(myTrack1, 1440, 480, 0, "C5", 100);
+			*/
 
-
-
-			ShortMessage shortMessage = new ShortMessage();
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_ON, 0, 60, 100);
-			myTrack1.add(new MidiEvent(shortMessage, 0));
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_OFF, 0, 60, 127);
-			myTrack1.add(new MidiEvent(shortMessage, 480));
-
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_ON, 0, 64, 100);
-			myTrack1.add(new MidiEvent(shortMessage, 480));
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_OFF, 0, 64, 127);
-			myTrack1.add(new MidiEvent(shortMessage, 960));
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_ON, 0, 67, 100);
-			myTrack1.add(new MidiEvent(shortMessage, 960));
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_OFF, 0, 67, 127);
-			myTrack1.add(new MidiEvent(shortMessage, 1440));
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_ON, 0, 72, 100);
-			myTrack1.add(new MidiEvent(shortMessage, 1440));
-
-			shortMessage = (ShortMessage)shortMessage.clone();
-			shortMessage.setMessage(ShortMessage.NOTE_OFF, 0, 72, 127);
-			myTrack1.add(new MidiEvent(shortMessage, 1920));
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -127,6 +103,9 @@ public class IdealSequence {
 	public static void main(String[] args) {
 		//FlowerBed bed = new FlowerBed();
 		//System.out.println("fitness: " + bed.fitness());
+
+		System.out.println(DebugMidi.sequenceEventsToString(sequence));
+		MidiHelper.play(sequence);
 	}
 
 }
