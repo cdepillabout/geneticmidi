@@ -8,8 +8,6 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	Sequence sequence;
 
 	public MidiIndividual() {
-		System.out.println(DebugMidi.sequenceEventsToString(
-					IdealSequence.getIdealSequence()));
 
 		try {
 			sequence = new Sequence(IdealSequence.getDivisionType(),
@@ -17,18 +15,10 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 			Track track = sequence.createTrack();
 
-			track.add(MidiHelper.createNoteOnEvent(0, 60, 100));
-			track.add(MidiHelper.createNoteOffEvent(480, 60, 127));
-
-			track.add(MidiHelper.createNoteOnEvent(480, 64, 100));
-			track.add(MidiHelper.createNoteOffEvent(960, 64, 127));
-
-			track.add(MidiHelper.createNoteOnEvent(960, 67, 100));
-			track.add(MidiHelper.createNoteOffEvent(1440, 67, 127));
-
-			track.add(MidiHelper.createNoteOnEvent(1440, 72, 100));
-			track.add(MidiHelper.createNoteOffEvent(1920, 72, 127));
-
+			new Note(track, 0, 480, 0, 60, 100);
+			new Note(track, 480, 480, 0, 64, 100);
+			new Note(track, 960, 480, 0, 67, 100);
+			new Note(track, 1440, 480, 0, 72, 100);
 
 			System.out.println("Ideal Sequence: ");
 			System.out.println(DebugMidi.sequenceEventsToString(
