@@ -15,10 +15,10 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 			Track track = sequence.createTrack();
 
-			new Note(track, 0, 480, 0, 60, 100);
-			new Note(track, 480, 480, 0, 64, 100);
-			new Note(track, 960, 480, 0, 67, 100);
-			new Note(track, 1440, 480, 0, 72, 100);
+			new Note(track, 0, 480, 0, MidiHelper.getValueFromNote("C4"), 100);
+			new Note(track, 480, 480, 0, MidiHelper.getValueFromNote("E4"), 100);
+			new Note(track, 960, 480, 0, MidiHelper.getValueFromNote("G4"), 100);
+			new Note(track, 1440, 480, 0, MidiHelper.getValueFromNote("C5"), 100);
 
 			System.out.println("Ideal Sequence: ");
 			System.out.println(DebugMidi.sequenceEventsToString(

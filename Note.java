@@ -5,7 +5,7 @@ import javax.sound.midi.Track;
 import javax.sound.midi.MidiEvent;
 
 /**
- * Helper class for working with midi's.
+ * Helper class for adding notes easily to tracks.
  */
 public class Note 
 {
