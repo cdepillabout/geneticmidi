@@ -5,6 +5,7 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import java.util.Vector;
 
 public class IdealSequence {
 
@@ -62,19 +63,20 @@ public class IdealSequence {
 
 */
 
-			
+		/*	
 			new Note(myTrack1, 0, 480, 0, "C4", 100);
 			new Note(myTrack1, 480, 480, 0, "E4", 100);
 			new Note(myTrack1, 960, 480, 0, "G4", 100);
 			new Note(myTrack1, 1440, 480, 0, "C5", 100);
+			*/
 			
 
-			/*
-			new Note(myTrack1, 0, 1102, 0, "C4", 100);
-			new Note(myTrack1, 0, 480, 0, "E4", 100);
-			new Note(myTrack1, 1550, 20, 0, "G4", 100);
-			new Note(myTrack1, 1440, 480, 0, "C5", 100);
-			*/
+			
+			new Note(myTrack1, 100, 1102, 0, "C4", 100);
+			new Note(myTrack1, 100, 480, 0, "E4", 100);
+			new Note(myTrack1, 100, 20, 0, "G4", 100);
+			new Note(myTrack1, 100, 480, 0, "C5", 100);
+			
 
 
 		} catch(Exception e) {
@@ -98,6 +100,14 @@ public class IdealSequence {
 
 	public static int getResolution() {
 		return sequence.getResolution();
+	}
+
+	/**
+	 * Return an array with all the notes from track 0.
+	 */
+	public static Vector<Note> getNotes()
+	{
+		return MidiHelper.getNotesFromTrack(sequence.getTracks()[0]);
 	}
 
 	public static void main(String[] args) {

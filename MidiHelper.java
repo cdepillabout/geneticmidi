@@ -380,13 +380,34 @@ public class MidiHelper {
 
 	}
 
+	public static Vector<Note> getNotesPlayingAtTick(Vector<Note> allNotes, long tick)
+	{
+		Vector<Note> playingNotes = new Vector<Note>();
+
+		for (Note n : allNotes)
+		{
+			if (tick >= n.getStartTick() && tick < n.getEndTick())
+			{
+				playingNotes.add(n);
+			}
+		}
+
+		return playingNotes;
+	}
+
 
 	public static void main(String [] args)
 	{
+		System.out.println("All notes:");
 		System.out.println(
 				getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]));
 
 
+		long tick = 100;
+		System.out.println("Notes playing at tick:" + tick);
+		System.out.println(getNotesPlayingAtTick(
+					getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]),
+					tick));
 
 
 	}

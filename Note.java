@@ -57,6 +57,16 @@ public class Note
 		this.track.add(noteOffEvent);
 	}
 
+	public long getStartTick()
+	{
+		return startTick;
+	}
+
+	public long getEndTick()
+	{
+		return startTick + lengthTicks;
+	}
+
 	public String toString()
 	{
 		String result = "";

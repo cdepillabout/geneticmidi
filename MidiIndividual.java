@@ -3,6 +3,8 @@ package geneticmidi;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 
+import java.util.Vector;
+
 public class MidiIndividual implements Individual<MidiIndividual> {
 
 	Sequence sequence;
@@ -45,8 +47,15 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 
 
-	public double fitness() {
-		//Note [] notes = IdealSequence.getNotes();
+	public double fitness() 
+	{
+		Vector<Note> idealSequenceNotes = IdealSequence.getNotes();
+
+		for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); i += 10)
+		{
+			Vector<Note> playingNotes = 
+				MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, i);
+		}
 
 
 		return -100;
