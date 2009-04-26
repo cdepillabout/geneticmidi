@@ -17,18 +17,22 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 			Track track = sequence.createTrack();
 
+			
 			/*
 			new Note(track, 0, 480, 0, MidiHelper.getValueFromNote("C4"), 100);
 			new Note(track, 480, 480, 0, MidiHelper.getValueFromNote("E4"), 100);
 			new Note(track, 960, 480, 0, MidiHelper.getValueFromNote("G4"), 100);
 			new Note(track, 1440, 480, 0, MidiHelper.getValueFromNote("C5"), 100);
 			*/
+			
 
+			
 			for (int i = 0; i < 4; i++)
 			{
 				new Note(track, (i * 480), 480, 0, 
 						BitString.RAND.nextInt(128), 100);
 			}
+			
 
 			//System.out.println("Ideal Sequence: ");
 			//System.out.println(DebugMidi.sequenceEventsToString(
@@ -49,16 +53,45 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public double fitness() 
 	{
-		Vector<Note> idealSequenceNotes = IdealSequence.getNotes();
+		double fitness = 0;
 
+		
+		Vector<Note> idealSequenceNotes = IdealSequence.getNotes();
+		Vector<Note> ourNotes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
+
+
+		/*
+
+
+		Vector<Note> idealSequencePlayingNotes = 
+			MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, 0);
+		Vector<Note> ourSequencePlayingNotes = 
+			MidiHelper.getNotesPlayingAtTick(ourNotes, 0);
+
+		System.out.println("idealSequencePlayingNotes: " + idealSequencePlayingNotes);
+		System.out.println("ourSequencePlayingNotes: " + ourSequencePlayingNotes);
+		
+		System.out.println("are these vectors equal? " + 
+				(idealSequencePlayingNotes.equals(ourSequencePlayingNotes)));
+		
+				*/
+
+		
 		for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); i += 10)
 		{
-			Vector<Note> playingNotes = 
+			Vector<Note> idealSequencePlayingNotes = 
 				MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, i);
+			Vector<Note> ourSequencePlayingNotes = 
+				MidiHelper.getNotesPlayingAtTick(ourNotes, i);
+
+			if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
+			{
+				fitness += 1;
+			}
 		}
+		
 
-
-		return -100;
+		return fitness;
 	}
 
 
@@ -85,6 +118,8 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public static void main(String[] args) {
 		MidiIndividual midiIndv = new MidiIndividual();
+		System.out.println("Individual: " + midiIndv);
+		System.out.println("fitness: " + midiIndv.fitness());
 		//System.out.println("fitness: " + bed.fitness());
 	}
 

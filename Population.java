@@ -2,7 +2,7 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 5;
+	public static int NUMBER_OF_INDIVIDUALS = 2000;
 
 	protected int generation;
 
@@ -82,11 +82,11 @@ public class Population<I extends Individual<I>> {
 		for (int i = 0; i < individuals.length; i++) 
 		{
 			result += "Individual " + i + ": ";
-			//result += individuals[i].fitness();
+			result += individuals[i].fitness();
 			result += "\n";
 		}
 
-		//result += "Best Fitness: " + bestIndividual().fitness();
+		result += "Best Fitness: " + bestIndividual().fitness();
 
 		return result;
 	}

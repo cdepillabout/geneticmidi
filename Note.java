@@ -57,6 +57,28 @@ public class Note
 		this.track.add(noteOffEvent);
 	}
 
+	/**
+	 * Returns two if two notes have the same note value.
+	 * This is used in the fitness function for a midi individual.
+	 */
+	@Override
+	public boolean equals(Object otherNote)
+	{
+		if (otherNote instanceof Note)
+		{
+			return this.getNoteValue() == ((Note)otherNote).getNoteValue();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public int getNoteValue()
+	{
+		return note;
+	}
+
 	public long getStartTick()
 	{
 		return startTick;

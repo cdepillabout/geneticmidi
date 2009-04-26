@@ -63,19 +63,21 @@ public class IdealSequence {
 
 */
 
-		/*	
+			
 			new Note(myTrack1, 0, 480, 0, "C4", 100);
 			new Note(myTrack1, 480, 480, 0, "E4", 100);
 			new Note(myTrack1, 960, 480, 0, "G4", 100);
 			new Note(myTrack1, 1440, 480, 0, "C5", 100);
-			*/
+			
 			
 
 			
+			/*
 			new Note(myTrack1, 100, 1102, 0, "C4", 100);
 			new Note(myTrack1, 100, 480, 0, "E4", 100);
 			new Note(myTrack1, 100, 20, 0, "G4", 100);
 			new Note(myTrack1, 100, 480, 0, "C5", 100);
+			*/
 			
 
 
