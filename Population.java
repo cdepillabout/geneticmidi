@@ -2,15 +2,15 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 500;
+	public static int NUMBER_OF_INDIVIDUALS = 5;
 
 	protected int generation;
 
 	public static void main(String[] args) {
-		Population<OneMinIndividual> pop = new Population<OneMinIndividual>(
-				new OneMinIndividual(NUMBER_OF_INDIVIDUALS));
+		Population<MidiIndividual> pop = new Population<MidiIndividual>(
+				new MidiIndividual());
 		System.out.println(pop);
-		pop.run();
+		//pop.run();
 	}
 
 	public void run() {
@@ -82,11 +82,11 @@ public class Population<I extends Individual<I>> {
 		for (int i = 0; i < individuals.length; i++) 
 		{
 			result += "Individual " + i + ": ";
-			result += individuals[i].fitness();
+			//result += individuals[i].fitness();
 			result += "\n";
 		}
 
-		result += "Best Fitness: " + bestIndividual().fitness();
+		//result += "Best Fitness: " + bestIndividual().fitness();
 
 		return result;
 	}

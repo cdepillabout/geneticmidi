@@ -250,6 +250,44 @@ public class MidiHelper {
 	}
 
 
+	public static boolean isNoteOnEvent(MidiEvent event)
+	{
+		System.out.println(java.util.Arrays.toString(
+					event.getMessage().getMessage()));
+
+		//return event.getMessage().getMessage();
+		return false;
+
+	}
+
+	/**
+	 * Return an array of all of the Notes in sequence.
+	 */
+	public static Vector<Note> getNotesFromTrack(Track track)
+	{
+		Vector<MidiEvent> midiEvents = new Vector<MidiEvent>();
+		Vector<Note> notes = new Vector<Note>();
+
+		for(int i = 0; i < track.size(); i++)
+		{
+			midiEvents.add(track.get(i));
+		}
+
+		int noteOns = 0;
+		int noteOffs = 0;
+
+		for(int i = 0; i < midiEvents.size(); i++)
+		{
+			if (isNoteOnEvent(midiEvents.get(i)))
+			{
+				noteOns++;
+			}
+		}
+
+		return notes;
+
+	}
+
 	public static void main(String [] args)
 	{
 		/*

@@ -210,7 +210,7 @@ public class DebugMidi {
 		String result = "";
 
 		result = "[";
-		result += "Note: " + note;
+		result += "Note: " + note + " (" + MidiHelper.getNoteFromValue(note) + ")";
 		result += ", ";
 		result += "Velocity: " + velocity;
 		result += "]";

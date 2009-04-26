@@ -15,19 +15,27 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 			Track track = sequence.createTrack();
 
+			/*
 			new Note(track, 0, 480, 0, MidiHelper.getValueFromNote("C4"), 100);
 			new Note(track, 480, 480, 0, MidiHelper.getValueFromNote("E4"), 100);
 			new Note(track, 960, 480, 0, MidiHelper.getValueFromNote("G4"), 100);
 			new Note(track, 1440, 480, 0, MidiHelper.getValueFromNote("C5"), 100);
+			*/
 
-			System.out.println("Ideal Sequence: ");
-			System.out.println(DebugMidi.sequenceEventsToString(
-						IdealSequence.getIdealSequence()));
+			for (int i = 0; i < 4; i++)
+			{
+				new Note(track, (i * 480), 480, 0, 
+						BitString.RAND.nextInt(128), 100);
+			}
 
-			System.out.println("This Sequence: ");
-			System.out.println(DebugMidi.sequenceEventsToString(sequence));
+			//System.out.println("Ideal Sequence: ");
+			//System.out.println(DebugMidi.sequenceEventsToString(
+			//			IdealSequence.getIdealSequence()));
+
+			//System.out.println("This Sequence: ");
+			//System.out.println(DebugMidi.sequenceEventsToString(sequence));
 			//MidiHelper.play(IdealSequence.getIdealSequence());
-			MidiHelper.play(sequence);
+			//MidiHelper.play(sequence);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -38,7 +46,8 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 
 	public double fitness() {
-		return -1000;
+		Note [] notes = IdealSequence.getNotes();
+
 	}
 
 
@@ -56,6 +65,11 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	public void mutate (double mutationRate)
 	{
 
+	}
+
+	public String toString()
+	{
+		return DebugMidi.sequenceEventsToString(sequence);
 	}
 
 	public static void main(String[] args) {
