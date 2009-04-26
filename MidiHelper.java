@@ -102,7 +102,7 @@ public class MidiHelper {
 	}
 
 	/**
-	 * Given a musical pitch (C, C#, D...), give back the midi value.
+	 * Given a musical pitch (C4, C#-1, D9...), give back the midi value.
 	 */
 	public static int getValueFromNote(String noteAndOctave)
 	{
@@ -183,17 +183,26 @@ public class MidiHelper {
 		return (octave + 1) * 12 + noteValue;
 	}
 
+	/**
+	 * Given a midi picth value (0-127), give back the musical note.
+	 */
 	public static String getNoteFromValue(int value)
 	{
+		if (value > 127 || value < 0)
+		{
+			System.out.println("value is out of range");
+			System.exit(1);
+		}
+
 		int octave = -100;
 
 		octave = (int) Math.floor(value / 12) - 1;
 
-		System.out.println("octave: " + octave);
+		//System.out.println("octave: " + octave);
 
 		int noteValue = value - ((octave + 1) * 12);
 
-		System.out.println("noteValue: " + noteValue);
+		//System.out.println("noteValue: " + noteValue);
 
 		String note = "";
 
