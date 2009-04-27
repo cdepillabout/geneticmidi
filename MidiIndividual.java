@@ -28,7 +28,6 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 			MidiHelper.getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]);
 		int totalNotes = idealSequenceNotes.size();
 
-		// TODO: take out this hard coded '4' from here and the other constructor
 		for (int i = 0; i < totalNotes; i++)
 		{
 			long length = BitString.RAND.nextLong();
@@ -153,15 +152,16 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 
 	
+	// change this to take into account note length
 	public void mutate (double mutationRate)
 	{
 		// just change one of the notes
 		Vector<Note> notes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
 
-		//double roll = BitString.RAND.nextDouble();
+		double roll = BitString.RAND.nextDouble();
 
-		//if (roll < mutationRate)
-		//{
+		if (roll < mutationRate)
+		{
 			int randomNote = BitString.RAND.nextInt(notes.size());
 			int randomNoteValue = BitString.RAND.nextInt(128);
 
@@ -169,8 +169,8 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 			notes.get(randomNote).setNoteValue(randomNoteValue);
 			notes.get(randomNote).addToTrack();
 
-			//this = new MidiIndividual(notes);
-		//}
+			this = new MidiIndividual(notes);
+		}
 		
 	}
 
