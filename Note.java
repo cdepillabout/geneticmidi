@@ -89,6 +89,17 @@ public class Note
 		return startTick + lengthTicks;
 	}
 
+	/**
+	 * Add this note to a new track
+	 */
+	public void addToTrack(Track track)
+	{
+		this.track = track;
+
+		this.track.add(noteOnEvent);
+		this.track.add(noteOffEvent);
+	}
+
 	public String toString()
 	{
 		String result = "";

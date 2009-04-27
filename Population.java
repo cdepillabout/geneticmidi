@@ -2,15 +2,29 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 2000;
+	public static int NUMBER_OF_INDIVIDUALS = 500;
 
 	protected int generation;
 
 	public static void main(String[] args) {
 		Population<MidiIndividual> pop = new Population<MidiIndividual>(
 				new MidiIndividual());
-		System.out.println(pop);
-		//pop.run();
+
+		System.out.println("Generation " + 0 + ": ");
+		MidiIndividual best = pop.bestIndividual();
+		System.out.println("Best Individual: " + best + "'s fitness is "
+				+ best.fitness());
+		System.out.println();
+
+		for(int i = 1; i < 10; i++)
+		{
+			pop.evolve();
+			System.out.println("Generation " + i + ": ");
+			best = pop.bestIndividual();
+			System.out.println("Best Individual: " + best + "'s fitness is "
+					+ best.fitness());
+			System.out.println();
+		}
 	}
 
 	public void run() {

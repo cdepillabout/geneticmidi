@@ -43,12 +43,21 @@ public class DebugMidi {
 	{
 		String result = "";
 
-		for (int i = 0; i < track.size(); i++)
+		for (int i = 0; i < track.size() - 1; i++)
 		{
 			MidiEvent midiEvent = track.get(i);
 
 			result += "Event " + i + ": ";
 			result += midiEventToString(midiEvent) + "\n";
+		}
+
+		if (track.size() >= 0)
+		{
+			MidiEvent midiEvent = track.get(track.size() - 1);
+
+			result += "Event " + (track.size() - 1) + ": ";
+			result += midiEventToString(midiEvent);
+
 		}
 
 		return result;
