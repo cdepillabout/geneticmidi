@@ -10,6 +10,9 @@ public class DebugMidi {
 
 	static long MICROSECONDS_PER_MINUTE = 60000000;
 
+	/**
+	 * Return the string representations of info about a sequence.
+	 */
 	public static String sequenceInfoToString(Sequence sequence)
 	{
 		String result = "";
@@ -23,6 +26,9 @@ public class DebugMidi {
 		return result;
 	}
 
+	/** 
+	 * Return the string representation of a sequence.
+	 */
 	public static String sequenceEventsToString(Sequence sequence)
 	{
 		String result = "";
@@ -39,6 +45,9 @@ public class DebugMidi {
 		return result;
 	}
 
+	/**
+	 * Return the string representation of a Track.
+	 */
 	public static String trackEventsToString(Track track)
 	{
 		String result = "";
@@ -64,6 +73,9 @@ public class DebugMidi {
 
 	}
 
+	/**
+	 * Return the string representations of a MidiEvent.
+	 */
 	public static String midiEventToString(MidiEvent midiEvent)
 	{
 		String result = "";
@@ -85,8 +97,6 @@ public class DebugMidi {
 
 		return result;
 	}
-
-
 
 	/**
 	 * Return the midi event type from a status value from a MidiEvent.

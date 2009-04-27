@@ -369,7 +369,8 @@ public class MidiHelper {
 			{
 				MidiEvent noteOff = findMatchingNoteOff(track, i, event);
 				// TODO: should this not be channel 0?
-				notes.add(new Note(event.getTick(), noteOff.getTick() - event.getTick(),
+				// TODO: is it okay to add the track here?
+				notes.add(new Note(track, event.getTick(), noteOff.getTick() - event.getTick(),
 							0, getNoteValue(event), getVelocity(event)));
 
 			}
@@ -380,6 +381,9 @@ public class MidiHelper {
 
 	}
 
+	/**
+	 * Return a vector containing all the notes from allNotes that are playing at tick.
+	 */
 	public static Vector<Note> getNotesPlayingAtTick(Vector<Note> allNotes, long tick)
 	{
 		Vector<Note> playingNotes = new Vector<Note>();
@@ -395,6 +399,34 @@ public class MidiHelper {
 		return playingNotes;
 	}
 
+	/**
+	 * Find the same MidiEvent in track as the argument midiEvent.
+	 */
+	public static MidiEvent findSameEvent(Track track, MidiEvent midiEvent)
+	{
+		for (int i = 0; i < track.size(); i++)
+		{
+			MidiEvent trackEvent = track.get(i);
+
+			if (trackEvent.getTick() == midiEvent.getTick())
+			{
+				MidiMessage trackMessage = trackEvent.getMessage();
+				MidiMessage thisMessage = midiEvent.getMessage();
+				if (java.util.Arrays.equals(trackMessage.getMessage(),
+							thisMessage.getMessage()))
+				{
+					return trackEvent;
+				}
+			}
+		}
+
+		System.out.println("There is no event " + 
+				DebugMidi.midiEventToString(midiEvent) +
+				" in track: " + track);
+		System.exit(1);
+		return null;
+
+	}
 
 	public static void main(String [] args)
 	{
@@ -408,7 +440,6 @@ public class MidiHelper {
 		System.out.println(getNotesPlayingAtTick(
 					getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]),
 					tick));
-
 
 	}
 		

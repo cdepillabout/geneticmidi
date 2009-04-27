@@ -34,7 +34,8 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 			for (int i = 0; i < notes.size(); i++)
 			{
-				notes.get(i).addToTrack(track);
+				notes.get(i).setTrack(track);
+				notes.get(i).addToTrack();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,7 +52,8 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 			for (int i = 0; i < notes.size(); i++)
 			{
-				notes.get(i).addToTrack(track);
+				notes.get(i).setTrack(track);
+				notes.get(i).addToTrack();
 			}
 
 		} catch (Exception e) {
@@ -123,9 +125,26 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		return new MidiIndividual(resultNotes);
 	}
 
+	
 	public void mutate (double mutationRate)
 	{
+		// just change one of the notes
+		Vector<Note> notes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
 
+		//double roll = BitString.RAND.nextDouble();
+
+		//if (roll < mutationRate)
+		//{
+			int randomNote = BitString.RAND.nextInt(notes.size());
+			int randomNoteValue = BitString.RAND.nextInt(128);
+
+			notes.get(randomNote).removeFromTrack();
+			notes.get(randomNote).setNoteValue(randomNoteValue);
+			notes.get(randomNote).addToTrack();
+
+			//this = new MidiIndividual(notes);
+		//}
+		
 	}
 
 	public String toString()
@@ -139,15 +158,23 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		System.out.println("fitness: " + midiIndv1.fitness());
 		System.out.println();
 
+		
 		MidiIndividual midiIndv2 = new MidiIndividual();
 		System.out.println("Individual 2: " + midiIndv2);
 		System.out.println("fitness: " + midiIndv2.fitness());
 		System.out.println();
 
+		
 		MidiIndividual newIndividual = midiIndv1.crossover(midiIndv2);
 		System.out.println("crossover Individual: " + newIndividual);
 		System.out.println("fitness: " + newIndividual.fitness());
 		System.out.println();
+
+		newIndividual.mutate(.5);
+		System.out.println("mutated crossover Individual: " + newIndividual);
+		System.out.println("fitness: " + newIndividual.fitness());
+		System.out.println();
+		
 
 	}
 

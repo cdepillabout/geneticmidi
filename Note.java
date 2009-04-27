@@ -52,9 +52,34 @@ public class Note
 		this(startTick, lengthTicks, channel, note, velocity);
 
 		this.track = track;
+	}
 
-		this.track.add(noteOnEvent);
-		this.track.add(noteOffEvent);
+	/**
+	 * Remove this note from the track it is in.
+	 * Errors out if it is not in a track.
+	 */
+	public void removeFromTrack()
+	{
+		assert track != null;
+
+		// This is needed because track.remove() will only take a
+		// reference to an exact MidiEvent.  It can't be an identical event. :-(
+		track.remove(MidiHelper.findSameEvent(track, noteOnEvent));
+		track.remove(MidiHelper.findSameEvent(track, noteOffEvent));
+	}
+
+	/**
+	 * Set the note value for this Note.  If you want to update the MidiMessage on the
+	 * track, you have to first removeFromTrack(), then setNoteValue(),
+	 * then addToTrack().
+	 */
+	public void setNoteValue(int noteValue)
+	{
+		this.note = noteValue;
+
+		noteOnEvent = MidiHelper.createNoteOnEvent(startTick, channel, note, velocity);
+		noteOffEvent = MidiHelper.createNoteOffEvent(startTick + lengthTicks, 
+				channel, note, 127);
 	}
 
 	/**
@@ -90,14 +115,22 @@ public class Note
 	}
 
 	/**
-	 * Add this note to a new track
+	 * Add this note to the track it is associated with.
 	 */
-	public void addToTrack(Track track)
+	public void addToTrack()
 	{
-		this.track = track;
+		assert track != null;
 
 		this.track.add(noteOnEvent);
 		this.track.add(noteOffEvent);
+	}
+
+	/**
+	 * Associate this note with a track.
+	 */
+	public void setTrack(Track track)
+	{
+		this.track = track;
 	}
 
 	public String toString()

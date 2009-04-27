@@ -2,7 +2,8 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 500;
+	public static int NUMBER_OF_INDIVIDUALS = 1000;
+	public static double MUTATION_RATE = 0.1;
 
 	protected int generation;
 
@@ -16,7 +17,7 @@ public class Population<I extends Individual<I>> {
 				+ best.fitness());
 		System.out.println();
 
-		for(int i = 1; i < 10; i++)
+		for(int i = 1; i < 400; i++)
 		{
 			pop.evolve();
 			System.out.println("Generation " + i + ": ");
@@ -66,7 +67,7 @@ public class Population<I extends Individual<I>> {
 		I parent1 = chooseParent();
 		I parent2 = chooseParent();
 		I child = parent2.crossover(parent1);
-		child.mutate(0.5);
+		child.mutate(MUTATION_RATE);
 		return child;
 	}
 
