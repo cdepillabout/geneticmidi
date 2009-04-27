@@ -20,10 +20,37 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		   notes.add(new Note(track, 1440, 480, 0, MidiHelper.getValueFromNote("C5"), 100));
 		   */
 
+		// find out how many ticks the ideal sequence is
+		long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
+
+		// find out how many notes ideal sequence has
+		Vector<Note> idealSequenceNotes = 
+			MidiHelper.getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]);
+		int totalNotes = idealSequenceNotes.size();
+
 		// TODO: take out this hard coded '4' from here and the other constructor
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < totalNotes; i++)
 		{
-			notes.add(new Note((i * 480), 480, 0, BitString.RAND.nextInt(128), 100));
+			long length = BitString.RAND.nextLong();
+			if (length < 0)
+			{
+				length = -length;
+			}
+			length = length % (totalTicks);
+			// the length can't be zero
+			length++;
+
+			long startingTick = BitString.RAND.nextLong();
+			if (startingTick < 0)
+			{
+				startingTick = -startingTick;
+			}
+			startingTick = startingTick % (totalTicks - length + 1);
+
+			//System.out.println("length = " + length + ", startingTick = " + startingTick);
+			//System.out.println("nextLong() =  " + BitString.RAND.nextLong());
+			//notes.add(new Note((i * 480), 480, 0, BitString.RAND.nextInt(128), 100));
+			notes.add(new Note(startingTick, length, 0, BitString.RAND.nextInt(128), 100));
 		}
 
 		try {
@@ -153,6 +180,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 
 	public static void main(String[] args) {
+
 		MidiIndividual midiIndv1 = new MidiIndividual();
 		System.out.println("Individual 1: " + midiIndv1);
 		System.out.println("fitness: " + midiIndv1.fitness());
