@@ -169,7 +169,6 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 			notes.get(randomNote).setNoteValue(randomNoteValue);
 			notes.get(randomNote).addToTrack();
 
-			this = new MidiIndividual(notes);
 		}
 		
 	}
