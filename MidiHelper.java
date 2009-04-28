@@ -96,8 +96,31 @@ public class MidiHelper {
 				sequencer.stop();
 			}
 
+			sequencer.setTickPosition(0);
 			sequencer.setSequence(sequence);
 			sequencer.start();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	/** 
+	 * Stop playing a sequence.
+	 */
+	public static void stopPlaying()
+	{
+		try{
+
+			if (sequencer.isOpen())
+			{
+				if (sequencer.isRunning())
+				{
+					sequencer.stop();
+					sequencer.setTickPosition(0);
+				}
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

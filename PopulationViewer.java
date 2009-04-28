@@ -1,11 +1,29 @@
 
+package geneticmidi;
+
 import javax.swing.*;
 import java.awt.*;
+
+import javax.sound.midi.Sequence;
 
 public class PopulationViewer extends JFrame
 {
 	public static final int DEFAULT_WIDTH = 600;
 	public static final int DEFAULT_HEIGHT = 600;
+
+	/** A main panel to hold everything in this frame.  Do I need this? */
+	JPanel mainPanel;
+
+	/**
+	 * A panel holding the player for the ideal sequence.
+	 */
+	PlayerPanel idealSequencePlayer;
+
+	/**
+	 * A panel holding the player for the best sequence
+	 * in the current generation.
+	 */
+	PlayerPanel bestIndividual;
 
 	public static void main(String [] args)
 	{
@@ -16,10 +34,15 @@ public class PopulationViewer extends JFrame
 
 	public PopulationViewer()
 	{
-		PlayerPanel idealSequencePlayer = new PlayerPanel();
-		PlayerPanel bestIndividual = new PlayerPanel();
-		add(idealSequencePlayer);
-		add(bestIndividual);
+		mainPanel = new JPanel();
+		add(mainPanel);
+
+		PlayerPanel idealSequencePlayer = 
+			new PlayerPanel(IdealSequence.getIdealSequence());
+		PlayerPanel bestIndividual = new PlayerPanel(null);
+
+		mainPanel.add(idealSequencePlayer);
+		mainPanel.add(bestIndividual);
 
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setTitle("Midi Population Viewer");
