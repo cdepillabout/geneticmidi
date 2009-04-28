@@ -2,8 +2,8 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 20000;
-	public static double MUTATION_RATE = 0.2;
+	public static int NUMBER_OF_INDIVIDUALS = 2000;
+	public static double MUTATION_RATE = 0.5;
 	public static int TOTAL_GENERATIONS = 2000;
 
 	protected int generation;

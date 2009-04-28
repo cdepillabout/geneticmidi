@@ -8,6 +8,7 @@ import javax.sound.midi.Sequence;
 
 public class PopulationViewer extends JFrame
 {
+
 	public static final int DEFAULT_WIDTH = 600;
 	public static final int DEFAULT_HEIGHT = 600;
 
@@ -23,16 +24,32 @@ public class PopulationViewer extends JFrame
 	 * A panel holding the player for the best sequence
 	 * in the current generation.
 	 */
-	PlayerPanel bestIndividual;
+	PlayerPanel bestIndividualPlayer;
+
+	/**
+	 * A panel holding the list for the population.
+	 */
+	PopulationListPanel popPanel;
+
+
 
 	public static void main(String [] args)
 	{
-		PopulationViewer frame = new PopulationViewer();
+		Population<MidiIndividual> pop = new Population<MidiIndividual>(
+				new MidiIndividual());
+
+		System.out.println("Generation " + 0 + ": ");
+		MidiIndividual best = pop.bestIndividual();
+		System.out.println("Best Individual: " + best + "'s fitness is "
+				+ best.fitness());
+		System.out.println();
+
+		PopulationViewer frame = new PopulationViewer(pop);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 
-	public PopulationViewer(Population pop)
+	public PopulationViewer(Population<MidiIndividual> pop)
 	{
 		/*
 		// all look and feels
@@ -63,16 +80,18 @@ public class PopulationViewer extends JFrame
 		mainPanel.setLayout(new BorderLayout(20, 20));
 
 		// Create the players to play the two midi sequences
-		PlayerPanel idealSequencePlayer = 
+		idealSequencePlayer = 
 			new PlayerPanel(IdealSequence.getIdealSequence(), "Ideal");
-		PlayerPanel bestIndividual = new PlayerPanel(null, "Best Individual");
+		bestIndividualPlayer = 
+			new PlayerPanel( ((MidiIndividual)pop.bestIndividual()).getSequence(), 
+					"Best Individual" );
 
 		// add the players to the main panel
 		mainPanel.add(idealSequencePlayer, BorderLayout.NORTH);
-		mainPanel.add(bestIndividual, BorderLayout.SOUTH);
+		mainPanel.add(bestIndividualPlayer, BorderLayout.SOUTH);
 
 		// create the panel to hold list of individuals
-		PopulationListPanel popPanel = new PopulationListPanel();
+		popPanel = new PopulationListPanel(pop, bestIndividualPlayer);
 
 		// add the population list panel to the main panel
 		mainPanel.add(popPanel, BorderLayout.CENTER);

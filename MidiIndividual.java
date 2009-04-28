@@ -152,7 +152,6 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 
 	
-	// change this to take into account note length
 	public void mutate (double mutationRate)
 	{
 		// just change one of the notes
@@ -165,8 +164,28 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 			int randomNote = BitString.RAND.nextInt(notes.size());
 			int randomNoteValue = BitString.RAND.nextInt(128);
 
+			// find out how many ticks the ideal sequence is
+			long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
+
+			long length = BitString.RAND.nextLong();
+			if (length < 0)
+			{
+				length = -length;
+			}
+			length = length % (totalTicks);
+			// the length can't be zero
+			length++;
+
+			long startingTick = BitString.RAND.nextLong();
+			if (startingTick < 0)
+			{
+				startingTick = -startingTick;
+			}
+			startingTick = startingTick % (totalTicks - length + 1);
+
 			notes.get(randomNote).removeFromTrack();
 			notes.get(randomNote).setNoteValue(randomNoteValue);
+			notes.get(randomNote).setStartTickAndLength(startingTick, length);
 			notes.get(randomNote).addToTrack();
 
 		}
@@ -197,7 +216,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		System.out.println("fitness: " + newIndividual.fitness());
 		System.out.println();
 
-		newIndividual.mutate(.5);
+		newIndividual.mutate(1);
 		System.out.println("mutated crossover Individual: " + newIndividual);
 		System.out.println("fitness: " + newIndividual.fitness());
 		System.out.println();

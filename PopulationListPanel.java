@@ -11,13 +11,19 @@ import java.awt.event.*;
 public class PopulationListPanel extends JPanel
 {
 
+	Population<MidiIndividual> pop;
+
+	PlayerPanel bestIndividualPlayer;
 
 	public static void main(String [] args)
 	{
 	}
 
-	public PopulationListPanel()
+	public PopulationListPanel(Population<MidiIndividual> pop,
+			PlayerPanel bestIndividualPlayer)
 	{
+		this.pop = pop;
+		this.bestIndividualPlayer = bestIndividualPlayer;
 
 		JButton evolveOneGeneration = new JButton("Evolve 1 Generation");
 		JButton evolveTenGenerations = new JButton("Evolve 10 Generations");
@@ -55,14 +61,33 @@ public class PopulationListPanel extends JPanel
 		{
 			// set mouse cursor
 			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			// TODO: make this multithreaded
 			
-			// TODO: actually evolve population
+			// TODO: actually evolve population -- be sure to update the
+			// best individual player panel with the correct sequence
 
-			// TODO: uncomment this when I need it:
-			// put mouse cursor back to normal
-			//getParent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			MidiIndividual best = null;
 
-			System.out.println("Called evolve action with evolutions = " + evolutions);
+			for (int i = 0; i < evolutions; i++)
+			{
+				pop.evolve();
+				System.out.println("Generation " + pop.getGeneration() + ": ");
+				best = pop.bestIndividual();
+				System.out.println("Best Individual: " + best + "'s fitness is "
+						+ best.fitness());
+				System.out.println();
+			}
+
+			// set best individual sequence for playuer
+			bestIndividualPlayer.setSequence(best.getSequence());
+			bestIndividualPlayer.setName("Generation " + pop.getGeneration() + 
+					" -- Best Individual");
+
+
+			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+			//System.out.println("Called evolve action with evolutions = " + evolutions);
 		}
 	}
 

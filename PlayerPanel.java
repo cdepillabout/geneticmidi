@@ -16,9 +16,10 @@ public class PlayerPanel extends JPanel
 	 */
 	protected Sequence sequence;
 
-	public static void main(String [] args)
-	{
-	}
+	/** 
+	 * The label that holds the name of the sequence.
+	 */
+	protected JLabel name;
 
 	public PlayerPanel(Sequence sequence, String sequenceName)
 	{
@@ -31,7 +32,7 @@ public class PlayerPanel extends JPanel
 
 		this.sequence = sequence;
 
-		System.out.println("This sequence is: " + sequence);
+		//System.out.println("This sequence is: " + sequence);
 
 		//JButton startButton = new JButton("Start");
 		//JButton stopButton = new JButton("Stop");
@@ -52,11 +53,22 @@ public class PlayerPanel extends JPanel
 		add(stopButton);
 
 		// create a label with the name of the sequence
-		JLabel name = new JLabel(sequenceName);
+		name = new JLabel(sequenceName);
 
 		// add the label to the panel
 		add(name);
 	}
+
+	public void setName(String newSequenceName)
+	{
+		name.setText(newSequenceName);
+	}
+
+	public void setSequence(Sequence newSequence)
+	{
+		sequence = newSequence;
+	}
+
 
 	public void paintComponent(Graphics g)
 	{
@@ -68,7 +80,7 @@ public class PlayerPanel extends JPanel
 	{
 		public void actionPerformed(ActionEvent event)
 		{
-			System.out.println("In start event listener, this sequence is: " + sequence);
+			//System.out.println("In start event listener, this sequence is: " + sequence);
 
 			if (sequence != null)
 			{
@@ -85,7 +97,7 @@ public class PlayerPanel extends JPanel
 	{
 		public void actionPerformed(ActionEvent event)
 		{
-			System.out.println("In stop event listener, this sequence is: " + sequence);
+			//System.out.println("In stop event listener, this sequence is: " + sequence);
 
 			MidiHelper.stopPlaying();
 		}

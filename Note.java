@@ -82,6 +82,22 @@ public class Note
 				channel, note, 127);
 	}
 
+	/** 
+	 * Set the start tick and the length of this Note.  If you want to update 
+	 * the MidiMessage on the track, you have to first removeFromTrack(), 
+	 * then setStartTickAndLength(), then addToTrack().
+	 */
+	public void setStartTickAndLength(long startTick, long length)
+	{
+		this.startTick = startTick;
+		this.lengthTicks = length;
+
+		noteOnEvent = MidiHelper.createNoteOnEvent(this.startTick, channel, note, velocity);
+		noteOffEvent = MidiHelper.createNoteOffEvent(this.startTick + this.lengthTicks, 
+				channel, note, 127);
+	}
+
+
 	/**
 	 * Returns two if two notes have the same note value.
 	 * This is used in the fitness function for a midi individual.
