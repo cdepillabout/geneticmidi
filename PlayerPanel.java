@@ -23,19 +23,11 @@ public class PlayerPanel extends JPanel
 
 	public PlayerPanel(Sequence sequence, String sequenceName)
 	{
-		/*
-		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		setTitle("Midi Population Viewer");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-		*/
 
 		this.sequence = sequence;
 
-		//System.out.println("This sequence is: " + sequence);
-
-		//JButton startButton = new JButton("Start");
-		//JButton stopButton = new JButton("Stop");
+		// add a border
+		this.setBorder(BorderFactory.createEtchedBorder());
 
 		// TODO: add pause button
 
@@ -51,6 +43,10 @@ public class PlayerPanel extends JPanel
 		// add the buttons to the panel
 		add(startButton);
 		add(stopButton);
+
+		// TODO: add slider to show where in the midi file we are playing
+		// (pg. 394 in Core Java Volume I);
+		// JSlider slider = new JSlider(min, max, initialValue);
 
 		// create a label with the name of the sequence
 		name = new JLabel(sequenceName);

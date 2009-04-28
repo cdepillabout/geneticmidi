@@ -3,6 +3,7 @@ package geneticmidi;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.sound.midi.Sequence;
 
@@ -51,26 +52,11 @@ public class PopulationViewer extends JFrame
 
 	public PopulationViewer(Population<MidiIndividual> pop)
 	{
-		/*
-		// all look and feels
-		UIManager.LookAndFeelInfo[] infos = UIManager.getInstalledLookAndFeels();
-
-		for (UIManager.LookAndFeelInfo i : infos)
-		{
-			System.out.println("name = " + i.getName() + ", className = " +
-					i.getClassName());
-		}
-
-		// update look and feel
-		String plaf = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-		try {
-			UIManager.setLookAndFeel(plaf);
-			SwingUtilities.updateComponentTreeUI(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		*/
+		// Create menu
+		createMenu();
+		
+		// TODO: add file dialog for opening new midi file for ideal sequence
+		// file dialog --> pg. 475 in core java
 
 		// Create main panel to hold all the other panels
 		mainPanel = new JPanel();
@@ -101,6 +87,33 @@ public class PopulationViewer extends JFrame
 		setTitle("Midi Population Viewer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+	}
+
+	protected void createMenu()
+	{
+		// create the menubar
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
+
+		// create the file menu
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic('F');
+		menuBar.add(fileMenu);
+
+		Action exitAction = new 
+			AbstractAction("Quit")
+			{
+				public void actionPerformed(ActionEvent event)
+				{
+					System.exit(0);
+				}
+			};
+		
+		exitAction.putValue(Action.MNEMONIC_KEY, new Integer('Q'));
+
+		JMenuItem exitItem = new JMenuItem(exitAction);
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+		fileMenu.add(exitItem);
 	}
 
 	public void paintComponent(Graphics g)

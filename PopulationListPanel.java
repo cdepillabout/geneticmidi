@@ -39,6 +39,12 @@ public class PopulationListPanel extends JPanel
 		add(evolveOneGeneration);
 		add(evolveTenGenerations);
 		add(evolveOneHundredGenerations);
+
+
+		// TODO: create table.
+		// to add scrollbar to table, just add table to a scroll pane
+		// textArea = new JTextArea(8, 40);
+		// JScrollPane scrollPane = new JScrollPane(textArea);
 	}
 
 	public void paintComponent(Graphics g)
@@ -63,9 +69,7 @@ public class PopulationListPanel extends JPanel
 			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			// TODO: make this multithreaded
-			
-			// TODO: actually evolve population -- be sure to update the
-			// best individual player panel with the correct sequence
+			// (pg. 1 in core java volume 2)
 
 			MidiIndividual best = null;
 
