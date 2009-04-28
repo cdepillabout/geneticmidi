@@ -115,13 +115,9 @@ public class PopulationListPanel extends JPanel
 						// find column of click
 						int tableColumn = populationTable.columnAtPoint(event.getPoint());
 
-						System.out.println("column point of click: " + tableColumn);
-
 						// translate to table model index and sort
 						int modelColumn = 
 							populationTable.convertColumnIndexToModel(tableColumn);
-
-						System.out.println("model column: " + tableColumn);
 
 						sorter.sort(modelColumn);
 					}
@@ -168,8 +164,6 @@ public class PopulationListPanel extends JPanel
 			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
 			getParent().repaint();
-
-			//System.out.println("Called evolve action with evolutions = " + evolutions);
 		}
 	}
 

@@ -59,7 +59,13 @@ public class PopulationViewer extends JFrame
 		// file dialog --> pg. 475 in core java
 
 		// Create main panel to hold all the other panels
-		mainPanel = new JPanel();
+		mainPanel = new 
+			JPanel() {
+				public Insets getInsets()
+				{
+					return new Insets(8, 8, 8, 8);
+				}
+			};
 		add(mainPanel);
 
 		// lets use the border layout manager with 20 pixel horizontal and vertical gaps

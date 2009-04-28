@@ -45,7 +45,7 @@ public class PlayerPanel extends JPanel
 		add(stopButton);
 
 		// TODO: add slider to show where in the midi file we are playing
-		// (pg. 394 in Core Java Volume I);
+		// (pg. 394 in Core Java Volume I)
 		// JSlider slider = new JSlider(min, max, initialValue);
 
 		// create a label with the name of the sequence
@@ -64,13 +64,6 @@ public class PlayerPanel extends JPanel
 	{
 		sequence = newSequence;
 	}
-
-
-	public void paintComponent(Graphics g)
-	{
-		Graphics2D g2 = (Graphics2D) g;
-	}
-
 
 	private class StartPlayingAction implements ActionListener
 	{
