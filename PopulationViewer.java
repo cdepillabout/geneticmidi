@@ -34,6 +34,27 @@ public class PopulationViewer extends JFrame
 
 	public PopulationViewer()
 	{
+		/*
+		// all look and feels
+		UIManager.LookAndFeelInfo[] infos = UIManager.getInstalledLookAndFeels();
+
+		for (UIManager.LookAndFeelInfo i : infos)
+		{
+			System.out.println("name = " + i.getName() + ", className = " +
+					i.getClassName());
+		}
+
+		// update look and feel
+		String plaf = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+		try {
+			UIManager.setLookAndFeel(plaf);
+			SwingUtilities.updateComponentTreeUI(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		*/
+
 		mainPanel = new JPanel();
 		add(mainPanel);
 

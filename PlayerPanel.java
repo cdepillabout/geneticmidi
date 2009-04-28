@@ -36,6 +36,8 @@ public class PlayerPanel extends JPanel
 		//JButton startButton = new JButton("Start");
 		//JButton stopButton = new JButton("Stop");
 
+		// TODO: add pause button
+
 		// create the buttons
 		JButton startButton = new JButton(new ImageIcon("btnStart.png"));
 		JButton stopButton = new JButton(new ImageIcon("btnStop.png"));
@@ -60,6 +62,11 @@ public class PlayerPanel extends JPanel
 	{
 		public void actionPerformed(ActionEvent event)
 		{
+			// set mouse cursor
+			// TODO: this shouldn't go here, but I'll need it later,
+			// so I'll just put it here for now.
+			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			
 			System.out.println("In start event listener, this sequence is: " + sequence);
 
 			if (sequence != null)
