@@ -32,7 +32,7 @@ public class PopulationViewer extends JFrame
 		frame.setVisible(true);
 	}
 
-	public PopulationViewer()
+	public PopulationViewer(Population pop)
 	{
 		/*
 		// all look and feels
@@ -55,15 +55,28 @@ public class PopulationViewer extends JFrame
 		}
 		*/
 
+		// Create main panel to hold all the other panels
 		mainPanel = new JPanel();
 		add(mainPanel);
 
-		PlayerPanel idealSequencePlayer = 
-			new PlayerPanel(IdealSequence.getIdealSequence());
-		PlayerPanel bestIndividual = new PlayerPanel(null);
+		// lets use the border layout manager with 20 pixel horizontal and vertical gaps
+		mainPanel.setLayout(new BorderLayout(20, 20));
 
-		mainPanel.add(idealSequencePlayer);
-		mainPanel.add(bestIndividual);
+		// Create the players to play the two midi sequences
+		PlayerPanel idealSequencePlayer = 
+			new PlayerPanel(IdealSequence.getIdealSequence(), "Ideal");
+		PlayerPanel bestIndividual = new PlayerPanel(null, "Best Individual");
+
+		// add the players to the main panel
+		mainPanel.add(idealSequencePlayer, BorderLayout.NORTH);
+		mainPanel.add(bestIndividual, BorderLayout.SOUTH);
+
+		// create the panel to hold list of individuals
+		PopulationListPanel popPanel = new PopulationListPanel();
+
+		// add the population list panel to the main panel
+		mainPanel.add(popPanel, BorderLayout.CENTER);
+
 
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setTitle("Midi Population Viewer");

@@ -20,7 +20,7 @@ public class PlayerPanel extends JPanel
 	{
 	}
 
-	public PlayerPanel(Sequence sequence)
+	public PlayerPanel(Sequence sequence, String sequenceName)
 	{
 		/*
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -50,6 +50,12 @@ public class PlayerPanel extends JPanel
 		// add the buttons to the panel
 		add(startButton);
 		add(stopButton);
+
+		// create a label with the name of the sequence
+		JLabel name = new JLabel(sequenceName);
+
+		// add the label to the panel
+		add(name);
 	}
 
 	public void paintComponent(Graphics g)
@@ -62,11 +68,6 @@ public class PlayerPanel extends JPanel
 	{
 		public void actionPerformed(ActionEvent event)
 		{
-			// set mouse cursor
-			// TODO: this shouldn't go here, but I'll need it later,
-			// so I'll just put it here for now.
-			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			
 			System.out.println("In start event listener, this sequence is: " + sequence);
 
 			if (sequence != null)
