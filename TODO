@@ -1,0 +1,33 @@
+
+* In MidiHelper.java, isNoteOnMessage() and isNoteOffMessage() don't take into account
+  the fact that if a note on message has a velocity of zero, it is considered a note
+  off message.
+
+* Strewn throughout the code, I am always modeling my MidiIndividuals off of track 0 from
+  the ideal sequence.  I should change this to model them off of what ever track they came
+  from.  I will probably have to add a field to Midi Individual to say what number track it
+  came from.
+
+* For the player panel, it would be nice to add a pause button.  Also, it would be nice
+  to add a slider to show how far along the song is.
+
+* In PopulationListPanel.java, there is a weird bug where the bottom of the table is not
+  visible.  I need to fix this.
+
+* In PopulationListPanel.java, I should change the sort order so it is in decreasing 
+  order.  That is, when I sort by fitness, the highest fitness ones should be at
+  the top.
+
+* Make PopulationListPanel.java multi-threaded.  So, when the evolve button is clicked,
+  you don't have to wait until all the evolutions are finished.
+
+* In PopulationViewer.java, it would be nice to add a file dialog to open the midi file
+  we want to evolve into.  
+
+* It would be nice to make IdealSequence.java load a midi file and evolve into it.
+
+* It would be nice to make MidiIndividual represent the whole midi file and not just
+  one track from ideal sequence.
+
+* Make MidiIndividual add the Meta Events, program events, controller events, etc., to 
+  the beginning of the MidiIndividual track.

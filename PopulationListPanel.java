@@ -45,10 +45,7 @@ public class PopulationListPanel extends JPanel
 		add(evolveOneHundredGenerations);
 
 
-		// TODO: create table.
-		// to add scrollbar to table, just add table to a scroll pane
-		// textArea = new JTextArea(8, 40);
-		// JScrollPane scrollPane = new JScrollPane(textArea);
+		// create table.
 		TableModel model = new PopulationTableModel(this.pop);
 		final SortFilterModel sorter = new SortFilterModel(model);
 		populationTable = new JTable(sorter);
