@@ -154,39 +154,46 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	
 	public void mutate (double mutationRate)
 	{
-		// just change one of the notes
+		// Augment the mutation rate and then test to mutate on each note.
 		Vector<Note> notes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
 
-		double roll = BitString.RAND.nextDouble();
+		// new mutation rate
+		mutationRate = mutationRate / notes.size();
 
-		if (roll < mutationRate)
+		for (int i = 0; i < notes.size(); i++)
 		{
-			int randomNote = BitString.RAND.nextInt(notes.size());
-			int randomNoteValue = BitString.RAND.nextInt(128);
+			// check if note i will be mutated
+			double roll = BitString.RAND.nextDouble();
 
-			// find out how many ticks the ideal sequence is
-			long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
-
-			long length = BitString.RAND.nextLong();
-			if (length < 0)
+			if (roll < mutationRate)
 			{
-				length = -length;
-			}
-			length = length % (totalTicks);
-			// the length can't be zero
-			length++;
+				// get the new note value
+				int randomNoteValue = BitString.RAND.nextInt(128);
 
-			long startingTick = BitString.RAND.nextLong();
-			if (startingTick < 0)
-			{
-				startingTick = -startingTick;
-			}
-			startingTick = startingTick % (totalTicks - length + 1);
+				// find out how many ticks the ideal sequence is
+				long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
 
-			notes.get(randomNote).removeFromTrack();
-			notes.get(randomNote).setNoteValue(randomNoteValue);
-			notes.get(randomNote).setStartTickAndLength(startingTick, length);
-			notes.get(randomNote).addToTrack();
+				long length = BitString.RAND.nextLong();
+				if (length < 0)
+				{
+					length = -length;
+				}
+				length = length % (totalTicks);
+				// the length can't be zero
+				length++;
+
+				long startingTick = BitString.RAND.nextLong();
+				if (startingTick < 0)
+				{
+					startingTick = -startingTick;
+				}
+				startingTick = startingTick % (totalTicks - length + 1);
+
+				notes.get(i).removeFromTrack();
+				notes.get(i).setNoteValue(randomNoteValue);
+				notes.get(i).setStartTickAndLength(startingTick, length);
+				notes.get(i).addToTrack();
+			}
 
 		}
 		

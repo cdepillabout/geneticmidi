@@ -112,6 +112,9 @@ public class PopulationListPanel extends JPanel
 				{
 					public void mouseClicked(MouseEvent event)
 					{
+						// set mouse cursor
+						getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
 						// find column of click
 						int tableColumn = populationTable.columnAtPoint(event.getPoint());
 
@@ -120,6 +123,11 @@ public class PopulationListPanel extends JPanel
 							populationTable.convertColumnIndexToModel(tableColumn);
 
 						sorter.sort(modelColumn);
+
+						getParent().setCursor(
+							Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+						getParent().repaint();
 					}
 				});
 

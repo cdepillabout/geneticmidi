@@ -4,7 +4,7 @@ public class Population<I extends Individual<I>> {
 
 	public static int NUMBER_OF_INDIVIDUALS = 100;
 	public static double MUTATION_RATE = 0.5;
-	public static int TOTAL_GENERATIONS = 2000;
+	public static int TOTAL_GENERATIONS = 1000000;
 
 	protected int generation;
 
@@ -12,20 +12,12 @@ public class Population<I extends Individual<I>> {
 		Population<MidiIndividual> pop = new Population<MidiIndividual>(
 				new MidiIndividual());
 
-		System.out.println("Generation " + 0 + ": ");
-		MidiIndividual best = pop.bestIndividual();
-		System.out.println("Best Individual: " + best + "'s fitness is "
-				+ best.fitness());
-		System.out.println();
+		System.out.println(pop);
 
 		for(int i = 1; i < TOTAL_GENERATIONS; i++)
 		{
 			pop.evolve();
-			System.out.println("Generation " + i + ": ");
-			best = pop.bestIndividual();
-			System.out.println("Best Individual: " + best + "'s fitness is "
-					+ best.fitness());
-			System.out.println();
+			System.out.println(pop);
 		}
 	}
 
@@ -95,6 +87,7 @@ public class Population<I extends Individual<I>> {
 		return individuals;
 	}
 
+	/*
 	public String toString() {
 		String result = "";
 
@@ -108,6 +101,23 @@ public class Population<I extends Individual<I>> {
 		}
 
 		result += "Best Fitness: " + bestIndividual().fitness();
+
+		return result;
+	}
+	*/
+
+	public String toString() {
+		String result = "";
+
+		result += "Generation " + this.getGeneration() + ": " + "\n";
+
+		I best = bestIndividual();
+
+		result += "Best Individual: " + best + "Best Individual fitness: "
+				+ best.fitness() + " (" + 
+				String.format("%.0f", 
+						(best.fitness() * 100/ IdealSequence.perfectFitness())) +
+				"%)\n";
 
 		return result;
 	}
