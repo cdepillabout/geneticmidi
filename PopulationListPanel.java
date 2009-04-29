@@ -156,8 +156,11 @@ public class PopulationListPanel extends JPanel
 			for (int i = 0; i < evolutions; i++)
 			{
 				pop.evolve();
+				best = pop.bestIndividual();
 				System.out.println(pop);
 			}
+
+			assert best != null;
 
 			// set best individual sequence for playuer
 			bestIndividualPlayer.setSequence(best.getSequence());

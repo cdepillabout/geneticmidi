@@ -39,11 +39,7 @@ public class PopulationViewer extends JFrame
 		Population<MidiIndividual> pop = new Population<MidiIndividual>(
 				new MidiIndividual());
 
-		System.out.println("Generation " + 0 + ": ");
-		MidiIndividual best = pop.bestIndividual();
-		System.out.println("Best Individual: " + best + "'s fitness is "
-				+ best.fitness());
-		System.out.println();
+		System.out.println(pop);
 
 		PopulationViewer frame = new PopulationViewer(pop);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

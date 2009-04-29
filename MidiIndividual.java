@@ -154,6 +154,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	
 	public void mutate (double mutationRate)
 	{
+		
 		// Augment the mutation rate and then test to mutate on each note.
 		Vector<Note> notes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
 
@@ -190,12 +191,13 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 				startingTick = startingTick % (totalTicks - length + 1);
 
 				notes.get(i).removeFromTrack();
-				notes.get(i).setNoteValue(randomNoteValue);
-				notes.get(i).setStartTickAndLength(startingTick, length);
+				//notes.get(i).setNoteValue(randomNoteValue);
+				//notes.get(i).setStartTickAndLength(startingTick, length);
 				notes.get(i).addToTrack();
 			}
 
 		}
+		
 		
 	}
 
