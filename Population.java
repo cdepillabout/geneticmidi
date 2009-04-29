@@ -2,7 +2,7 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 100;
+	public static int NUMBER_OF_INDIVIDUALS = 10000;
 	public static double MUTATION_RATE = 0.5;
 	public static int TOTAL_GENERATIONS = 1000000;
 
@@ -18,6 +18,12 @@ public class Population<I extends Individual<I>> {
 		{
 			pop.evolve();
 			System.out.println(pop);
+
+			if (i % 10 == 0)
+			{
+				pop.bestIndividual().writeSequence("best_individual.mid");
+			}
+
 		}
 	}
 

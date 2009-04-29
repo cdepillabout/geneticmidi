@@ -16,48 +16,21 @@ import java.io.File;
 
 public class PlayMidi {
 
-	//static Synthesizer synth;
-
 	public static void main(String[] args) {
 
-		Sequencer sequencer;
-		//Transmitter	seqTrans;
-		//Receiver synthRcvr;
-		//Track [] tracks;
+			File myMidiFile = new File(args[0]);
+
+			Sequence mySeq = null;
+
+			try{
+				mySeq = MidiSystem.getSequence(myMidiFile);
+				MidiHelper.play(mySeq);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
 
 
-		try {
-			// get the transmitter for the sequencer
-			sequencer = MidiSystem.getSequencer();
-			//seqTrans = sequencer.getTransmitter();
-
-			// get the receiver for the sythesizer
-			//synth = MidiSystem.getSynthesizer();
-			//synthRcvr = synth.getReceiver(); 
-
-			// hook the transmitter and the receiver together
-			//seqTrans.setReceiver(synthRcvr);	
-
-			//File myMidiFile = new File("../midi_files/Freestyler.mid");
-			File myMidiFile = new File("midi_files/test.mid");
-
-			// Construct a Sequence object, and
-			// load it into my sequencer.
-			Sequence mySeq = MidiSystem.getSequence(myMidiFile);
-
-			System.out.println(DebugMidi.sequenceInfoToString(mySeq));
-
-			System.out.println(DebugMidi.sequenceEventsToString(mySeq));
-
-			sequencer.setSequence(mySeq);
-			sequencer.open();
-			sequencer.start();
-			//sequencer.stop();
-			//sequencer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
 	}
 
 }

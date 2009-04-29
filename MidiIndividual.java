@@ -1,9 +1,12 @@
 package geneticmidi;
 
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 
 import java.util.Vector;
+
+import java.io.File;
 
 public class MidiIndividual implements Individual<MidiIndividual> {
 
@@ -212,7 +215,12 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public void writeSequence(String filename)
 	{
-
+		try {
+			MidiSystem.write(sequence, 1, new File(filename));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	/*
