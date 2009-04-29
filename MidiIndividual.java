@@ -190,16 +190,37 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 				}
 				startingTick = startingTick % (totalTicks - length + 1);
 
+				/*
+				System.out.println("\nthis track:\n" + 
+						DebugMidi.trackEventsToString(this.sequence.getTracks()[0]));
+				System.out.println("This note: " + notes.get(i));
+				System.out.println("Events in this track: " + 
+						this.sequence.getTracks()[0].size());
+						*/
+
 				notes.get(i).removeFromTrack();
-				//notes.get(i).setNoteValue(randomNoteValue);
-				//notes.get(i).setStartTickAndLength(startingTick, length);
+				notes.get(i).setNoteValue(randomNoteValue);
+				notes.get(i).setStartTickAndLength(startingTick, length);
 				notes.get(i).addToTrack();
+
 			}
 
 		}
 		
 		
 	}
+
+	public void writeSequence(String filename)
+	{
+
+	}
+
+	/*
+	public boolean allNotesExistInTrack()
+	{
+
+	}
+	*/
 
 	public String toString()
 	{

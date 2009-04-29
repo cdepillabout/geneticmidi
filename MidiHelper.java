@@ -378,6 +378,57 @@ public class MidiHelper {
 	}
 
 	/**
+	 * Return the number of note on and note off events in track.
+	 */
+	public static int noteOnOffsInTrack(Track track)
+	{
+		int count = 0;
+
+		for (int i = 0; i < track.size(); i++)
+		{
+			MidiEvent event = track.get(i);
+			if (isNoteOnEvent(event) || isNoteOffEvent(event))
+			{
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+
+	/**
+	 * Return a clone of a track.
+	 */
+	public static Track cloneTrack(Track track)
+	{
+		Track newTrack = null;
+
+		try {
+			Sequence seq = new Sequence(IdealSequence.getDivisionType(),
+					IdealSequence.getResolution());
+			newTrack = seq.createTrack();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		assert newTrack != null;
+
+
+		for (int i = 0; i < track.size(); i++)
+		{
+			MidiEvent event = track.get(i);
+			newTrack.add(event);
+		}
+
+		assert track.size() == newTrack.size();
+
+		return newTrack;
+
+	}
+
+	/**
 	 * Return an array of all of the Notes in sequence.
 	 */
 	public static Vector<Note> getNotesFromTrack(Track track)
@@ -385,18 +436,38 @@ public class MidiHelper {
 		Vector<MidiEvent> midiEvents = new Vector<MidiEvent>();
 		Vector<Note> notes = new Vector<Note>();
 
-		for(int i = 0; i < track.size(); i++)
+		Track tempTrack = cloneTrack(track);
+
+		while (noteOnOffsInTrack(tempTrack) > 0)
 		{
-			MidiEvent event = track.get(i);
+			MidiEvent event = tempTrack.get(0);
 			if (isNoteOnEvent(event))
 			{
-				MidiEvent noteOff = findMatchingNoteOff(track, i, event);
+				MidiEvent noteOff = findMatchingNoteOff(tempTrack, 0, event);
 				// TODO: should this not be channel 0?
-				// TODO: is it okay to add the track here?
+				// TODO: is it okay to add the tempTrack here?
 				notes.add(new Note(track, event.getTick(), noteOff.getTick() - event.getTick(),
 							0, getNoteValue(event), getVelocity(event)));
 
+				boolean removeNoteOn = tempTrack.remove(event);
+				boolean removeNoteOff = tempTrack.remove(noteOff);
+
+				if (!removeNoteOn)
+				{
+					System.out.println("Could not remove note on event" + 
+							" in MidiHelper.getNotesFromTrack()");
+					System.exit(1);
+				}
+				if (!removeNoteOff)
+				{
+					System.out.println("Could not remove note off event" + 
+							" in MidiHelper.getNotesFromTrack()");
+					System.exit(1);
+				}
+
 			}
+
+
 		}
 
 
@@ -426,6 +497,7 @@ public class MidiHelper {
 	 * Find the same MidiEvent in track as the argument midiEvent.
 	 */
 	public static MidiEvent findSameEvent(Track track, MidiEvent midiEvent)
+		throws Exception
 	{
 		for (int i = 0; i < track.size(); i++)
 		{
@@ -445,14 +517,19 @@ public class MidiHelper {
 
 		System.out.println("There is no event " + 
 				DebugMidi.midiEventToString(midiEvent) +
-				" in track: " + track);
-		System.exit(1);
-		return null;
+				" in track: " + DebugMidi.trackEventsToString(track));
+		//System.exit(1);
+		throw new Exception();
+
+		//return null;
 
 	}
 
 	public static void main(String [] args)
 	{
+		System.out.println("ideal sequence track: " +
+				DebugMidi.trackEventsToString(
+					IdealSequence.getIdealSequence().getTracks()[0]));
 		System.out.println("All notes:");
 		System.out.println(
 				getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]));
@@ -463,6 +540,7 @@ public class MidiHelper {
 		System.out.println(getNotesPlayingAtTick(
 					getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]),
 					tick));
+
 
 	}
 		

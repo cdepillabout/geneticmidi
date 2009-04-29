@@ -62,10 +62,44 @@ public class Note
 	{
 		assert track != null;
 
-		// This is needed because track.remove() will only take a
-		// reference to an exact MidiEvent.  It can't be an identical event. :-(
-		track.remove(MidiHelper.findSameEvent(track, noteOnEvent));
-		track.remove(MidiHelper.findSameEvent(track, noteOffEvent));
+		try {
+
+			// This is needed because track.remove() will only take a
+			// reference to an exact MidiEvent.  It can't be an identical event. :-(
+
+			/*
+			System.out.println("\nRemoving " + DebugMidi.midiEventToString(noteOnEvent) + 
+					" from\n" + DebugMidi.trackEventsToString(track));
+			System.out.println("This Note: " + this);
+			*/
+
+			boolean removeNoteOn = track.remove(MidiHelper.findSameEvent(track, noteOnEvent));
+
+			/*
+			System.out.println("Removing " + DebugMidi.midiEventToString(noteOffEvent) + 
+					" from\n" + DebugMidi.trackEventsToString(track));
+			System.out.println("This Note: " + this);
+			*/
+
+			boolean removeNoteOff = track.remove(MidiHelper.findSameEvent(track, noteOffEvent));
+
+
+			if (!removeNoteOn)
+			{
+				System.out.println("in removeFromTrack() Could not remove note on...");
+				System.exit(1);
+			}
+			if (!removeNoteOff)
+			{
+				System.out.println("in removeFromTrack() Could not remove note off...");
+				System.exit(1);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	/**
