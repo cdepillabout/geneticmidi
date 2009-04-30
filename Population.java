@@ -5,7 +5,7 @@ public class Population<I extends Individual<I>> {
 	/**
 	 * This is the number of individuals to have in the population.
 	 */
-	public static int NUMBER_OF_INDIVIDUALS = 5;
+	public static int NUMBER_OF_INDIVIDUALS = 2000;
 
 	/**
 	 * This is the mutation rate.  For example, if the mutation rate is
@@ -24,7 +24,7 @@ public class Population<I extends Individual<I>> {
 	 * and this is the number of individuals that will compete in
 	 * that tournament.
 	 */
-	public static int CHOOSE_PARENT_AMOUNT = 5;
+	public static int CHOOSE_PARENT_AMOUNT = 100;
 
 	/**
 	 * This just holds the generation number that will are working on.

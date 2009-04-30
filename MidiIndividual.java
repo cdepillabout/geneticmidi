@@ -10,10 +10,24 @@ import java.io.File;
 
 public class MidiIndividual implements Individual<MidiIndividual> {
 
-	Sequence sequence;
+	protected Sequence sequence;
+
+	/**
+	 * This holds the fitness score. This is so that I can calculated it once
+	 * and be done with it, instead of calculating it many times.
+	 */
+	protected double storedFitness;
+
+	/**
+	 * This holds whether the fitness score has already been calculated.
+	 */
+	protected boolean alreadyCalcedFitness;
+
 
 	public MidiIndividual() 
 	{
+		alreadyCalcedFitness = false;
+
 		Vector<Note> notes = new Vector<Note>();
 
 		/*
@@ -73,6 +87,8 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public MidiIndividual(Vector<Note> notes) 
 	{
+		alreadyCalcedFitness = false; 
+
 		try {
 			sequence = new Sequence(IdealSequence.getDivisionType(),
 					IdealSequence.getResolution());
@@ -97,6 +113,11 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public double fitness() 
 	{
+		if (alreadyCalcedFitness)
+		{
+			return storedFitness;
+		}
+
 		double fitness = 0;
 
 		
@@ -117,9 +138,12 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 			}
 		}
 		
+		storedFitness = fitness;
+		alreadyCalcedFitness = true;
 
 		return fitness;
 	}
+	
 
 
 
@@ -157,6 +181,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	
 	public void mutate (double mutationRate)
 	{
+		alreadyCalcedFitness = false;
 		
 		// Augment the mutation rate and then test to mutate on each note.
 		Vector<Note> notes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
