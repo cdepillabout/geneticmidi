@@ -1,0 +1,125 @@
+Genetic Midi
+Evolve a MIDI file genetically.
+
+Copyright (c) 2009
+
+
+TABLE OF CONTENTS
+*****************
+
+1. Explanation
+2. Use
+	2.1. Using the command line program
+	2.2. Using the GUI
+	2.3. Playing a MIDI file from the command line
+	2.4. Changing settings
+3. Possible Improvements
+4. Comments
+
+
+
+
+
+
+1. Explanation
+--------------
+
+Genetic Midi uses a genetic algorithm to evolve a MIDI sequence that matches
+some ideal sequence.
+
+
+
+2. Use
+------
+
+There are two ways to run this program.  One is from the command line and one
+is from a GUI.
+
+To run it from either the GUI or the command line, first you need to compile it.
+
+$ cd geneticmidi
+$ javac *.java
+$
+
+
+
+2.1. Using the command line program
+-----------------------------------
+
+To run it from the command line, run the Population class.
+
+$ java geneticmidi.Population
+
+This will output the best individual from each population, and how close the 
+best individual is to the goal, or the ideal sequence.
+
+Every 10 generations, it will write a MIDI file "best_individual.mid" which
+is the sequence from the best individual of that generation.
+
+
+
+2.2. Using the GUI
+------------------
+
+To run it from the GUI, run the PopulationViewer class.
+
+$ java geneticmidi.PopulationViewer
+
+This will open up a GUI giving you a panel to play the ideal sequence (the
+sequence we are trying to evolve to), a panel showing all the individuals in
+the current generation, and a panel to play the sequence from the individual
+you select.
+
+To evolve the individuals, just use the "Evolve" button.
+
+
+
+2.3. Playing a MIDI file from the command line
+----------------------------------------------
+
+To listen to MIDI files from the command line, just use the PlayMidi class.
+
+$ java geneticmidi.PlayMidi <MIDI file>
+
+For example, you might want to play the best_individual.mid that is evolved
+from the Population class.
+
+$ java geneticmidi.PlayMidi best_individual.mid
+
+
+
+2.3. Changing settings
+----------------------
+
+To change the settings (number of individuals, mutation rate, number of parent
+chosen in the tournament selection, etc.), change the Population.java file.
+It contains static fields at the top of the file that control all of these
+variables.
+
+
+
+3. Possible Improvements
+------------------------
+
+Please see the TODO file.  It contains a list of possible improvements that
+could be made.
+
+
+
+4. Comments
+-----------
+
+I think this is a very cool project.  It is interesting to see the power of
+genetic algorithms.
+
+One of the problems I had was programming the GUI.  I find it more difficult
+and less rewarding to program GUIs.
+
+Another problem I had was, just like all genetic algorithms, coming up with
+a good fitness function, parent selection function, and cross over function.
+
+Finally, I do not know if this all was programmed in the spirit of Java.
+My MidiHelper.java clas just has a lot of helper functions to help programming
+with MIDI files.  Maybe I should have made this better some how.  It reminds
+me of C the way it is.
+
