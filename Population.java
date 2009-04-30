@@ -2,10 +2,33 @@ package geneticmidi;
 
 public class Population<I extends Individual<I>> {
 
-	public static int NUMBER_OF_INDIVIDUALS = 10000;
+	/**
+	 * This is the number of individuals to have in the population.
+	 */
+	public static int NUMBER_OF_INDIVIDUALS = 5;
+
+	/**
+	 * This is the mutation rate.  For example, if the mutation rate is
+	 * 0.5, then half of the individuals will mutate each evolution.
+	 */
 	public static double MUTATION_RATE = 0.5;
+
+	/** 
+	 * When Population is run by itself, this determines how many
+	 * evolutions it will go through.
+	 */
 	public static int TOTAL_GENERATIONS = 1000000;
 
+	/**
+	 * chooseParent() uses a tornament selection (not roulette wheel),
+	 * and this is the number of individuals that will compete in
+	 * that tournament.
+	 */
+	public static int CHOOSE_PARENT_AMOUNT = 5;
+
+	/**
+	 * This just holds the generation number that will are working on.
+	 */
 	protected int generation;
 
 	public static void main(String[] args) {
@@ -137,13 +160,19 @@ public class Population<I extends Individual<I>> {
 	}
 
 	public I chooseParent() {
-		I a = individuals[BitString.RAND.nextInt(individuals.length)];
-		I b = individuals[BitString.RAND.nextInt(individuals.length)];
-		// System.out.println(a);
-		// System.out.println(b);
-		if (a.fitness() > b.fitness()) {
-			return a;
+
+		I selection = individuals[BitString.RAND.nextInt(individuals.length)];
+
+		for (int i = 0; i < CHOOSE_PARENT_AMOUNT; i++)
+		{
+			I tempSelection = individuals[BitString.RAND.nextInt(individuals.length)];
+
+			if (selection.fitness() < tempSelection.fitness())
+			{
+				selection = tempSelection;
+			}
 		}
-		return b;
+
+		return selection;
 	}
 }

@@ -67,20 +67,7 @@ public class Note
 			// This is needed because track.remove() will only take a
 			// reference to an exact MidiEvent.  It can't be an identical event. :-(
 
-			/*
-			System.out.println("\nRemoving " + DebugMidi.midiEventToString(noteOnEvent) + 
-					" from\n" + DebugMidi.trackEventsToString(track));
-			System.out.println("This Note: " + this);
-			*/
-
 			boolean removeNoteOn = track.remove(MidiHelper.findSameEvent(track, noteOnEvent));
-
-			/*
-			System.out.println("Removing " + DebugMidi.midiEventToString(noteOffEvent) + 
-					" from\n" + DebugMidi.trackEventsToString(track));
-			System.out.println("This Note: " + this);
-			*/
-
 			boolean removeNoteOff = track.remove(MidiHelper.findSameEvent(track, noteOffEvent));
 
 
