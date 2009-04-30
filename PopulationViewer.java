@@ -48,6 +48,8 @@ public class PopulationViewer extends JFrame
 
 	public PopulationViewer(Population<MidiIndividual> pop)
 	{
+		setLookAndFeel();
+
 		// Create menu
 		createMenu();
 		
@@ -118,4 +120,27 @@ public class PopulationViewer extends JFrame
 		fileMenu.add(exitItem);
 	}
 
+	/**
+	 * Updated look and feel to run like a GTK application if the GTK theme is available.
+	 */
+	protected void setLookAndFeel()
+	{
+		UIManager.LookAndFeelInfo[] infos = UIManager.getInstalledLookAndFeels();
+
+		for (UIManager.LookAndFeelInfo i : infos)
+		{
+			if (i.getName().contains("GTK"))
+			{
+				try {
+					UIManager.setLookAndFeel(i.getClassName());
+					SwingUtilities.updateComponentTreeUI(this);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+
+			}
+		}
+
+	}
 }
