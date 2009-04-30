@@ -31,3 +31,11 @@
 
 * Make MidiIndividual add the Meta Events, program events, controller events, etc., to 
   the beginning of the MidiIndividual track.
+
+* In MidiIndividual.java, the fitness function should be a memory function.  That is,
+  it should remember it's value and not have to recompute it every time it needs it.
+
+* Write more JUnit tests, especially for the functions from MidiHelper.java.
+
+* In MidiIndividual.java, in the fitness function, try penalizing the parts of the 
+ track where too many notes are being played at one time.
