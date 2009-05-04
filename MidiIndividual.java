@@ -125,16 +125,24 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		Vector<Note> ourNotes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0]);
 
 
-		for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); i += 10)
+		// test this individual every FITNESS_TICK_AMOUNT ticks to see
+		// if the right notes are being played
+		for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); 
+				i += Population.FITNESS_TICK_AMOUNT)
 		{
 			Vector<Note> idealSequencePlayingNotes = 
 				MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, i);
 			Vector<Note> ourSequencePlayingNotes = 
 				MidiHelper.getNotesPlayingAtTick(ourNotes, i);
 
+			// if the correct notes are being played, the fitness will increase
 			if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
 			{
 				fitness += 1;
+			}
+			else if (idealSequencePlayingNotes.size() != ourSequencePlayingNotes.size())
+			{
+				fitness -= 1.5;
 			}
 		}
 		

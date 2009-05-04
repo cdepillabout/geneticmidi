@@ -5,13 +5,13 @@ public class Population<I extends Individual<I>> {
 	/**
 	 * This is the number of individuals to have in the population.
 	 */
-	public static int NUMBER_OF_INDIVIDUALS = 2000;
+	public static int NUMBER_OF_INDIVIDUALS = 200;
 
 	/**
 	 * This is the mutation rate.  For example, if the mutation rate is
 	 * 0.5, then half of the individuals will mutate each evolution.
 	 */
-	public static double MUTATION_RATE = 0.5;
+	public static double MUTATION_RATE = 2;
 
 	/** 
 	 * When Population is run by itself, this determines how many
@@ -27,6 +27,13 @@ public class Population<I extends Individual<I>> {
 	public static int CHOOSE_PARENT_AMOUNT = 100;
 
 	/**
+	 * How many ticks to skip when calculating the fitness
+	 * in MidiIndividual.  For example, if it is 10, then
+	 * the fitness will be calculated every 10 ticks.
+	 */
+	public static int FITNESS_TICK_AMOUNT = 30;
+
+	/**
 	 * This just holds the generation number that will are working on.
 	 */
 	protected int generation;
@@ -40,10 +47,10 @@ public class Population<I extends Individual<I>> {
 		for(int i = 1; i < TOTAL_GENERATIONS; i++)
 		{
 			pop.evolve();
-			System.out.println(pop);
 
 			if (i % 10 == 0)
 			{
+				System.out.println(pop);
 				pop.bestIndividual().writeSequence("best_individual.mid");
 			}
 
@@ -142,11 +149,11 @@ public class Population<I extends Individual<I>> {
 
 		I best = bestIndividual();
 
-		result += "Best Individual: " + best + "Best Individual fitness: "
-				+ best.fitness() + " (" + 
-				String.format("%.0f", 
-						(best.fitness() * 100/ IdealSequence.perfectFitness())) +
-				"%)\n";
+		result += "Best Individual: " + best + "Best Individual fitness: " + 
+			String.format("%.2f (%.0f%%)\n", best.fitness(), 
+					(best.fitness() * 
+					 100 / IdealSequence.perfectFitness()
+					));
 
 		return result;
 	}

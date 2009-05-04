@@ -71,7 +71,9 @@ public class IdealSequence {
 			(new Note(myTrack1, 1440, 480, 0, "C5", 100)).addToTrack();
 			*/
 			
+		
 			
+			// two C major arpeggios
 			for (int i = 0; i < 8; i++)
 			{
 				int noteValue = 0;
@@ -95,17 +97,15 @@ public class IdealSequence {
 				(new Note(myTrack1, i * 480, 480, 0, noteValue, 100)).addToTrack();
 			}
 			
+	
 
+			
 			/*
+			// Two notes playing during each other
 			(new Note(myTrack1, 0, 480, 0, 5, 100)).addToTrack();
 			(new Note(myTrack1, 100, 200, 0, 5, 100)).addToTrack();
 			*/
-
-
-
-
-
-
+			
 			
 			/*
 			(new Note(myTrack1, 100, 1102, 0, "C4", 100)).addToTrack();
@@ -155,11 +155,11 @@ public class IdealSequence {
 	}
 
 	public static void main(String[] args) {
-		//FlowerBed bed = new FlowerBed();
-		//System.out.println("fitness: " + bed.fitness());
 
 		System.out.println(DebugMidi.sequenceEventsToString(sequence));
-		MidiHelper.play(sequence);
+		System.out.println(MidiHelper.getNotesPlayingAtTick(
+					getNotes(), 110));
+		//MidiHelper.play(sequence);
 	}
 
 }

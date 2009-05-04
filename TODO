@@ -37,5 +37,3 @@
 
 * Write more JUnit tests, especially for the functions from MidiHelper.java.
 
-* In MidiIndividual.java, in the fitness function, try penalizing the parts of the 
- track where too many notes are being played at one time.
