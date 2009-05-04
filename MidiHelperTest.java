@@ -9,6 +9,8 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 
+import java.util.Vector;
+
 
 public class MidiHelperTest {
 	
@@ -381,7 +383,53 @@ public class MidiHelperTest {
 	@Test
 	public void testGetNotesFromTrack()
 	{
-		fail();
+		try 
+		{
+			Sequence sequence = new Sequence(0, 480);
+			Track trackA = sequence.createTrack();
 
+			// add a new note to the track
+			Note note1 = new Note(trackA, 0, 480, 0, "C5", 100);
+			note1.addToTrack();
+			
+			// add new note to track
+			Note note2 = new Note(trackA, 100, 200, 0, "C5", 100);
+			note2.addToTrack();
+
+			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA);
+
+			assertEquals(trackNotes.size(), 2);
+
+			assertTrue(trackNotes.get(0) != note1);
+			assertTrue(trackNotes.get(1) != note2);
+
+			Track trackB = sequence.createTrack();
+
+			// add a new note to the track
+			Note note3 = new Note(trackB, 0, 200, 0, "C5", 100);
+			note3.addToTrack();
+			
+			// add new note to track
+			Note note4 = new Note(trackB, 200, 200, 0, "A4", 100);
+			note4.addToTrack();
+
+			Vector<Note> trackNotes2 = MidiHelper.getNotesFromTrack(trackB);
+
+			assertEquals(trackNotes2.size(), 2);
+
+			// TODO: make a new method in Note.java to compare two notes if
+			// they are exactly equal (same start ticks, end ticks, channel...), 
+			// not just if they have the same note value
+			assertEquals(trackNotes2.get(0), note3);
+			assertEquals(trackNotes2.get(1), note4);
+			assertFalse(trackNotes2.get(0).equals(note1));
+			assertFalse(trackNotes2.get(1).equals(note2));
+
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 }
