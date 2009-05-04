@@ -377,4 +377,11 @@ public class MidiHelperTest {
 			System.exit(1);
 		}
 	}
+
+	@Test
+	public void testGetNotesFromTrack()
+	{
+		fail();
+
+	}
 }
