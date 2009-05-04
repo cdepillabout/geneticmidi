@@ -136,13 +136,14 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 				MidiHelper.getNotesPlayingAtTick(ourNotes, i);
 
 			// if the correct notes are being played, the fitness will increase
-			if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
-			{
-				fitness += 1;
-			}
-			else if (idealSequencePlayingNotes.size() != ourSequencePlayingNotes.size())
+			if (idealSequencePlayingNotes.size() != 
+					ourSequencePlayingNotes.size())
 			{
 				fitness -= 1.5;
+			}
+			else if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
+			{
+				fitness += 1;
 			}
 		}
 		

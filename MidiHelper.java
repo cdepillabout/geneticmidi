@@ -18,19 +18,6 @@ public class MidiHelper {
 
 	static Sequencer sequencer;
 
-	/**
-	 * Initialize the sequencer.
-	 */
-	static
-	{
-		try {
-			sequencer = MidiSystem.getSequencer();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
 	/** 
 	 * Create a note on event.
 	 */
@@ -86,16 +73,26 @@ public class MidiHelper {
 	{
 		try{
 
+			// if the sequencer hasn't been initialized, 
+			// initialize it
+			if (sequencer == null)
+			{
+				sequencer = MidiSystem.getSequencer();
+			}
+
+			// if the sequencer hasn't been opened, open it for playing
 			if (!sequencer.isOpen())
 			{
 				sequencer.open();
 			}
 			
+			// if the sequencer is running, we need to stop it
 			if (sequencer.isRunning())
 			{
 				sequencer.stop();
 			}
 
+			// rewind it to the beginning and start playing again
 			sequencer.setTickPosition(0);
 			sequencer.setSequence(sequence);
 			sequencer.start();
@@ -113,12 +110,15 @@ public class MidiHelper {
 	{
 		try{
 
-			if (sequencer.isOpen())
+			if (sequencer != null)
 			{
-				if (sequencer.isRunning())
+				if (sequencer.isOpen())
 				{
-					sequencer.stop();
-					sequencer.setTickPosition(0);
+					if (sequencer.isRunning())
+					{
+						sequencer.stop();
+						sequencer.setTickPosition(0);
+					}
 				}
 			}
 
