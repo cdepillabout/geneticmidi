@@ -400,8 +400,8 @@ public class MidiHelperTest {
 
 			assertEquals(trackNotes.size(), 2);
 
-			assertTrue(trackNotes.get(0) != note1);
-			assertTrue(trackNotes.get(1) != note2);
+			assertTrue(!note1.completelyEquals(trackNotes.get(0)));
+			assertTrue(!note2.completelyEquals(trackNotes.get(1)));
 
 			Track trackB = sequence.createTrack();
 
@@ -417,13 +417,17 @@ public class MidiHelperTest {
 
 			assertEquals(trackNotes2.size(), 2);
 
-			// TODO: make a new method in Note.java to compare two notes if
-			// they are exactly equal (same start ticks, end ticks, channel...), 
-			// not just if they have the same note value
-			assertEquals(trackNotes2.get(0), note3);
-			assertEquals(trackNotes2.get(1), note4);
-			assertFalse(trackNotes2.get(0).equals(note1));
-			assertFalse(trackNotes2.get(1).equals(note2));
+			assertTrue(trackNotes2.get(0).completelyEquals(note3));
+			assertTrue(trackNotes2.get(1).completelyEquals(note4));
+
+			assertFalse(trackNotes2.get(0).completelyEquals(note1));
+			assertFalse(trackNotes2.get(1).completelyEquals(note2));
+
+
+
+			Track trackC = sequence.createTrack();
+			Vector<Note> trackNotes3 = MidiHelper.getNotesFromTrack(trackC);
+			assertEquals(trackNotes3.size(), 0);
 
 		}
 		catch (Exception e)
@@ -432,4 +436,95 @@ public class MidiHelperTest {
 			System.exit(1);
 		}
 	}
+
+	@Test
+	public void testGetNotesPlayingAtTick()
+	{
+		try 
+		{
+			Sequence sequence = new Sequence(0, 480);
+			Track trackA = sequence.createTrack();
+
+			// add a new note to the track
+			Note note1 = new Note(trackA, 0, 480, 0, "C5", 100);
+			note1.addToTrack();
+			
+			// add new note to track
+			Note note2 = new Note(trackA, 100, 200, 0, "C5", 100);
+			note2.addToTrack();
+
+			Note note3 = new Note(trackA, 0, 300, 0, "C5", 100);
+			Note note4 = new Note(trackA, 100, 380, 0, "C5", 100);
+
+			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA);
+
+			assertEquals(trackNotes.size(), 2);
+
+			assertFalse(note1.completelyEquals(trackNotes.get(0)));
+			assertFalse(note2.completelyEquals(trackNotes.get(1)));
+			assertTrue(note3.completelyEquals(trackNotes.get(0)));
+			assertTrue(note4.completelyEquals(trackNotes.get(1)));
+
+			Vector<Note> playingNotes = MidiHelper.getNotesPlayingAtTick(trackNotes, 0);
+
+			assertEquals(playingNotes.size(), 1);
+			assertEquals(playingNotes.get(0), note3);
+
+			playingNotes = MidiHelper.getNotesPlayingAtTick(trackNotes, 100);
+
+			assertEquals(playingNotes.size(), 2);
+			assertEquals(playingNotes.get(0), note3);
+			assertEquals(playingNotes.get(1), note4);
+
+			playingNotes = MidiHelper.getNotesPlayingAtTick(trackNotes, 400);
+
+			assertEquals(playingNotes.size(), 1);
+			assertEquals(playingNotes.get(0), note4);
+
+			playingNotes = MidiHelper.getNotesPlayingAtTick(trackNotes, 500);
+
+			assertEquals(playingNotes.size(), 0);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+	}
+
+	@Test
+	public void testFindSameEvent()
+	{
+		try 
+		{
+			//TODO: I don't know if this function actually works. it might just
+			//take note on events to be note off events
+			
+			Sequence sequence = new Sequence(0, 480);
+			Track trackA = sequence.createTrack();
+
+			// add a new note to the track
+			Note note1 = new Note(trackA, 0, 480, 0, "C5", 100);
+			note1.addToTrack();
+			
+			// add new note to track
+			Note note2 = new Note(trackA, 100, 200, 0, "C5", 100);
+			note2.addToTrack();
+
+			Note note3 = new Note(trackA, 0, 300, 0, "C5", 100);
+			Note note4 = new Note(trackA, 100, 380, 0, "C5", 100);
+
+			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA);
+
+			fail();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+	}
+
 }

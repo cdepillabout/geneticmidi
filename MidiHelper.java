@@ -517,6 +517,7 @@ public class MidiHelper {
 	public static MidiEvent findSameEvent(Track track, MidiEvent midiEvent)
 		throws Exception
 	{
+		//TODO: I don't know if this actually works
 		for (int i = 0; i < track.size(); i++)
 		{
 			MidiEvent trackEvent = track.get(i);

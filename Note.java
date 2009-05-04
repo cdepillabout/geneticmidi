@@ -120,7 +120,7 @@ public class Note
 
 
 	/**
-	 * Returns two if two notes have the same note value.
+	 * Returns true if two notes have the same note value.
 	 * This is used in the fitness function for a midi individual.
 	 */
 	@Override
@@ -136,6 +136,21 @@ public class Note
 		}
 	}
 
+	/**
+	 * Returns true if two notes are completely the same.
+	 */
+	public boolean completelyEquals(Note otherNote)
+	{
+		return this.getNoteValue() == otherNote.getNoteValue() &&
+			   this.getStartTick() == otherNote.getStartTick() &&
+			   this.getEndTick() == otherNote.getEndTick() &&
+			   this.toString().equals(otherNote.toString()) &&
+			   this.getChannel() == otherNote.getChannel() &&
+			   this.getVelocity() == otherNote.getVelocity();
+	}
+
+
+
 	public int getNoteValue()
 	{
 		return note;
@@ -149,6 +164,16 @@ public class Note
 	public long getEndTick()
 	{
 		return startTick + lengthTicks;
+	}
+
+	public int getChannel()
+	{
+		return channel;
+	}
+
+	public int getVelocity()
+	{
+		return velocity;
 	}
 
 	public MidiEvent getNoteOnEvent()

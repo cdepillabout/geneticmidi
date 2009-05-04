@@ -34,3 +34,5 @@
 
 * Write more JUnit tests, especially for the functions from MidiHelper.java and Note.java
 
+* Change the fitness function so that it just calculates the fitness based
+  on binary strings from the vector of Notes.
