@@ -104,48 +104,53 @@ public class DebugMidi {
 	 */
 	public static String eventTypeToString(int value)
 	{
-			// 0x80
-			if (value >= 128 && value < 144) {
-				return "Note Off";
-			}
+		// value modulates based on what channel is?
+		// For example, if the event is a note on message
+		// and it's on channel 0, value will be 144,
+		// but if it's on channel 1, value will be 145.
 
-			// 0x90
-			if (value >= 144 && value < 160) {
-				return "Note On";
-			}
+		// 0x80
+		if (value >= 128 && value < 144) {
+			return "Note Off";
+		}
 
-			// 0xA0
-			if (value >= 160 && value < 176) {
-				return "Note Aftertouch";
-			}
+		// 0x90
+		if (value >= 144 && value < 160) {
+			return "Note On [" + value + "]";
+		}
 
-			// 0xB0
-			if (value >= 176 && value < 192) {
-				return "Controller";
-			}
+		// 0xA0
+		if (value >= 160 && value < 176) {
+			return "Note Aftertouch";
+		}
 
-			// 0xC0
-			if (value >= 192 && value < 208) {
-				return "Program Change";
-			}
+		// 0xB0
+		if (value >= 176 && value < 192) {
+			return "Controller";
+		}
 
-			// 0xD0
-			if (value >= 208 && value < 224) {
-				return "Channel Aftertouch";
-			}
+		// 0xC0
+		if (value >= 192 && value < 208) {
+			return "Program Change";
+		}
 
-			// 0xE0
-			if (value >= 224 && value < 240) {
-				return "Pitch Bend";
-			}
+		// 0xD0
+		if (value >= 208 && value < 224) {
+			return "Channel Aftertouch";
+		}
 
-			// 0xFF
-			if (value == 255) {
-				return "Meta Event";
-			}
+		// 0xE0
+		if (value >= 224 && value < 240) {
+			return "Pitch Bend";
+		}
+
+		// 0xFF
+		if (value == 255) {
+			return "Meta Event";
+		}
 
 
-			return String.valueOf(value);
+		return String.valueOf(value);
 	}
 
 	/**

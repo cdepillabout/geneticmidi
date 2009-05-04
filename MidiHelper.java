@@ -291,7 +291,18 @@ public class MidiHelper {
 	public static boolean isNoteOnMessage(MidiMessage message)
 	{
 		// TODO: make sure velocity is not zero
-		return message.getStatus() == ShortMessage.NOTE_ON;
+
+		// TODO: make sure this is correct --
+		// if the the message is not on channel 0, it will
+		// not be equal to ShortMessage.NOTE_ON, but 
+		// ShortMessage.NOTE_ON + channel.
+		// So, we have to check for a range of possible values.
+
+		// Just this won't work.
+		//return message.getStatus() == ShortMessage.NOTE_ON;
+
+		return message.getStatus() >= 144 && 
+			message.getStatus() < 160;
 	}
 
 	/** 
@@ -309,7 +320,14 @@ public class MidiHelper {
 	{
 		// TODO: change this so that it can be a note on event with 
 		// velocity 0.
-		return message.getStatus() == ShortMessage.NOTE_OFF;
+		
+		// TODO: see note at isNoteOnMessage()
+
+		//return message.getStatus() == ShortMessage.NOTE_OFF;
+		
+
+		return message.getStatus() >= 128 && 
+			message.getStatus() < 144;
 	}
 
 	/**

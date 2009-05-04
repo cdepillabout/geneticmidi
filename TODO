@@ -32,8 +32,5 @@
 * Make MidiIndividual add the Meta Events, program events, controller events, etc., to 
   the beginning of the MidiIndividual track.
 
-* In MidiIndividual.java, the fitness function should be a memory function.  That is,
-  it should remember it's value and not have to recompute it every time it needs it.
-
 * Write more JUnit tests, especially for the functions from MidiHelper.java.
 
