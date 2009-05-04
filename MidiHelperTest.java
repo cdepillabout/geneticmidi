@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
 
 
 public class MidiHelperTest {
@@ -17,7 +19,8 @@ public class MidiHelperTest {
 	}
 
 	@Test
-	public void testGetNoteFromValue() {
+	public void testGetNoteFromValue() 
+	{
 		assertEquals("C4", MidiHelper.getNoteFromValue(60));
 		assertEquals("C#-1", MidiHelper.getNoteFromValue(1));
 		assertEquals("F6", MidiHelper.getNoteFromValue(89));
@@ -30,7 +33,8 @@ public class MidiHelperTest {
 	}
 
 	@Test
-	public void testGetValueFromNote() {
+	public void testGetValueFromNote() 
+	{
 		assertEquals(MidiHelper.getValueFromNote("C4"), 60);
 		assertEquals(MidiHelper.getValueFromNote("C#-1"), 1);
 		assertEquals(MidiHelper.getValueFromNote("F6"), 89);
@@ -175,4 +179,95 @@ public class MidiHelperTest {
 		assertTrue(MidiHelper.isNoteOffEvent(event6));
 
 	}
+
+	/** 
+	 * This is hard because it will System.exit() if it can't 
+	 * find a matching note off event.
+	 */
+	@Test
+	public void testFindMatchingNoteOff()
+	{
+		try 
+		{
+			Sequence sequence = new Sequence(0, 480);
+			Track track = sequence.createTrack();
+
+			// add a new note to the track
+			Note note1 = new Note(track, 0, 480, 0, "C5", 100);
+			note1.addToTrack();
+
+			// make sure that the first note in the track is the same as
+			// note1's getNoteOnEvent().
+			assertTrue(MidiHelper.isEqualMidiEvents(track.get(0), note1.getNoteOnEvent())); 
+
+			// make sure the matching noteOff for this track is the same
+			// as note1's getNoteOffEvent().
+			assertTrue(
+					MidiHelper.isEqualMidiEvents(
+						MidiHelper.findMatchingNoteOff(track, 0, note1.getNoteOnEvent()),
+						note1.getNoteOffEvent()
+					) 
+				);
+
+			// add new note to track
+			Note note2 = new Note(track, 100, 200, 0, "C5", 100);
+			note2.addToTrack();
+			
+			// make sure it's the second note on the track and it's not equal to 
+			// the first note
+			assertTrue(MidiHelper.isEqualMidiEvents(track.get(1), note2.getNoteOnEvent()));
+			assertFalse(MidiHelper.isEqualMidiEvents(track.get(1), note1.getNoteOnEvent()));
+
+			// make sure the second note on event corresponds to it's own note off
+			assertTrue(
+					MidiHelper.isEqualMidiEvents(
+						MidiHelper.findMatchingNoteOff(track, 0, note2.getNoteOnEvent()),
+						note2.getNoteOffEvent()
+					) 
+				);
+
+			// now note1's note off will correspond to note2's note off
+			// (since they are the same note and note2's note off comes sooner)
+			assertTrue(
+					MidiHelper.isEqualMidiEvents(
+						MidiHelper.findMatchingNoteOff(track, 0, note1.getNoteOnEvent()),
+						note2.getNoteOffEvent()
+					) 
+				);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+	}
+
+	@Test
+	public void testGetNoteValue()
+	{
+		Note note1 = new Note(0, 480, 0, 60, 100);
+		Note note2 = new Note(0, 480, 0, 0, 100);
+		Note note3 = new Note(0, 480, 0, "C#5", 100);
+		Note note4 = new Note(0, 480, 0, "C#5", 100);
+
+		assertEquals(MidiHelper.getNoteValue(note1.getNoteOnEvent()), 60);
+		assertEquals(MidiHelper.getNoteValue(note1.getNoteOffEvent()), 60);
+
+		assertEquals(MidiHelper.getNoteValue(note2.getNoteOnEvent()), 0);
+		assertEquals(MidiHelper.getNoteValue(note2.getNoteOffEvent()), 0);
+
+		assertFalse(MidiHelper.getNoteValue(note2.getNoteOffEvent()) ==
+				MidiHelper.getNoteValue(note1.getNoteOffEvent()));
+
+		assertEquals(MidiHelper.getNoteValue(note2.getNoteOffEvent()),
+				MidiHelper.getNoteValue(note2.getNoteOnEvent()));
+
+		assertEquals(MidiHelper.getNoteValue(note3.getNoteOffEvent()),
+				MidiHelper.getNoteValue(note4.getNoteOffEvent()));
+
+		assertEquals(MidiHelper.getNoteValue(note3.getNoteOnEvent()),
+				MidiHelper.getNoteValue(note4.getNoteOnEvent()));
+	}
+
 }

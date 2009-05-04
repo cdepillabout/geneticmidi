@@ -151,6 +151,16 @@ public class Note
 		return startTick + lengthTicks;
 	}
 
+	public MidiEvent getNoteOnEvent()
+	{
+		return noteOnEvent;
+	}
+
+	public MidiEvent getNoteOffEvent()
+	{
+		return noteOffEvent;
+	}
+
 	/**
 	 * Add this note to the track it is associated with.
 	 */

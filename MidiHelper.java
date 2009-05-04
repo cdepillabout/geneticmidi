@@ -543,6 +543,47 @@ public class MidiHelper {
 
 	}
 
+	public static boolean isEqualMidiEvents(MidiEvent aEvent, MidiEvent bEvent)
+	{
+		assert aEvent != null && bEvent != null;
+		assert isNoteOnEvent(aEvent) || isNoteOffEvent(aEvent); 
+		assert isNoteOnEvent(bEvent) || isNoteOffEvent(bEvent);
+
+		if (aEvent.getTick() != bEvent.getTick())
+		{
+			return false;
+		}
+
+		MidiMessage a = aEvent.getMessage();
+		MidiMessage b = bEvent.getMessage();
+
+		// test if they are note on messages
+		if (isNoteOnMessage(a))
+		{
+			if (!isNoteOnMessage(b))
+			{
+				return false;
+			}
+		}
+
+		// test if they are note off messages
+		if (isNoteOnMessage(a))
+		{
+			if (!isNoteOnMessage(b))
+			{
+				return false;
+			}
+		}
+
+		// make sure the rest of them is the same
+		if (java.util.Arrays.equals(a.getMessage(), b.getMessage()))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	public static void main(String [] args)
 	{
 		System.out.println("ideal sequence track: " +

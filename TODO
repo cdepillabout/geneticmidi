@@ -32,5 +32,5 @@
 * Make MidiIndividual add the Meta Events, program events, controller events, etc., to 
   the beginning of the MidiIndividual track.
 
-* Write more JUnit tests, especially for the functions from MidiHelper.java.
+* Write more JUnit tests, especially for the functions from MidiHelper.java and Note.java
 
