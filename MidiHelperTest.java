@@ -108,4 +108,71 @@ public class MidiHelperTest {
 		assertFalse(MidiHelper.isNoteOffEvent(event6));
 
 	}
+
+	@Test
+	public void testCreateNoteOffEvent()
+	{
+		MidiEvent event1 = MidiHelper.createNoteOffEvent(0, 0, 0, 100);
+		MidiEvent event2 = MidiHelper.createNoteOffEvent(0, 0, 0, 100);
+		MidiEvent event3 = MidiHelper.createNoteOffEvent(10, 0, 0, 100);
+		MidiEvent event4 = MidiHelper.createNoteOffEvent(20, 1, 5, 55);
+		MidiEvent event5 = MidiHelper.createNoteOffEvent(20, 1, 5, 55);
+		MidiEvent event6 = MidiHelper.createNoteOffEvent(20, 5, 6, 45);
+
+		/*
+		System.out.println("event1: " + DebugMidi.midiEventToString(event1));
+		System.out.println("event2: " + DebugMidi.midiEventToString(event2));
+		System.out.println("event3: " + DebugMidi.midiEventToString(event3));
+		System.out.println("event4: " + DebugMidi.midiEventToString(event4));
+		System.out.println("event5: " + DebugMidi.midiEventToString(event5));
+		System.out.println("event6: " + DebugMidi.midiEventToString(event6));
+		*/
+
+		// make sure they are happening on the correct tick
+		assertEquals(event1.getTick(), 0);
+		assertEquals(event3.getTick(), 10);
+
+		assertTrue(event1.getTick() == event2.getTick());
+		assertTrue(event1.getTick() != event3.getTick());
+
+		// make sure they are the same MidiMessage
+		assertTrue(event1.getMessage().equals(event1.getMessage()));
+		assertFalse(event1.getMessage().clone().equals(event1.getMessage()));
+		assertFalse(event2.getMessage().equals(event1.getMessage()));
+
+		// make event1 and event2 are the same midimessage
+		assertTrue(java.util.Arrays.equals(event1.getMessage().getMessage(),
+					event2.getMessage().getMessage()));
+		assertEquals(event1.getMessage().getLength(), event2.getMessage().getLength());
+		assertEquals(event1.getMessage().getStatus(), event2.getMessage().getStatus());
+
+		// make sure event4 and event5 are the same midimessage
+		assertTrue(java.util.Arrays.equals(event4.getMessage().getMessage(),
+					event5.getMessage().getMessage()));
+		assertEquals(event4.getMessage().getLength(), event5.getMessage().getLength());
+		assertEquals(event4.getMessage().getStatus(), event5.getMessage().getStatus());
+
+		// make sure event3 and event4 are not the same midimessage
+		assertFalse(java.util.Arrays.equals(event4.getMessage().getMessage(),
+					event3.getMessage().getMessage()));
+		assertEquals(event4.getMessage().getLength(), event3.getMessage().getLength());
+		assertFalse(event4.getMessage().getStatus() == event3.getMessage().getStatus());
+
+		// make sure they are not note on events
+		assertFalse(MidiHelper.isNoteOnEvent(event1));
+		assertFalse(MidiHelper.isNoteOnEvent(event2));
+		assertFalse(MidiHelper.isNoteOnEvent(event3));
+		assertFalse(MidiHelper.isNoteOnEvent(event4));
+		assertFalse(MidiHelper.isNoteOnEvent(event5));
+		assertFalse(MidiHelper.isNoteOnEvent(event6));
+
+		// make sure they are all note off events
+		assertTrue(MidiHelper.isNoteOffEvent(event1));
+		assertTrue(MidiHelper.isNoteOffEvent(event2));
+		assertTrue(MidiHelper.isNoteOffEvent(event3));
+		assertTrue(MidiHelper.isNoteOffEvent(event4));
+		assertTrue(MidiHelper.isNoteOffEvent(event5));
+		assertTrue(MidiHelper.isNoteOffEvent(event6));
+
+	}
 }
