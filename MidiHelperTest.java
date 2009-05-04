@@ -270,4 +270,33 @@ public class MidiHelperTest {
 				MidiHelper.getNoteValue(note4.getNoteOnEvent()));
 	}
 
+	@Test
+	public void testGetVelocity()
+	{
+		Note note1 = new Note(0, 480, 0, 60, 100);
+		Note note2 = new Note(0, 480, 0, 0, 50);
+		Note note3 = new Note(0, 480, 0, "C#5", 77);
+		Note note4 = new Note(0, 480, 0, "C#5", 77);
+
+		assertEquals(MidiHelper.getVelocity(note1.getNoteOnEvent()), 100);
+		assertEquals(MidiHelper.getVelocity(note1.getNoteOffEvent()), 127);
+
+		assertEquals(MidiHelper.getVelocity(note2.getNoteOnEvent()), 50);
+		assertEquals(MidiHelper.getVelocity(note2.getNoteOffEvent()), 127);
+
+		assertEquals(MidiHelper.getVelocity(note2.getNoteOffEvent()),
+				MidiHelper.getVelocity(note1.getNoteOffEvent()));
+
+		assertFalse(MidiHelper.getVelocity(note2.getNoteOnEvent()) ==
+				MidiHelper.getVelocity(note1.getNoteOnEvent()));
+
+		assertFalse(MidiHelper.getVelocity(note2.getNoteOffEvent()) ==
+				MidiHelper.getVelocity(note2.getNoteOnEvent()));
+
+		assertEquals(MidiHelper.getVelocity(note3.getNoteOffEvent()),
+				MidiHelper.getVelocity(note4.getNoteOffEvent()));
+
+		assertEquals(MidiHelper.getVelocity(note3.getNoteOnEvent()),
+				MidiHelper.getVelocity(note4.getNoteOnEvent()));
+	}
 }
