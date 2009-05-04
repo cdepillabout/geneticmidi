@@ -299,4 +299,82 @@ public class MidiHelperTest {
 		assertEquals(MidiHelper.getVelocity(note3.getNoteOnEvent()),
 				MidiHelper.getVelocity(note4.getNoteOnEvent()));
 	}
+
+
+	@Test
+	public void testNoteOnOffsInTrack()
+	{
+
+		try 
+		{
+			Sequence sequence = new Sequence(0, 480);
+			Track track = sequence.createTrack();
+
+			assertEquals(MidiHelper.noteOnOffsInTrack(track), 0);
+
+			// add a new note to the track
+			Note note1 = new Note(track, 0, 480, 0, "C5", 100);
+			note1.addToTrack();
+
+			assertEquals(MidiHelper.noteOnOffsInTrack(track), 2);
+			track.remove(track.get(0));
+			assertEquals(MidiHelper.noteOnOffsInTrack(track), 1);
+
+			// add new note to track
+			Note note2 = new Note(track, 100, 200, 0, "C5", 100);
+			note2.addToTrack();
+			
+			assertEquals(MidiHelper.noteOnOffsInTrack(track), 3);
+			track.remove(track.get(0));
+			track.remove(track.get(0));
+			track.remove(track.get(0));
+			assertEquals(MidiHelper.noteOnOffsInTrack(track), 0);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	@Test
+	public void testCloneTrack()
+	{
+		try 
+		{
+			Sequence sequence = new Sequence(0, 480);
+			Track trackA = sequence.createTrack();
+
+			// add a new note to the track
+			Note note1 = new Note(trackA, 0, 480, 0, "C5", 100);
+			note1.addToTrack();
+			
+			// add new note to track
+			Note note2 = new Note(trackA, 100, 200, 0, "C5", 100);
+			note2.addToTrack();
+			
+			Track trackB = MidiHelper.cloneTrack(trackA);
+
+			for (int i = 0; i < trackA.size(); i++)
+			{
+				assertTrue(MidiHelper.isEqualMidiEvents(trackA.get(i),
+							trackB.get(i)));
+			}
+
+			assertTrue(MidiHelper.isEqualMidiEvents(trackB.get(0),
+						note1.getNoteOnEvent()));
+			assertTrue(MidiHelper.isEqualMidiEvents(trackB.get(1),
+						note2.getNoteOnEvent()));
+			assertTrue(MidiHelper.isEqualMidiEvents(trackB.get(2),
+						note2.getNoteOffEvent()));
+			assertTrue(MidiHelper.isEqualMidiEvents(trackB.get(3),
+						note1.getNoteOffEvent()));
+
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 }
