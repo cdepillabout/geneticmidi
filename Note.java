@@ -103,6 +103,20 @@ public class Note
 				channel, note, 127);
 	}
 
+	/**
+	 * Set the channel for this Note.  If you want to update the MidiMessage on the
+	 * track, you have to first removeFromTrack(), then setNoteValue(),
+	 * then addToTrack().
+	 */
+	public void setChannel(int chan)
+	{
+		this.channel = chan;
+
+		noteOnEvent = MidiHelper.createNoteOnEvent(startTick, channel, note, velocity);
+		noteOffEvent = MidiHelper.createNoteOffEvent(startTick + lengthTicks, 
+				channel, note, 127);
+	}
+
 	/** 
 	 * Set the start tick and the length of this Note.  If you want to update 
 	 * the MidiMessage on the track, you have to first removeFromTrack(), 

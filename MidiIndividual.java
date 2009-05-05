@@ -26,16 +26,12 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public MidiIndividual() 
 	{
+		
 		alreadyCalcedFitness = false;
 
+		/*
 		Vector<Note> notes = new Vector<Note>();
 
-		/*
-		   notes.add(new Note(track, 0, 480, 0, MidiHelper.getValueFromNote("C4"), 100));
-		   notes.add(new Note(track, 480, 480, 0, MidiHelper.getValueFromNote("E4"), 100));
-		   notes.add(new Note(track, 960, 480, 0, MidiHelper.getValueFromNote("G4"), 100));
-		   notes.add(new Note(track, 1440, 480, 0, MidiHelper.getValueFromNote("C5"), 100));
-		   */
 
 		// find out how many ticks the ideal sequence is
 		long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
@@ -83,6 +79,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	public MidiIndividual(Vector<Note> notes) 
