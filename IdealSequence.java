@@ -77,7 +77,7 @@ public class IdealSequence {
 		
 			
 			// two C major arpeggios
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < 20; i++)
 			{
 				int noteValue = 0;
 
@@ -148,10 +148,13 @@ public class IdealSequence {
 
 	public static double perfectFitness()
 	{
+		/*
 		// TODO: this needs to be changed to accomodate multiple tracks
 		MidiIndividual perfectIndividual = new MidiIndividual(getNotes(0));
 
 		return perfectIndividual.fitness();
+		*/
+		return 100;
 	}
 
 	/**

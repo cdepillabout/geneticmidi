@@ -23,85 +23,61 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	 */
 	protected boolean alreadyCalcedFitness;
 
+	/**
+	 * The individual tracks.
+	 */
+	Vector<MidiIndividualTrack> midiIndividualTracks;
 
 	public MidiIndividual() 
 	{
 		
 		alreadyCalcedFitness = false;
 
-		/*
-		Vector<Note> notes = new Vector<Note>();
-
-
-		// find out how many ticks the ideal sequence is
-		long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
-
-		// find out how many notes ideal sequence has
-		Vector<Note> idealSequenceNotes = 
-			MidiHelper.getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0], 0);
-		int totalNotes = idealSequenceNotes.size();
-
-		for (int i = 0; i < totalNotes; i++)
-		{
-			long length = BitString.RAND.nextLong();
-			if (length < 0)
-			{
-				length = -length;
-			}
-			length = length % (totalTicks);
-			// the length can't be zero
-			length++;
-
-			long startingTick = BitString.RAND.nextLong();
-			if (startingTick < 0)
-			{
-				startingTick = -startingTick;
-			}
-			startingTick = startingTick % (totalTicks - length + 1);
-
-			//System.out.println("length = " + length + ", startingTick = " + startingTick);
-			//System.out.println("nextLong() =  " + BitString.RAND.nextLong());
-			//notes.add(new Note((i * 480), 480, 0, BitString.RAND.nextInt(128), 100));
-			notes.add(new Note(startingTick, length, 0, BitString.RAND.nextInt(128), 100));
-		}
-
 		try {
 			sequence = new Sequence(IdealSequence.getDivisionType(),
 					IdealSequence.getResolution());
 
-			Track track = sequence.createTrack();
+			int tracks = IdealSequence.getIdealSequence().getTracks().length;
+		
+			midiIndividualTracks = new Vector<MidiIndividualTrack>();
 
-			for (int i = 0; i < notes.size(); i++)
+			for (int i = 0; i < tracks; i++)
 			{
-				notes.get(i).setTrack(track);
-				notes.get(i).addToTrack();
+				midiIndividualTracks.add(
+						new MidiIndividualTrack(sequence.createTrack(), i));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
+
 	}
 
-	public MidiIndividual(Vector<Note> notes) 
+	public MidiIndividual(Vector<MidiIndividualTrack> midIndvTracks) 
 	{
-		alreadyCalcedFitness = false; 
+		
+		alreadyCalcedFitness = false;
 
 		try {
 			sequence = new Sequence(IdealSequence.getDivisionType(),
 					IdealSequence.getResolution());
 
-			Track track = sequence.createTrack();
+			int tracks = IdealSequence.getIdealSequence().getTracks().length;
+			assert tracks == midIndvTracks.size();
+		
+			midiIndividualTracks = new Vector<MidiIndividualTrack>();
 
-			for (int i = 0; i < notes.size(); i++)
+			for (int i = 0; i < tracks; i++)
 			{
-				notes.get(i).setTrack(track);
-				notes.get(i).addToTrack();
+				midiIndividualTracks.add(
+						new MidiIndividualTrack(
+							sequence.createTrack(), i, midIndvTracks.get(i)));
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
+
 
 	public Sequence getSequence()
 	{
@@ -117,31 +93,9 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 		double fitness = 0;
 
-		
-		Vector<Note> idealSequenceNotes = IdealSequence.getNotes(0);
-		Vector<Note> ourNotes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0], 0);
-
-
-		// test this individual every FITNESS_TICK_AMOUNT ticks to see
-		// if the right notes are being played
-		for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); 
-				i += Population.FITNESS_TICK_AMOUNT)
+		for(MidiIndividualTrack track: midiIndividualTracks)
 		{
-			Vector<Note> idealSequencePlayingNotes = 
-				MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, i);
-			Vector<Note> ourSequencePlayingNotes = 
-				MidiHelper.getNotesPlayingAtTick(ourNotes, i);
-
-			// if the correct notes are being played, the fitness will increase
-			if (idealSequencePlayingNotes.size() != 
-					ourSequencePlayingNotes.size())
-			{
-				fitness -= 1.5;
-			}
-			else if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
-			{
-				fitness += 1;
-			}
+			fitness += track.fitness();
 		}
 		
 		storedFitness = fitness;
@@ -151,97 +105,45 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 	
 
-
-
 	public MidiIndividual makeAnother() 
 	{
 		return new MidiIndividual();
 	}
 
+	
+	/** 
+	 * Get index-th individual track.
+	 */
+	public MidiIndividualTrack getIndividualTrack(int index)
+	{
+		return midiIndividualTracks.get(index);
+	}
+
 
 	public MidiIndividual crossover(MidiIndividual that)
 	{
-		// it is assumed they are both the same length
-		Vector<Note> thisNotes = MidiHelper.getNotesFromTrack(
-				this.sequence.getTracks()[0], 0);
-		Vector<Note> thatNotes = MidiHelper.getNotesFromTrack(
-				that.getSequence().getTracks()[0], 0);
+		Vector<MidiIndividualTrack> newIndividualTracks = 
+			new Vector<MidiIndividualTrack>();
 
-		assert thisNotes.size() == thatNotes.size();
-
-		int crossPoint = BitString.RAND.nextInt(thisNotes.size());
-
-		Vector<Note> resultNotes = new Vector<Note>();
-
-		for(int i = 0; i < crossPoint; i++) {
-			resultNotes.add(thisNotes.get(i));
+		for (int i = 0; i < midiIndividualTracks.size(); i++)
+		{
+			MidiIndividualTrack newIndv = 
+				this.getIndividualTrack(i).crossover(that.getIndividualTrack(i));
+			newIndividualTracks.add(newIndv);
 		}
 
-		for(int j = crossPoint; j < thatNotes.size(); j++) {
-			resultNotes.add(thatNotes.get(j));
-		}
-
-		return new MidiIndividual(resultNotes);
+		return new MidiIndividual(newIndividualTracks);
 	}
 
 	
 	public void mutate (double mutationRate)
 	{
 		alreadyCalcedFitness = false;
-		
-		// Augment the mutation rate and then test to mutate on each note.
-		Vector<Note> notes = MidiHelper.getNotesFromTrack(this.sequence.getTracks()[0], 0);
 
-		// new mutation rate
-		mutationRate = mutationRate / notes.size();
-
-		for (int i = 0; i < notes.size(); i++)
+		for (MidiIndividualTrack t: midiIndividualTracks)
 		{
-			// check if note i will be mutated
-			double roll = BitString.RAND.nextDouble();
-
-			if (roll < mutationRate)
-			{
-				// get the new note value
-				int randomNoteValue = BitString.RAND.nextInt(128);
-
-				// find out how many ticks the ideal sequence is
-				long totalTicks = IdealSequence.getIdealSequence().getTracks()[0].ticks(); 
-
-				long length = BitString.RAND.nextLong();
-				if (length < 0)
-				{
-					length = -length;
-				}
-				length = length % (totalTicks);
-				// the length can't be zero
-				length++;
-
-				long startingTick = BitString.RAND.nextLong();
-				if (startingTick < 0)
-				{
-					startingTick = -startingTick;
-				}
-				startingTick = startingTick % (totalTicks - length + 1);
-
-				/*
-				System.out.println("\nthis track:\n" + 
-						DebugMidi.trackEventsToString(this.sequence.getTracks()[0]));
-				System.out.println("This note: " + notes.get(i));
-				System.out.println("Events in this track: " + 
-						this.sequence.getTracks()[0].size());
-						*/
-
-				notes.get(i).removeFromTrack();
-				notes.get(i).setNoteValue(randomNoteValue);
-				notes.get(i).setStartTickAndLength(startingTick, length);
-				notes.get(i).addToTrack();
-
-			}
-
+			t.mutate(mutationRate);
 		}
-		
-		
 	}
 
 	public void writeSequence(String filename)

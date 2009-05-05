@@ -10,7 +10,7 @@ import java.io.File;
 
 public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 
-	protected Sequence sequence;
+	protected Track track;
 
 	/**
 	 * This holds the fitness score. This is so that I can calculated it once
@@ -29,10 +29,11 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 	protected int channel;
 
 
-	public MidiIndividualTrack(int channel) 
+	public MidiIndividualTrack(Track track, int channel) 
 	{
 		alreadyCalcedFitness = false;
 		this.channel = channel;
+		this.track = track;
 
 		Vector<Note> notes = new Vector<Note>();
 
@@ -41,8 +42,8 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 
 		// find out how many notes ideal sequence has
 		Vector<Note> idealSequenceNotes = 
-			MidiHelper.getNotesFromTrack(IdealSequence.getIdealSequence().
-					getTracks()[channel], channel);
+			MidiHelper.getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[channel],
+					channel);
 		int totalNotes = idealSequenceNotes.size();
 
 		for (int i = 0; i < totalNotes; i++)
@@ -63,52 +64,56 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 			}
 			startingTick = startingTick % (totalTicks - length + 1);
 
-			notes.add(new Note(startingTick, length, channel, 
+			notes.add(new Note(track, startingTick, length, channel, 
 						BitString.RAND.nextInt(128), 100));
 		}
 
-		try {
-			sequence = new Sequence(IdealSequence.getDivisionType(),
-					IdealSequence.getResolution());
-
-			Track track = sequence.createTrack();
-
-			for (int i = 0; i < notes.size(); i++)
-			{
-				notes.get(i).setTrack(track);
-				notes.get(i).addToTrack();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		for (int i = 0; i < notes.size(); i++)
+		{
+			notes.get(i).addToTrack();
 		}
 	}
 
-	public MidiIndividualTrack(Vector<Note> notes, int channel) 
+	public MidiIndividualTrack(Track track, int channel, MidiIndividualTrack model) 
 	{
 		alreadyCalcedFitness = false; 
 		this.channel = channel;
+		this.track = track;
 
-		try {
-			sequence = new Sequence(IdealSequence.getDivisionType(),
-					IdealSequence.getResolution());
+		Vector<Note> notes = MidiHelper.getNotesFromTrack(model.getTrack(), channel);
 
-			Track track = sequence.createTrack();
-
-			for (int i = 0; i < notes.size(); i++)
-			{
-				notes.get(i).setChannel(channel);
-				notes.get(i).setTrack(track);
-				notes.get(i).addToTrack();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		for (int i = 0; i < notes.size(); i++)
+		{
+			notes.get(i).setChannel(channel);
+			notes.get(i).setTrack(track);
+			notes.get(i).addToTrack();
 		}
+
 	}
 
-	public Sequence getSequence()
+	public MidiIndividualTrack(Track track, int channel, Vector<Note> notes) 
 	{
-		return sequence;
+		alreadyCalcedFitness = false; 
+		this.channel = channel;
+		this.track = track;
+
+		for (int i = 0; i < notes.size(); i++)
+		{
+			notes.get(i).setChannel(channel);
+			notes.get(i).setTrack(track);
+			notes.get(i).addToTrack();
+		}
+
+	}
+
+	public Track getTrack()
+	{
+		return track;
+	}
+
+	public int getChannel()
+	{
+		return channel;
 	}
 
 	public double fitness() 
@@ -123,7 +128,7 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		
 		Vector<Note> idealSequenceNotes = IdealSequence.getNotes(channel);
 		Vector<Note> ourNotes = MidiHelper.getNotesFromTrack(
-				this.sequence.getTracks()[channel], channel);
+				track, channel);
 
 
 		// test this individual every FITNESS_TICK_AMOUNT ticks to see
@@ -155,24 +160,26 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 	}
 	
 
-
-
-	public MidiIndividualTrack makeAnother() 
+	public MidiIndividualTrack makeAnother()
 	{
-		return new MidiIndividualTrack(channel);
+		return null;
 	}
-
 
 	public MidiIndividualTrack crossover(MidiIndividualTrack that)
 	{
+		// make sure they the channels for the two tracks are the same
+		assert channel == that.getChannel();
+
 		// it is assumed they are both the same length
 		Vector<Note> thisNotes = MidiHelper.getNotesFromTrack(
-				this.sequence.getTracks()[channel], channel);
+				track, channel);
 		Vector<Note> thatNotes = MidiHelper.getNotesFromTrack(
-				that.getSequence().getTracks()[channel], channel);
+				that.getTrack(), that.getChannel());
 
+		// make sure that the are the same number of notes in each
 		assert thisNotes.size() == thatNotes.size();
 
+		// actually do the crossover
 		int crossPoint = BitString.RAND.nextInt(thisNotes.size());
 
 		Vector<Note> resultNotes = new Vector<Note>();
@@ -185,7 +192,17 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 			resultNotes.add(thatNotes.get(j));
 		}
 
-		return new MidiIndividualTrack(resultNotes, channel);
+
+		try {
+			Sequence tempseq = new Sequence(IdealSequence.getDivisionType(),
+					IdealSequence.getResolution());
+			return new MidiIndividualTrack(tempseq.createTrack(), channel, resultNotes);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return null;
 	}
 
 	
@@ -194,8 +211,7 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		alreadyCalcedFitness = false;
 		
 		// Augment the mutation rate and then test to mutate on each note.
-		Vector<Note> notes = MidiHelper.getNotesFromTrack(
-				this.sequence.getTracks()[channel], channel);
+		Vector<Note> notes = MidiHelper.getNotesFromTrack(track, channel);
 
 		// new mutation rate
 		mutationRate = mutationRate / notes.size();
@@ -243,31 +259,18 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		
 	}
 
-	public void writeSequence(String filename)
-	{
-		try {
-			MidiSystem.write(sequence, 1, new File(filename));
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
 
-	/*
-	public boolean allNotesExistInTrack()
-	{
-
-	}
-	*/
 
 	public String toString()
 	{
-		return DebugMidi.sequenceEventsToString(sequence);
+		return "Channel " + channel + "\n" +
+			DebugMidi.trackEventsToString(track);
 	}
 
 	public static void main(String[] args) {
 
 		/*
+	
 		MidiIndividualTrack midiIndv1 = new MidiIndividualTrack();
 		System.out.println("Individual 1: " + midiIndv1);
 		System.out.println("fitness: " + midiIndv1.fitness());

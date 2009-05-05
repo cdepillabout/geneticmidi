@@ -5,13 +5,13 @@ public class Population<I extends Individual<I>> {
 	/**
 	 * This is the number of individuals to have in the population.
 	 */
-	public static int NUMBER_OF_INDIVIDUALS = 100;
+	public static int NUMBER_OF_INDIVIDUALS = 50;
 
 	/**
 	 * This is the mutation rate.  For example, if the mutation rate is
 	 * 0.5, then half of the individuals will mutate each evolution.
 	 */
-	public static double MUTATION_RATE = 2.1;
+	public static double MUTATION_RATE = .5;
 
 	/** 
 	 * When Population is run by itself, this determines how many
@@ -24,14 +24,14 @@ public class Population<I extends Individual<I>> {
 	 * and this is the number of individuals that will compete in
 	 * that tournament.
 	 */
-	public static int CHOOSE_PARENT_AMOUNT = 25;
+	public static int CHOOSE_PARENT_AMOUNT = 10;
 
 	/**
 	 * How many ticks to skip when calculating the fitness
 	 * in MidiIndividual.  For example, if it is 10, then
 	 * the fitness will be calculated every 10 ticks.
 	 */
-	public static int FITNESS_TICK_AMOUNT = 40;
+	public static int FITNESS_TICK_AMOUNT = 10;
 
 	/**
 	 * This just holds the generation number that will are working on.
