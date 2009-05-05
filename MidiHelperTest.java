@@ -498,9 +498,6 @@ public class MidiHelperTest {
 	{
 		try 
 		{
-			//TODO: I don't know if this function actually works. it might just
-			//take note on events to be note off events
-			
 			Sequence sequence = new Sequence(0, 480);
 			Track trackA = sequence.createTrack();
 
@@ -512,12 +509,36 @@ public class MidiHelperTest {
 			Note note2 = new Note(trackA, 100, 200, 0, "C5", 100);
 			note2.addToTrack();
 
-			Note note3 = new Note(trackA, 0, 300, 0, "C5", 100);
-			Note note4 = new Note(trackA, 100, 380, 0, "C5", 100);
+			assertEquals(MidiHelper.findSameEvent(trackA, note1.getNoteOnEvent()),
+					note1.getNoteOnEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note2.getNoteOnEvent()),
+					note2.getNoteOnEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note1.getNoteOffEvent()),
+					note1.getNoteOffEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note2.getNoteOffEvent()),
+					note2.getNoteOffEvent());
 
-			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA);
+			Note note3 = new Note(0, 300, 0, "C5", 100);
+			Note note4 = new Note(100, 380, 0, "C5", 100);
 
-			fail();
+
+			assertEquals(MidiHelper.findSameEvent(trackA, note3.getNoteOnEvent()),
+					note1.getNoteOnEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note3.getNoteOffEvent()),
+					note2.getNoteOffEvent());
+
+			Note note5 = new Note(0, 300, 1, "C5", 100);
+			Note note6 = new Note(100, 380, 1, "C5", 100);
+
+			assertEquals(MidiHelper.findSameEvent(trackA, note5.getNoteOnEvent()),
+					note1.getNoteOnEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note5.getNoteOffEvent()),
+					note2.getNoteOffEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note6.getNoteOnEvent()),
+					note2.getNoteOnEvent());
+			assertEquals(MidiHelper.findSameEvent(trackA, note6.getNoteOffEvent()),
+					note1.getNoteOffEvent());
+
 		}
 		catch (Exception e)
 		{
@@ -525,6 +546,49 @@ public class MidiHelperTest {
 			System.exit(1);
 		}
 
+	}
+
+	@Test
+	public void testIsEqualMidiEvents()
+	{
+		Note note1 = new Note(0, 480, 0, "C5", 100);
+		Note note2 = new Note(0, 480, 0, "C5", 100);
+		Note note3 = new Note(0, 480, 1, "C5", 100);
+		Note note4 = new Note(100, 480, 0, "C5", 100);
+		Note note5 = new Note(0, 500, 0, "C5", 100);
+		Note note6 = new Note(0, 480, 0, "C6", 100);
+		Note note7 = new Note(0, 480, 0, "C5", 50);
+
+		assertTrue(MidiHelper.isEqualMidiEvents(note1.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+		assertTrue(MidiHelper.isEqualMidiEvents(note2.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+
+		assertFalse(MidiHelper.isEqualMidiEvents(note1.getNoteOnEvent(),
+					note1.getNoteOffEvent()));
+
+		assertTrue(MidiHelper.isEqualMidiEvents(note3.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+
+		assertFalse(MidiHelper.isEqualMidiEvents(note4.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+		assertFalse(MidiHelper.isEqualMidiEvents(note4.getNoteOffEvent(),
+					note1.getNoteOffEvent()));
+
+		assertTrue(MidiHelper.isEqualMidiEvents(note5.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+		assertFalse(MidiHelper.isEqualMidiEvents(note5.getNoteOffEvent(),
+					note1.getNoteOffEvent()));
+
+		assertFalse(MidiHelper.isEqualMidiEvents(note6.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+		assertFalse(MidiHelper.isEqualMidiEvents(note6.getNoteOffEvent(),
+					note1.getNoteOffEvent()));
+
+		assertFalse(MidiHelper.isEqualMidiEvents(note7.getNoteOnEvent(),
+					note1.getNoteOnEvent()));
+		assertTrue(MidiHelper.isEqualMidiEvents(note7.getNoteOffEvent(),
+					note1.getNoteOffEvent()));
 	}
 
 }

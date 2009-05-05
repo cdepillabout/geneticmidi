@@ -522,15 +522,9 @@ public class MidiHelper {
 		{
 			MidiEvent trackEvent = track.get(i);
 
-			if (trackEvent.getTick() == midiEvent.getTick())
+			if (isEqualMidiEvents(trackEvent, midiEvent))
 			{
-				MidiMessage trackMessage = trackEvent.getMessage();
-				MidiMessage thisMessage = midiEvent.getMessage();
-				if (java.util.Arrays.equals(trackMessage.getMessage(),
-							thisMessage.getMessage()))
-				{
-					return trackEvent;
-				}
+				return trackEvent;
 			}
 		}
 
@@ -544,11 +538,18 @@ public class MidiHelper {
 
 	}
 
+	/** 
+	 * Tests it two events are the same event.
+	 * (Their tick is the same, their note number is the same,
+	 * and their velocity is the same.)
+	 * Note: This does not make sure their channel is the same.
+	 */
 	public static boolean isEqualMidiEvents(MidiEvent aEvent, MidiEvent bEvent)
 	{
 		assert aEvent != null && bEvent != null;
-		assert isNoteOnEvent(aEvent) || isNoteOffEvent(aEvent); 
-		assert isNoteOnEvent(bEvent) || isNoteOffEvent(bEvent);
+		//assert isNoteOnEvent(aEvent) || isNoteOffEvent(aEvent); 
+		//assert isNoteOnEvent(bEvent) || isNoteOffEvent(bEvent);
+		
 
 		if (aEvent.getTick() != bEvent.getTick())
 		{
@@ -565,22 +566,32 @@ public class MidiHelper {
 			{
 				return false;
 			}
-		}
-
-		// test if they are note off messages
-		if (isNoteOnMessage(a))
-		{
-			if (!isNoteOnMessage(b))
+			else if (isNoteOnMessage(b))
 			{
-				return false;
+				return getVelocity(aEvent) == getVelocity(bEvent) &&
+					getNoteValue(aEvent) == getNoteValue(bEvent);
 			}
 		}
 
-		// make sure the rest of them is the same
-		if (java.util.Arrays.equals(a.getMessage(), b.getMessage()))
+		// test if they are note off messages
+		if (isNoteOffMessage(a))
 		{
-			return true;
+			if (!isNoteOffMessage(b))
+			{
+				return false;
+			}
+			else if (isNoteOffMessage(b))
+			{
+				return getNoteValue(aEvent) == getNoteValue(bEvent);
+			}
 		}
+		
+		// test if they are metamessages
+		if (a.getMessage()[0] == (byte)255 && b.getMessage()[0] == (byte)255)
+		{
+			return java.util.Arrays.equals(a.getMessage(), b.getMessage());
+		}
+
 
 		return false;
 	}
