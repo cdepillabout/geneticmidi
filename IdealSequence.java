@@ -3,6 +3,7 @@ package geneticmidi;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.Track;
 
 import java.util.Vector;
@@ -17,7 +18,7 @@ public class IdealSequence {
 		{
 			sequence = new Sequence(0, 480);
 
-			//Track myTrack0 = myNewMidi.createTrack();
+			Track myTrack0 = sequence.createTrack();
 			Track myTrack1 = sequence.createTrack();
 
 			//MetaMessage metaMessage = new MetaMessage();
@@ -27,6 +28,7 @@ public class IdealSequence {
 
 
 			/*
+			
 			// set tempo
 			MetaMessage tempo = new MetaMessage();
 			tempo.setMessage(81, new byte[]{7, -95, 32}, 3);
@@ -37,13 +39,13 @@ public class IdealSequence {
 			timeSignature.setMessage(88, new byte[]{4, 2, 24, 8}, 4);
 			myTrack0.add(new MidiEvent(timeSignature, 0));
 
-*/
 
 
-			/*
+
+			
 			// change to piano
 			ShortMessage programChange = new ShortMessage();
-			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
+			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 13);
 			myTrack1.add(new MidiEvent(programChange, 0));
 
 
@@ -61,7 +63,8 @@ public class IdealSequence {
 			pan.setMessage(ShortMessage.CONTROL_CHANGE, 10, 64);
 			myTrack1.add(new MidiEvent(pan, 0));
 
-*/
+			*/
+
 
 			
 			/*
@@ -94,7 +97,8 @@ public class IdealSequence {
 						break;
 				}
 
-				(new Note(myTrack1, i * 480, 480, 0, noteValue, 100)).addToTrack();
+				(new Note(myTrack1, i * 480, 480, 1, noteValue, 100)).addToTrack();
+				(new Note(myTrack0, i * 480, 480, 0, noteValue - 24, 100)).addToTrack();
 			}
 			
 	
@@ -127,38 +131,44 @@ public class IdealSequence {
 
 	}
 
-	public static Sequence getIdealSequence() {
+	public static Sequence getIdealSequence() 
+	{
 		return sequence;
 	}
 
-	public static float getDivisionType() {
+	public static float getDivisionType() 
+	{
 		return sequence.getDivisionType();
 	}
 
-	public static int getResolution() {
+	public static int getResolution() 
+	{
 		return sequence.getResolution();
 	}
 
 	public static double perfectFitness()
 	{
-		MidiIndividual perfectIndividual = new MidiIndividual(getNotes());
+		// TODO: this needs to be changed to accomodate multiple tracks
+		MidiIndividual perfectIndividual = new MidiIndividual(getNotes(0));
 
 		return perfectIndividual.fitness();
 	}
 
 	/**
-	 * Return an array with all the notes from track 0.
+	 * Return an array with all the notes from track (channel) trackNumber.
 	 */
-	public static Vector<Note> getNotes()
+	public static Vector<Note> getNotes(int trackNumber)
 	{
-		return MidiHelper.getNotesFromTrack(sequence.getTracks()[0]);
+		assert trackNumber >= 0 && trackNumber < sequence.getTracks().length;
+
+		return MidiHelper.getNotesFromTrack(sequence.getTracks()[trackNumber], trackNumber);
 	}
 
 	public static void main(String[] args) {
 
 		System.out.println(DebugMidi.sequenceEventsToString(sequence));
 		System.out.println(MidiHelper.getNotesPlayingAtTick(
-					getNotes(), 110));
+					getNotes(0), 110));
 		//MidiHelper.play(sequence);
 	}
 

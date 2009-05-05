@@ -292,11 +292,6 @@ public class MidiHelper {
 	{
 		// TODO: make sure velocity is not zero
 
-		// TODO: make sure this is correct --
-		// if the the message is not on channel 0, it will
-		// not be equal to ShortMessage.NOTE_ON, but 
-		// ShortMessage.NOTE_ON + channel.
-		// So, we have to check for a range of possible values.
 
 		// Just this won't work.
 		//return message.getStatus() == ShortMessage.NOTE_ON;
@@ -321,11 +316,6 @@ public class MidiHelper {
 		// TODO: change this so that it can be a note on event with 
 		// velocity 0.
 		
-		// TODO: see note at isNoteOnMessage()
-
-		//return message.getStatus() == ShortMessage.NOTE_OFF;
-		
-
 		return message.getStatus() >= 128 && 
 			message.getStatus() < 144;
 	}
@@ -449,7 +439,7 @@ public class MidiHelper {
 	/**
 	 * Return an array of all of the Notes in sequence.
 	 */
-	public static Vector<Note> getNotesFromTrack(Track track)
+	public static Vector<Note> getNotesFromTrack(Track track, int channelNumber)
 	{
 		Vector<MidiEvent> midiEvents = new Vector<MidiEvent>();
 		Vector<Note> notes = new Vector<Note>();
@@ -462,10 +452,9 @@ public class MidiHelper {
 			if (isNoteOnEvent(event))
 			{
 				MidiEvent noteOff = findMatchingNoteOff(tempTrack, 0, event);
-				// TODO: should this not be channel 0?
-				// TODO: is it okay to add the tempTrack here?
+
 				notes.add(new Note(track, event.getTick(), noteOff.getTick() - event.getTick(),
-							0, getNoteValue(event), getVelocity(event)));
+							channelNumber, getNoteValue(event), getVelocity(event)));
 
 				boolean removeNoteOn = tempTrack.remove(event);
 				boolean removeNoteOff = tempTrack.remove(noteOff);
@@ -517,7 +506,6 @@ public class MidiHelper {
 	public static MidiEvent findSameEvent(Track track, MidiEvent midiEvent)
 		throws Exception
 	{
-		//TODO: I don't know if this actually works
 		for (int i = 0; i < track.size(); i++)
 		{
 			MidiEvent trackEvent = track.get(i);
@@ -531,11 +519,7 @@ public class MidiHelper {
 		System.out.println("There is no event " + 
 				DebugMidi.midiEventToString(midiEvent) +
 				" in track: " + DebugMidi.trackEventsToString(track));
-		//System.exit(1);
 		throw new Exception();
-
-		//return null;
-
 	}
 
 	/** 
@@ -600,16 +584,16 @@ public class MidiHelper {
 	{
 		System.out.println("ideal sequence track: " +
 				DebugMidi.trackEventsToString(
-					IdealSequence.getIdealSequence().getTracks()[0]));
+					IdealSequence.getIdealSequence().getTracks()[1]));
 		System.out.println("All notes:");
 		System.out.println(
-				getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]));
+				getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[1], 1));
 
 
 		long tick = 100;
 		System.out.println("Notes playing at tick:" + tick);
 		System.out.println(getNotesPlayingAtTick(
-					getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[0]),
+					getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[1], 1),
 					tick));
 
 

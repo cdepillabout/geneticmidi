@@ -396,7 +396,7 @@ public class MidiHelperTest {
 			Note note2 = new Note(trackA, 100, 200, 0, "C5", 100);
 			note2.addToTrack();
 
-			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA);
+			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA, 0);
 
 			assertEquals(trackNotes.size(), 2);
 
@@ -413,7 +413,7 @@ public class MidiHelperTest {
 			Note note4 = new Note(trackB, 200, 200, 0, "A4", 100);
 			note4.addToTrack();
 
-			Vector<Note> trackNotes2 = MidiHelper.getNotesFromTrack(trackB);
+			Vector<Note> trackNotes2 = MidiHelper.getNotesFromTrack(trackB, 0);
 
 			assertEquals(trackNotes2.size(), 2);
 
@@ -426,7 +426,7 @@ public class MidiHelperTest {
 
 
 			Track trackC = sequence.createTrack();
-			Vector<Note> trackNotes3 = MidiHelper.getNotesFromTrack(trackC);
+			Vector<Note> trackNotes3 = MidiHelper.getNotesFromTrack(trackC, 0);
 			assertEquals(trackNotes3.size(), 0);
 
 		}
@@ -456,7 +456,7 @@ public class MidiHelperTest {
 			Note note3 = new Note(trackA, 0, 300, 0, "C5", 100);
 			Note note4 = new Note(trackA, 100, 380, 0, "C5", 100);
 
-			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA);
+			Vector<Note> trackNotes = MidiHelper.getNotesFromTrack(trackA, 0);
 
 			assertEquals(trackNotes.size(), 2);
 

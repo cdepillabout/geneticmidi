@@ -32,7 +32,7 @@
 * Make MidiIndividual add the Meta Events, program events, controller events, etc., to 
   the beginning of the MidiIndividual track.
 
-* Write more JUnit tests, especially for the functions from MidiHelper.java and Note.java
+* Write more JUnit tests, especially for the functions from Note.java
 
 * Change the fitness function so that it just calculates the fitness based
   on binary strings from the vector of Notes.
