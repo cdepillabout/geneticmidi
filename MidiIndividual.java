@@ -28,6 +28,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	 */
 	Vector<MidiIndividualTrack> midiIndividualTracks;
 
+
 	public MidiIndividual() 
 	{
 		
@@ -169,6 +170,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 	}
 
 	public static void main(String[] args) {
+
 
 		MidiIndividual midiIndv1 = new MidiIndividual();
 		System.out.println("Individual 1: " + midiIndv1);

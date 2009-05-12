@@ -167,6 +167,8 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 
 	public MidiIndividualTrack crossover(MidiIndividualTrack that)
 	{
+		// TODO, this doesn't work right
+		
 		// make sure they the channels for the two tracks are the same
 		assert channel == that.getChannel();
 
@@ -267,17 +269,30 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 			DebugMidi.trackEventsToString(track);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 
-		/*
-	
-		MidiIndividualTrack midiIndv1 = new MidiIndividualTrack();
+		Sequence sequence = null;
+		Track track1 = null;
+		Track track2 = null;
+
+		try {
+			sequence = new Sequence(IdealSequence.getDivisionType(),
+					IdealSequence.getResolution());
+			track1 = sequence.createTrack();
+			track2 = sequence.createTrack();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		MidiIndividualTrack midiIndv1 = new MidiIndividualTrack(track1, 0);
 		System.out.println("Individual 1: " + midiIndv1);
 		System.out.println("fitness: " + midiIndv1.fitness());
 		System.out.println();
 
 		
-		MidiIndividualTrack midiIndv2 = new MidiIndividualTrack();
+		MidiIndividualTrack midiIndv2 = new MidiIndividualTrack(track2, 0);
 		System.out.println("Individual 2: " + midiIndv2);
 		System.out.println("fitness: " + midiIndv2.fitness());
 		System.out.println();
@@ -293,7 +308,7 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		System.out.println("fitness: " + newIndividual.fitness());
 		System.out.println();
 		
-		*/
+	
 
 	}
 

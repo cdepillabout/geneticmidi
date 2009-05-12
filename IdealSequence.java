@@ -77,7 +77,7 @@ public class IdealSequence {
 		
 			
 			// two C major arpeggios
-			for (int i = 0; i < 20; i++)
+			for (int i = 0; i < 1; i++)
 			{
 				int noteValue = 0;
 
