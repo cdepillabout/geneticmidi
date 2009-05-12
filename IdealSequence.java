@@ -18,8 +18,9 @@ public class IdealSequence {
 		{
 			sequence = new Sequence(0, 480);
 
-			//Track myTrack0 = sequence.createTrack();
+			Track myTrack0 = sequence.createTrack();
 			Track myTrack1 = sequence.createTrack();
+			Track myTrack2 = sequence.createTrack();
 
 			//MetaMessage metaMessage = new MetaMessage();
 			//metaMessage.setMessage(MetaMessage.META, 
@@ -42,13 +43,22 @@ public class IdealSequence {
 
 			*/
 
+			ShortMessage programChange1 = new ShortMessage();
+			// wtf does this have to be channel 1??
+			programChange1.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 13, 999);
+			myTrack0.add(new MidiEvent(programChange1, 0));
 
-			
 			// change to piano
 			ShortMessage programChange = new ShortMessage();
-			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 20, 20);
+			// wtf does this have to be channel 1??
+			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 30, 999);
 			myTrack1.add(new MidiEvent(programChange, 0));
 
+
+			ShortMessage programChange2 = new ShortMessage();
+			// wtf does this have to be channel 1??
+			programChange2.setMessage(ShortMessage.PROGRAM_CHANGE, 2, 33, 999);
+			myTrack2.add(new MidiEvent(programChange2, 0));
 
 			/*
 
@@ -99,8 +109,20 @@ public class IdealSequence {
 						break;
 				}
 
-				(new Note(myTrack1, i * 480, 480, 1, noteValue, 100)).addToTrack();
-				//(new Note(myTrack0, i * 480, 480, 0, noteValue - 24, 100)).addToTrack();
+				int length = 2500;
+				int total_notes = 3;
+
+				(new Note(myTrack0, i * length + 0 * length / total_notes, 
+						  length / total_notes, 
+						  0, noteValue, 100)).addToTrack();
+
+				(new Note(myTrack1, i * length + 1 * length / total_notes, 
+						  length / total_notes, 
+						  1, noteValue, 100)).addToTrack();
+
+				(new Note(myTrack2, i * length + 2 * length / total_notes, 
+						  length / total_notes, 
+						  2, noteValue, 100)).addToTrack();
 			}
 			
 	
