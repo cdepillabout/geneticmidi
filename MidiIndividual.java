@@ -111,7 +111,14 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 		return new MidiIndividual();
 	}
 
-	
+	/**
+	 * Return the number of tracks.
+	 */
+	public int size()
+	{
+		return midiIndividualTracks.size();
+	}
+
 	/** 
 	 * Get index-th individual track.
 	 */
@@ -123,6 +130,10 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public MidiIndividual crossover(MidiIndividual that)
 	{
+
+		// make sure they are the same size
+		assert this.size() == that.size();
+
 		Vector<MidiIndividualTrack> newIndividualTracks = 
 			new Vector<MidiIndividualTrack>();
 

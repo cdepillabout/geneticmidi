@@ -167,8 +167,6 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 
 	public MidiIndividualTrack crossover(MidiIndividualTrack that)
 	{
-		// TODO, this doesn't work right
-		
 		// make sure they the channels for the two tracks are the same
 		assert channel == that.getChannel();
 
@@ -182,7 +180,7 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		assert thisNotes.size() == thatNotes.size();
 
 		// actually do the crossover
-		int crossPoint = BitString.RAND.nextInt(thisNotes.size());
+		int crossPoint = BitString.RAND.nextInt(thisNotes.size() + 1);
 
 		Vector<Note> resultNotes = new Vector<Note>();
 
@@ -307,9 +305,6 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		System.out.println("mutated crossover Individual: " + newIndividual);
 		System.out.println("fitness: " + newIndividual.fitness());
 		System.out.println();
-		
-	
-
 	}
 
 }
