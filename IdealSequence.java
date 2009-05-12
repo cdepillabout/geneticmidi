@@ -18,7 +18,7 @@ public class IdealSequence {
 		{
 			sequence = new Sequence(0, 480);
 
-			Track myTrack0 = sequence.createTrack();
+			//Track myTrack0 = sequence.createTrack();
 			Track myTrack1 = sequence.createTrack();
 
 			//MetaMessage metaMessage = new MetaMessage();
@@ -40,15 +40,17 @@ public class IdealSequence {
 			myTrack0.add(new MidiEvent(timeSignature, 0));
 
 
+			*/
 
 
 			
 			// change to piano
 			ShortMessage programChange = new ShortMessage();
-			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 13);
+			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 20, 20);
 			myTrack1.add(new MidiEvent(programChange, 0));
 
 
+			/*
 
 
 			// set volume to 100
@@ -98,7 +100,7 @@ public class IdealSequence {
 				}
 
 				(new Note(myTrack1, i * 480, 480, 1, noteValue, 100)).addToTrack();
-				(new Note(myTrack0, i * 480, 480, 0, noteValue - 24, 100)).addToTrack();
+				//(new Note(myTrack0, i * 480, 480, 0, noteValue - 24, 100)).addToTrack();
 			}
 			
 	
@@ -148,13 +150,6 @@ public class IdealSequence {
 
 	public static double perfectFitness()
 	{
-		/*
-		// TODO: this needs to be changed to accomodate multiple tracks
-		MidiIndividual perfectIndividual = new MidiIndividual(getNotes(0));
-
-		return perfectIndividual.fitness();
-		*/
-
 		try {
 			Sequence tempSequence = new Sequence(sequence.getDivisionType(),
 					sequence.getResolution());
@@ -193,9 +188,9 @@ public class IdealSequence {
 	public static void main(String[] args) {
 
 		System.out.println(DebugMidi.sequenceEventsToString(sequence));
-		System.out.println(MidiHelper.getNotesPlayingAtTick(
-					getNotes(0), 110));
-		//MidiHelper.play(sequence);
+		//System.out.println(MidiHelper.getNotesPlayingAtTick(
+					//getNotes(0), 110));
+		MidiHelper.play(sequence);
 	}
 
 }

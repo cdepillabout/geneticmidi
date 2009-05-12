@@ -446,9 +446,14 @@ public class MidiHelper {
 
 		Track tempTrack = cloneTrack(track);
 
+		int index = 0;
+
 		while (noteOnOffsInTrack(tempTrack) > 0)
 		{
-			MidiEvent event = tempTrack.get(0);
+			MidiEvent event = tempTrack.get(index);
+
+			// If this is a note on event, we want to remove it, and the
+			// cooresponding note off from the track.
 			if (isNoteOnEvent(event))
 			{
 				MidiEvent noteOff = findMatchingNoteOff(tempTrack, 0, event);
@@ -473,7 +478,22 @@ public class MidiHelper {
 				}
 
 			}
-
+			// We shouldn't ever get to a note off event
+			// (because we should have removed it when we found it's note 
+			// on event).
+			else if (isNoteOffEvent(event))
+			{
+					System.out.println("Accidentally got to a note off event" + 
+							" in MidiHelper.getNotesFromTrack()");
+					System.exit(1);
+			}
+			// since we got to something that is neither a note on or a note off,
+			// we have to increase our index and look at the next note.
+			// Otherwise we will have an infinite loop.
+			else 
+			{
+				index++;
+			}
 
 		}
 

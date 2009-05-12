@@ -25,6 +25,7 @@ public class PlayMidi {
 			try{
 				mySeq = MidiSystem.getSequence(myMidiFile);
 				MidiHelper.play(mySeq);
+				System.out.println("Sequence:\n" + DebugMidi.sequenceEventsToString(mySeq));
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);

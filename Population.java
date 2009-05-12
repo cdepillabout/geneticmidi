@@ -5,13 +5,13 @@ public class Population<I extends Individual<I>> {
 	/**
 	 * This is the number of individuals to have in the population.
 	 */
-	public static int NUMBER_OF_INDIVIDUALS = 100;
+	public static int NUMBER_OF_INDIVIDUALS = 500;
 
 	/**
 	 * This is the mutation rate.  For example, if the mutation rate is
 	 * 0.5, then half of the individuals will mutate each evolution.
 	 */
-	public static double MUTATION_RATE = 1.0;
+	public static double MUTATION_RATE = .5;
 
 	/** 
 	 * When Population is run by itself, this determines how many
@@ -24,7 +24,7 @@ public class Population<I extends Individual<I>> {
 	 * and this is the number of individuals that will compete in
 	 * that tournament.
 	 */
-	public static int CHOOSE_PARENT_AMOUNT = 20;
+	public static int CHOOSE_PARENT_AMOUNT = 50;
 
 	/**
 	 * How many ticks to skip when calculating the fitness

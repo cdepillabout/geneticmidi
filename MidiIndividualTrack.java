@@ -40,6 +40,7 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		// find out how many ticks the ideal sequence is
 		long totalTicks = IdealSequence.getIdealSequence().getTracks()[channel].ticks(); 
 
+
 		// find out how many notes ideal sequence has
 		Vector<Note> idealSequenceNotes = 
 			MidiHelper.getNotesFromTrack(IdealSequence.getIdealSequence().getTracks()[channel],
