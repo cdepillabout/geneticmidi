@@ -24,7 +24,7 @@ public class Population<I extends Individual<I>> {
 	 * and this is the number of individuals that will compete in
 	 * that tournament.
 	 */
-	public static int CHOOSE_PARENT_AMOUNT = 10;
+	public static int CHOOSE_PARENT_AMOUNT = 20;
 
 	/**
 	 * How many ticks to skip when calculating the fitness

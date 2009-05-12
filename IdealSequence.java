@@ -154,7 +154,30 @@ public class IdealSequence {
 
 		return perfectIndividual.fitness();
 		*/
-		return 100;
+
+		try {
+			Sequence tempSequence = new Sequence(sequence.getDivisionType(),
+					sequence.getResolution());
+
+			Vector <MidiIndividualTrack> tracks = new Vector<MidiIndividualTrack>();
+
+			for (int i = 0; i < sequence.getTracks().length; i++)
+			{
+				tracks.add(new MidiIndividualTrack(tempSequence.createTrack(),
+							i, IdealSequence.getNotes(i)));
+			}
+
+			MidiIndividual perfectIndividual = new MidiIndividual(tracks);
+
+			return perfectIndividual.fitness();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return 0;
+
 	}
 
 	/**
