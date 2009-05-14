@@ -22,18 +22,19 @@ public class IdealSequence {
 			Track myTrack1 = sequence.createTrack();
 			Track myTrack2 = sequence.createTrack();
 
-			//MetaMessage metaMessage = new MetaMessage();
-			//metaMessage.setMessage(MetaMessage.META, 
-			//		new byte[]{(byte)255, (byte)192, 0}, 2);
-			//myTrack.add(new MidiEvent(metaMessage, 0));
-
 
 			/*
+			MetaMessage metaMessage = new MetaMessage();
+			metaMessage.setMessage(MetaMessage.META, 
+					new byte[]{(byte)255, (byte)192, 0}, 2);
+			myTrack0.add(new MidiEvent(metaMessage, 0));
+			*/
 			
 			// set tempo
-			MetaMessage tempo = new MetaMessage();
-			tempo.setMessage(81, new byte[]{7, -95, 32}, 3);
-			myTrack0.add(new MidiEvent(tempo, 0));
+			//MetaMessage tempo = new MetaMessage();
+			//tempo.setMessage(81, new byte[]{7, -95, 32}, 3);
+			//myTrack0.add(new MidiEvent(tempo, 0));
+			myTrack0.add(MidiHelper.createSetTempoEvent(0, 120));
 
 			// set time signature
 			MetaMessage timeSignature = new MetaMessage();
@@ -41,41 +42,34 @@ public class IdealSequence {
 			myTrack0.add(new MidiEvent(timeSignature, 0));
 
 
-			*/
+			
 
+			//Change instrument
 			ShortMessage programChange1 = new ShortMessage();
-			// wtf does this have to be channel 1??
 			programChange1.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 115, 999);
 			myTrack0.add(new MidiEvent(programChange1, 0));
 
-			// change to piano
 			ShortMessage programChange = new ShortMessage();
-			// wtf does this have to be channel 1??
 			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 10, 999);
 			myTrack1.add(new MidiEvent(programChange, 0));
 
-
 			ShortMessage programChange2 = new ShortMessage();
-			// wtf does this have to be channel 1??
 			programChange2.setMessage(ShortMessage.PROGRAM_CHANGE, 2, 33, 999);
 			myTrack2.add(new MidiEvent(programChange2, 0));
 
-			/*
+			
 
-
-			// set volume to 100
+			// set volume to 100 -- channel 1
 			ShortMessage volume = new ShortMessage();
-			volume.setMessage(ShortMessage.CONTROL_CHANGE, 7, 100);
+			volume.setMessage(ShortMessage.CONTROL_CHANGE, 1, 7, 100);
 			myTrack1.add(new MidiEvent(volume, 0));
 
-
-
-			// set pan to 64
+			// set pan to 64 -- channel 1
 			ShortMessage pan = new ShortMessage();
-			pan.setMessage(ShortMessage.CONTROL_CHANGE, 10, 64);
+			pan.setMessage(ShortMessage.CONTROL_CHANGE, 1, 10, 64);
 			myTrack1.add(new MidiEvent(pan, 0));
 
-			*/
+			
 
 
 			
@@ -112,19 +106,21 @@ public class IdealSequence {
 				int length = 2500;
 				int total_notes = 3;
 
+				/*
 				(new Note(myTrack0, i * length + 0 * length / total_notes, 
 						  length / total_notes, 
 						  0, noteValue, 100)).addToTrack();
+						  */
 
 				(new Note(myTrack1, i * length + 1 * length / total_notes, 
 						  length / total_notes, 
 						  1, noteValue, 100)).addToTrack();
 
-				/*
+				
 				(new Note(myTrack2, i * length + 2 * length / total_notes, 
 						  length / total_notes, 
 						  2, noteValue, 100)).addToTrack();
-				*/
+				
 			}
 			
 	

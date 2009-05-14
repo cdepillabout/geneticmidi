@@ -8,7 +8,7 @@ import javax.sound.midi.MidiMessage;
 
 public class DebugMidi {
 
-	static long MICROSECONDS_PER_MINUTE = 60000000;
+	public static long MICROSECONDS_PER_MINUTE = 60000000;
 
 	/**
 	 * Return the string representations of info about a sequence.

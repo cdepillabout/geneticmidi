@@ -8,6 +8,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MetaMessage;
 
 import java.util.Vector;
 
@@ -64,6 +65,36 @@ public class MidiHelper {
 			System.exit(1);
 		}
 		return new MidiEvent(shortMessage, tick);
+	}
+
+	/** 
+	 * Create a Set Tempo meta event. Takes a tempo in BPMs.
+	 */
+	public static MidiEvent createSetTempoEvent(long tick, long tempo)
+	{
+		// microseconds per quarternote
+		long mpqn = DebugMidi.MICROSECONDS_PER_MINUTE / tempo;
+
+		MetaMessage metaMessage = new MetaMessage();
+
+		// create the tempo byte array
+		byte [] array = new byte[]{0, 0, 0};
+
+		for (int i = 0; i < 3; i++)
+		{
+			int shift = (3 - 1 - i) * 8;
+			array[i] = (byte) (mpqn >> shift);
+		}
+
+		// now set the message
+		try {
+			metaMessage.setMessage(81, array, 3);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return new MidiEvent(metaMessage, tick);
 	}
 
 	/**
