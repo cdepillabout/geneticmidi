@@ -120,9 +120,11 @@ public class IdealSequence {
 						  length / total_notes, 
 						  1, noteValue, 100)).addToTrack();
 
+				/*
 				(new Note(myTrack2, i * length + 2 * length / total_notes, 
 						  length / total_notes, 
 						  2, noteValue, 100)).addToTrack();
+				*/
 			}
 			
 	

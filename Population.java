@@ -11,7 +11,7 @@ public class Population<I extends Individual<I>> {
 	 * This is the mutation rate.  For example, if the mutation rate is
 	 * 0.5, then half of the individuals will mutate each evolution.
 	 */
-	public static double MUTATION_RATE = .5;
+	public static double MUTATION_RATE = .80;
 
 	/** 
 	 * When Population is run by itself, this determines how many

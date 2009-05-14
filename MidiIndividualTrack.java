@@ -3,6 +3,7 @@ package geneticmidi;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
+import javax.sound.midi.MidiEvent;
 
 import java.util.Vector;
 
@@ -45,6 +46,22 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		this.channel = channel;
 		this.track = track;
 
+		// Add all midi events from this channel from the idealsequence
+		// that are not Note On or Note Off events.
+		Track idealSequenceTrack = IdealSequence.getIdealSequence().getTracks()[channel];
+
+		
+		for (int i = 0; i < idealSequenceTrack.size(); i++)
+		{
+			MidiEvent evnt = idealSequenceTrack.get(i);
+
+			if (!MidiHelper.isNoteOnEvent(evnt) && !MidiHelper.isNoteOffEvent(evnt))
+			{
+				this.track.add(evnt);
+			}
+		}
+		
+
 		for (int i = 0; i < notes.size(); i++)
 		{
 			notes.get(i).setChannel(channel);
@@ -55,6 +72,10 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 	}
 
 
+	/**
+	 * This generates random notes for channel.  It is loosely based on the
+	 * number of notes for the corresponding track and channel on IdealSequence.
+	 */
 	static protected Vector<Note> generateRandomNotes(Track track, int channel)
 	{
 		Vector<Note> notes = new Vector<Note>();
@@ -118,26 +139,30 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		Vector<Note> ourNotes = MidiHelper.getNotesFromTrack(
 				track, channel);
 
-
-		// test this individual every FITNESS_TICK_AMOUNT ticks to see
-		// if the right notes are being played
-		for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); 
-				i += Population.FITNESS_TICK_AMOUNT)
+		// only do this if it is not empty
+		if (!idealSequenceNotes.isEmpty())
 		{
-			Vector<Note> idealSequencePlayingNotes = 
-				MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, i);
-			Vector<Note> ourSequencePlayingNotes = 
-				MidiHelper.getNotesPlayingAtTick(ourNotes, i);
+			// test this individual every FITNESS_TICK_AMOUNT ticks to see
+			// if the right notes are being played
+			for (long i = 0; i < idealSequenceNotes.lastElement().getEndTick(); 
+					i += Population.FITNESS_TICK_AMOUNT)
+			{
+				Vector<Note> idealSequencePlayingNotes = 
+					MidiHelper.getNotesPlayingAtTick(idealSequenceNotes, i);
+				Vector<Note> ourSequencePlayingNotes = 
+					MidiHelper.getNotesPlayingAtTick(ourNotes, i);
 
-			// if the correct notes are being played, the fitness will increase
-			if (idealSequencePlayingNotes.size() != 
-					ourSequencePlayingNotes.size())
-			{
-				fitness -= 1.5;
-			}
-			else if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
-			{
-				fitness += 1;
+				// if the correct notes are being played, the fitness will increase.
+				// if the wrong number of notes are being played, the fitness will decrease.
+				if (idealSequencePlayingNotes.size() != 
+						ourSequencePlayingNotes.size())
+				{
+					fitness -= 1.5;
+				}
+				else if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
+				{
+					fitness += 1;
+				}
 			}
 		}
 		
@@ -148,6 +173,9 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 	}
 	
 
+	/** 
+	 * This isn't used, but needs to be here because of Individual.java.
+	 */
 	public MidiIndividualTrack makeAnother()
 	{
 		return null;
