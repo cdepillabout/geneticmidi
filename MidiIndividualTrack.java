@@ -157,7 +157,7 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 				if (idealSequencePlayingNotes.size() != 
 						ourSequencePlayingNotes.size())
 				{
-					fitness -= 1.5;
+					fitness -= 0.25;
 				}
 				else if (idealSequencePlayingNotes.equals(ourSequencePlayingNotes))
 				{

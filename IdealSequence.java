@@ -5,14 +5,24 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.Track;
+import javax.sound.midi.MidiSystem;
 
 import java.util.Vector;
+
+import java.io.File;
 
 public class IdealSequence {
 
 	static Sequence sequence;
 
 	static 
+	{
+		//setProgrammedSequence();
+		//setSequenceFromFile("../test-what-what-what.mid");
+		setSequenceFromFile("../midi_files/Ibiza.mid");
+	}
+
+	protected static void setProgrammedSequence()
 	{
 		try 
 		{
@@ -21,26 +31,14 @@ public class IdealSequence {
 			Track myTrack0 = sequence.createTrack();
 			Track myTrack1 = sequence.createTrack();
 			Track myTrack2 = sequence.createTrack();
-
-
-			/*
-			MetaMessage metaMessage = new MetaMessage();
-			metaMessage.setMessage(MetaMessage.META, 
-					new byte[]{(byte)255, (byte)192, 0}, 2);
-			myTrack0.add(new MidiEvent(metaMessage, 0));
-			*/
 			
-			// set tempo
-			//MetaMessage tempo = new MetaMessage();
-			//tempo.setMessage(81, new byte[]{7, -95, 32}, 3);
-			//myTrack0.add(new MidiEvent(tempo, 0));
+			// create tempo event
 			myTrack0.add(MidiHelper.createSetTempoEvent(0, 120));
 
 			// set time signature
 			MetaMessage timeSignature = new MetaMessage();
 			timeSignature.setMessage(88, new byte[]{4, 2, 24, 8}, 4);
 			myTrack0.add(new MidiEvent(timeSignature, 0));
-
 
 			
 
@@ -69,19 +67,6 @@ public class IdealSequence {
 			pan.setMessage(ShortMessage.CONTROL_CHANGE, 1, 10, 64);
 			myTrack1.add(new MidiEvent(pan, 0));
 
-			
-
-
-			
-			/*
-			(new Note(myTrack1, 0, 480, 0, "C4", 100)).addToTrack();
-			(new Note(myTrack1, 480, 480, 0, "E4", 100)).addToTrack();
-			(new Note(myTrack1, 960, 480, 0, "G4", 100)).addToTrack();
-			(new Note(myTrack1, 1440, 480, 0, "C5", 100)).addToTrack();
-			*/
-			
-		
-			
 			// two C major arpeggios
 			for (int i = 0; i < 4; i++)
 			{
@@ -123,33 +108,23 @@ public class IdealSequence {
 				
 			}
 			
-	
-
-			
-			/*
-			// Two notes playing during each other
-			(new Note(myTrack1, 0, 480, 0, 5, 100)).addToTrack();
-			(new Note(myTrack1, 100, 200, 0, 5, 100)).addToTrack();
-			*/
-			
-			
-			/*
-			(new Note(myTrack1, 100, 1102, 0, "C4", 100)).addToTrack();
-			(new Note(myTrack1, 100, 480, 0, "E4", 100)).addToTrack();
-			(new Note(myTrack1, 100, 20, 0, "G4", 100)).addToTrack();
-			(new Note(myTrack1, 100, 480, 0, "C5", 100)).addToTrack();
-			*/
-			
-
-
 		} catch(Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		} 
 
-		//System.out.println(DebugMidi.sequenceInfoToString(sequence));
-		//System.out.println(DebugMidi.sequenceEventsToString(sequence));
+	}
 
+	public static void setSequenceFromFile(String filename)
+	{
+		File midiFile = new File(filename);
+
+		try {
+			sequence = MidiSystem.getSequence(midiFile);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		} 
 
 	}
 
@@ -207,10 +182,10 @@ public class IdealSequence {
 
 	public static void main(String[] args) {
 
-		System.out.println(DebugMidi.sequenceEventsToString(sequence));
 		//System.out.println(MidiHelper.getNotesPlayingAtTick(
 					//getNotes(0), 110));
 		MidiHelper.play(sequence);
+		System.out.println(DebugMidi.sequenceEventsToString(sequence));
 
 		while (MidiHelper.isPlaying())
 		{
