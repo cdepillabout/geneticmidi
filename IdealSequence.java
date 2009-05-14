@@ -45,13 +45,13 @@ public class IdealSequence {
 
 			ShortMessage programChange1 = new ShortMessage();
 			// wtf does this have to be channel 1??
-			programChange1.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 13, 999);
+			programChange1.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 115, 999);
 			myTrack0.add(new MidiEvent(programChange1, 0));
 
 			// change to piano
 			ShortMessage programChange = new ShortMessage();
 			// wtf does this have to be channel 1??
-			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 30, 999);
+			programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 1, 10, 999);
 			myTrack1.add(new MidiEvent(programChange, 0));
 
 
@@ -213,6 +213,13 @@ public class IdealSequence {
 		//System.out.println(MidiHelper.getNotesPlayingAtTick(
 					//getNotes(0), 110));
 		MidiHelper.play(sequence);
+
+		while (MidiHelper.isPlaying())
+		{
+			// pass
+		}
+
+		MidiHelper.closeSequencer();
 	}
 
 }

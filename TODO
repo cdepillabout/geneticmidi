@@ -26,9 +26,6 @@
 
 * It would be nice to make IdealSequence.java load a midi file and evolve into it.
 
-* It would be nice to make MidiIndividual represent the whole midi file and not just
-  one track from ideal sequence. -- TEST THIS
-
 * Make MidiIndividual add the Meta Events, program events, controller events, etc., to 
   the beginning of the MidiIndividual track.
 

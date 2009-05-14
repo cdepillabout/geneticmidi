@@ -75,22 +75,6 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 		}
 	}
 
-	public MidiIndividualTrack(Track track, int channel, MidiIndividualTrack model) 
-	{
-		alreadyCalcedFitness = false; 
-		this.channel = channel;
-		this.track = track;
-
-		Vector<Note> notes = MidiHelper.getNotesFromTrack(model.getTrack(), channel);
-
-		for (int i = 0; i < notes.size(); i++)
-		{
-			notes.get(i).setChannel(channel);
-			notes.get(i).setTrack(track);
-			notes.get(i).addToTrack();
-		}
-
-	}
 
 	public MidiIndividualTrack(Track track, int channel, Vector<Note> notes) 
 	{
@@ -105,6 +89,11 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 			notes.get(i).addToTrack();
 		}
 
+	}
+
+	public MidiIndividualTrack(Track track, int channel, MidiIndividualTrack model) 
+	{
+		this(track, channel, MidiHelper.getNotesFromTrack(model.getTrack(), channel));
 	}
 
 	public Track getTrack()

@@ -66,6 +66,32 @@ public class MidiHelper {
 		return new MidiEvent(shortMessage, tick);
 	}
 
+	/**
+	 * Detect whether or not there is anything playing.
+	 */
+	public static boolean isPlaying()
+	{
+		try{
+			if (sequencer == null)
+			{
+				return false;
+			}
+
+			// if it is not open, then it's not playing
+			if (!sequencer.isOpen())
+			{
+				return false;
+			}
+			
+			return sequencer.isRunning();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+			return false;
+		}
+	}
+
 	/** 
 	 * Play a sequence.  Stops playing any currently playing sequences.
 	 */
@@ -119,6 +145,28 @@ public class MidiHelper {
 						sequencer.stop();
 						sequencer.setTickPosition(0);
 					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	/**
+	 * Close the sequencer (so that the program can exit instead of just hanging).
+	 */
+	public static void closeSequencer()
+	{
+		try{
+
+			if (sequencer != null)
+			{
+				if (sequencer.isOpen())
+				{
+					stopPlaying();
+					sequencer.close();
 				}
 			}
 
