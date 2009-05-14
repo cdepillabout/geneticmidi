@@ -31,15 +31,36 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 
 	public MidiIndividualTrack(Track track, int channel) 
 	{
-		alreadyCalcedFitness = false;
+		this(track, channel, generateRandomNotes(track, channel));
+	}
+
+	public MidiIndividualTrack(Track track, int channel, MidiIndividualTrack model) 
+	{
+		this(track, channel, MidiHelper.getNotesFromTrack(model.getTrack(), channel));
+	}
+
+	public MidiIndividualTrack(Track track, int channel, Vector<Note> notes) 
+	{
+		alreadyCalcedFitness = false; 
 		this.channel = channel;
 		this.track = track;
 
+		for (int i = 0; i < notes.size(); i++)
+		{
+			notes.get(i).setChannel(channel);
+			notes.get(i).setTrack(track);
+			notes.get(i).addToTrack();
+		}
+
+	}
+
+
+	static protected Vector<Note> generateRandomNotes(Track track, int channel)
+	{
 		Vector<Note> notes = new Vector<Note>();
 
 		// find out how many ticks the ideal sequence is
 		long totalTicks = IdealSequence.getIdealSequence().getTracks()[channel].ticks(); 
-
 
 		// find out how many notes ideal sequence has
 		Vector<Note> idealSequenceNotes = 
@@ -69,31 +90,8 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 						BitString.RAND.nextInt(128), 100));
 		}
 
-		for (int i = 0; i < notes.size(); i++)
-		{
-			notes.get(i).addToTrack();
-		}
-	}
+		return notes;
 
-
-	public MidiIndividualTrack(Track track, int channel, Vector<Note> notes) 
-	{
-		alreadyCalcedFitness = false; 
-		this.channel = channel;
-		this.track = track;
-
-		for (int i = 0; i < notes.size(); i++)
-		{
-			notes.get(i).setChannel(channel);
-			notes.get(i).setTrack(track);
-			notes.get(i).addToTrack();
-		}
-
-	}
-
-	public MidiIndividualTrack(Track track, int channel, MidiIndividualTrack model) 
-	{
-		this(track, channel, MidiHelper.getNotesFromTrack(model.getTrack(), channel));
 	}
 
 	public Track getTrack()
