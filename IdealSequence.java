@@ -17,9 +17,9 @@ public class IdealSequence {
 
 	static 
 	{
-		//setProgrammedSequence();
+		setProgrammedSequence();
 		//setSequenceFromFile("../test-what-what-what.mid");
-		setSequenceFromFile("../midi_files/Ibiza.mid");
+		//setSequenceFromFile("../midi_files/Ibiza.mid");
 	}
 
 	protected static void setProgrammedSequence()

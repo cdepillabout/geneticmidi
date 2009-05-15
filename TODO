@@ -1,8 +1,3 @@
-
-* In MidiHelper.java, isNoteOnMessage() and isNoteOffMessage() don't take into account
-  the fact that if a note on message has a velocity of zero, it is considered a note
-  off message. Also in DebugMidi.java
-
 * For the player panel, it would be nice to add a pause button.  Also, it would be nice
   to add a slider to show how far along the song is.
 
@@ -19,9 +14,10 @@
 * In PopulationViewer.java, it would be nice to add a file dialog to open the midi file
   we want to evolve into.  
 
-* It would be nice to make IdealSequence.java load a midi file and evolve into it.
-
 * Write more JUnit tests, especially for the functions from Note.java and MidiHelper.java
 
 * Change the fitness function so that it just calculates the fitness based
   on binary strings from the vector of Notes.
+
+* Change the project to work with ArrayLists instead of Vectors.  ArrayLists are not
+  synchronized, so they don't work well with multiple threads.

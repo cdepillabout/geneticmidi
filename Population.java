@@ -5,7 +5,7 @@ public class Population<I extends Individual<I>> {
 	/**
 	 * This is the number of individuals to have in the population.
 	 */
-	public static int NUMBER_OF_INDIVIDUALS = 100;
+	public static int NUMBER_OF_INDIVIDUALS = 5;
 
 	/**
 	 * This is the mutation rate.  For example, if the mutation rate is
@@ -24,14 +24,14 @@ public class Population<I extends Individual<I>> {
 	 * and this is the number of individuals that will compete in
 	 * that tournament.
 	 */
-	public static int CHOOSE_PARENT_AMOUNT = 10;
+	public static int CHOOSE_PARENT_AMOUNT = 2;
 
 	/**
 	 * How many ticks to skip when calculating the fitness
 	 * in MidiIndividual.  For example, if it is 10, then
 	 * the fitness will be calculated every 10 ticks.
 	 */
-	public static int FITNESS_TICK_AMOUNT = 30;
+	public static int FITNESS_TICK_AMOUNT = 100;
 
 	/**
 	 * This just holds the generation number that will are working on.
@@ -149,7 +149,9 @@ public class Population<I extends Individual<I>> {
 
 		I best = bestIndividual();
 
-		result += "Best Individual: " + best + "Best Individual fitness: " + 
+		//result += "Best Individual: " + best;
+		
+		result += "Best Individual fitness: " + 
 			String.format("%.2f (%.0f%%)\n", best.fitness(), 
 					(best.fitness() * 
 					 100 / IdealSequence.perfectFitness()
