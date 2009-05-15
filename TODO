@@ -16,8 +16,5 @@
 
 * Write more JUnit tests, especially for the functions from Note.java and MidiHelper.java
 
-* Change the fitness function so that it just calculates the fitness based
-  on binary strings from the vector of Notes.
-
 * Change the project to work with ArrayLists instead of Vectors.  ArrayLists are not
   synchronized, so they don't work well with multiple threads.

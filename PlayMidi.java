@@ -26,6 +26,16 @@ public class PlayMidi {
 				mySeq = MidiSystem.getSequence(myMidiFile);
 				MidiHelper.play(mySeq);
 				System.out.println("Sequence:\n" + DebugMidi.sequenceEventsToString(mySeq));
+
+				while (MidiHelper.isPlaying())
+				{
+					// I need this to be constantly doing something....
+					System.out.print("");
+				}
+
+				MidiHelper.closeSequencer();
+
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);

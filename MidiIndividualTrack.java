@@ -132,7 +132,8 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 			return storedFitness;
 		}
 
-		storedFitness = FitnessFunctions.atTick(track, channel);
+		//storedFitness = FitnessFunctions.atTick(track, channel);
+		storedFitness = FitnessFunctions.bitString(track, channel);
 		alreadyCalcedFitness = true;
 
 		return storedFitness;

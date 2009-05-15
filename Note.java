@@ -3,6 +3,9 @@ package geneticmidi;
 
 import javax.sound.midi.Track;
 import javax.sound.midi.MidiEvent;
+import java.lang.Long;
+import java.lang.Integer;
+import java.util.Vector;
 
 /**
  * Helper class for adding notes easily to tracks.
@@ -234,6 +237,82 @@ public class Note
 		return result;
 	}
 
+
+	public static String makeBitString(Vector<Note> notes)
+	{
+		StringBuilder finalString = new StringBuilder();
+
+		for (Note n : notes)
+		{
+			finalString.append(n.makeBitString());
+		}
+
+		return finalString.toString();
+
+	}
+
+	public static String makeBitString(long startTick, long lengthTicks, int noteValue)
+	{
+		StringBuilder startString = new StringBuilder();
+		StringBuilder lengthString = new StringBuilder();
+		StringBuilder noteString = new StringBuilder();
+
+		// create startString
+		for (int i = 0; i < 64 - Long.toBinaryString(startTick).length(); i++)
+		{
+			startString.append("0");
+		}
+		startString.append(Long.toBinaryString(startTick));
+
+		// create lengthString
+		for (int i = 0; i < 64 - Long.toBinaryString(lengthTicks).length(); i++)
+		{
+			lengthString.append("0");
+		}
+		lengthString.append(Long.toBinaryString(lengthTicks));
+
+		// create noteString
+		for (int i = 0; i < 32 - Integer.toBinaryString(noteValue).length(); i++)
+		{
+			noteString.append("0");
+		}
+		noteString.append(Integer.toBinaryString(noteValue));
+
+		
+		/*
+		System.out.println("startTick: " + startTick +
+				", binary: " + Long.toBinaryString(startTick) + 
+				", modified binary: " + startString);
+		System.out.println("lengthTicks: " + lengthTicks +
+				", binary: " + Long.toBinaryString(lengthTicks) + 
+				", modified binary: " + lengthString);
+		System.out.println("noteValue: " + noteValue +
+				", binary: " + Integer.toBinaryString(noteValue) +
+				", modified binary: " + noteString);
+				*/
+
+		return startString.toString() + 
+			   lengthString.toString() + 
+			   noteString.toString();
+	}
+
+	/**
+	 * Return a bitstring representation of this Note.
+	 */
+	public String makeBitString()
+	{
+		// I need to represent the startTick, the lengthTicks, and the note value.
+		//long startTick;
+		//long lengthTicks;
+		//int note;
+
+		return makeBitString(startTick, lengthTicks, note);
+	}
+
+	public static void main(String[] args)
+	{
+		System.out.println("make bit string: " + makeBitString(232343, 0, -1));
+	}
 }
 
 

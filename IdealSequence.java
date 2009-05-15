@@ -88,8 +88,8 @@ public class IdealSequence {
 						break;
 				}
 
-				int length = 2500;
-				int total_notes = 3;
+				int length = 400;
+				int total_notes = 1;
 
 				/*
 				(new Note(myTrack0, i * length + 0 * length / total_notes, 
@@ -97,9 +97,11 @@ public class IdealSequence {
 						  0, noteValue, 100)).addToTrack();
 						  */
 
+				/*
 				(new Note(myTrack1, i * length + 1 * length / total_notes, 
 						  length / total_notes, 
 						  1, noteValue, 100)).addToTrack();
+						  */
 
 				
 				(new Note(myTrack2, i * length + 2 * length / total_notes, 
