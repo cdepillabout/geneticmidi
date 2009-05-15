@@ -177,7 +177,7 @@ public class MidiIndividual implements Individual<MidiIndividual> {
 
 	public String toString()
 	{
-		return DebugMidi.sequenceEventsToString(sequence);
+		return DebugMidi.sequenceEventsToString(sequence).toString();
 	}
 
 	public static void main(String[] args) {

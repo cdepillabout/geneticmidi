@@ -300,13 +300,15 @@ public class MidiIndividualTrack implements Individual<MidiIndividualTrack> {
 			System.exit(1);
 		}
 
-		MidiIndividualTrack midiIndv1 = new MidiIndividualTrack(track1, 0);
+		int channel = 6;
+
+		MidiIndividualTrack midiIndv1 = new MidiIndividualTrack(track1, channel);
 		System.out.println("Individual 1: " + midiIndv1);
 		System.out.println("fitness: " + midiIndv1.fitness());
 		System.out.println();
 
 		
-		MidiIndividualTrack midiIndv2 = new MidiIndividualTrack(track2, 0);
+		MidiIndividualTrack midiIndv2 = new MidiIndividualTrack(track2, channel);
 		System.out.println("Individual 2: " + midiIndv2);
 		System.out.println("fitness: " + midiIndv2.fitness());
 		System.out.println();

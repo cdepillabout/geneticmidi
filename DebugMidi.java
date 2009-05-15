@@ -13,15 +13,30 @@ public class DebugMidi {
 	/**
 	 * Return the string representations of info about a sequence.
 	 */
-	public static String sequenceInfoToString(Sequence sequence)
+	public static StringBuilder sequenceInfoToString(Sequence sequence)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
-		result += "Sequence Division Type: " + sequence.getDivisionType() + "\n";
-		result += "Sequence Resolution: " + sequence.getResolution() + "\n";
-		result += "Sequence Microsecond Length: " + sequence.getMicrosecondLength() + "\n";
-		result += "Sequence Tick Length: " + sequence.getTickLength() + "\n";
-		result += "Sequence Tracks: " + sequence.getTracks().length + "\n";
+		result.append("Sequence Division Type: ");
+		result.append(sequence.getDivisionType());
+		result.append("\n");
+
+		result.append("Sequence Resolution: ");
+		result.append(sequence.getResolution()); 
+		result.append("\n");
+
+		result.append("Sequence Microsecond Length: ");
+		result.append(sequence.getMicrosecondLength());
+		result.append("\n");
+
+		result.append("Sequence Tick Length: ");
+		result.append(sequence.getTickLength());
+		result.append("\n");
+
+		result.append("Sequence Tracks: ");
+		result.append(sequence.getTracks().length);
+		result.append("\n");
+
 
 		return result;
 	}
@@ -29,17 +44,20 @@ public class DebugMidi {
 	/** 
 	 * Return the string representation of a sequence.
 	 */
-	public static String sequenceEventsToString(Sequence sequence)
+	public static StringBuilder sequenceEventsToString(Sequence sequence)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
 		Track[] tracks = sequence.getTracks();
 
 		for (int i = 0; i < tracks.length; i++)
 		{
-			result += "Track " + i + ":" + "\n";
-			result += trackEventsToString(tracks[i]);
-			result += "\n";
+			result.append("Track ");
+			result.append(i);
+			result.append(":\n");
+
+			result.append(trackEventsToString(tracks[i]));
+			result.append("\n");
 		}
 
 		return result;
@@ -48,24 +66,31 @@ public class DebugMidi {
 	/**
 	 * Return the string representation of a Track.
 	 */
-	public static String trackEventsToString(Track track)
+	public static StringBuilder trackEventsToString(Track track)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
 		for (int i = 0; i < track.size() - 1; i++)
 		{
 			MidiEvent midiEvent = track.get(i);
 
-			result += "Event " + i + ": ";
-			result += midiEventToString(midiEvent) + "\n";
+			result.append("Event ");
+			result.append(i);
+			result.append(": ");
+
+			result.append(midiEventToString(midiEvent));
+			result.append("\n");
+
 		}
 
 		if (track.size() >= 0)
 		{
 			MidiEvent midiEvent = track.get(track.size() - 1);
 
-			result += "Event " + (track.size() - 1) + ": ";
-			result += midiEventToString(midiEvent);
+			result.append("Event ");
+			result.append((track.size() - 1));
+			result.append(": ");
+			result.append(midiEventToString(midiEvent));
 
 		}
 
@@ -73,27 +98,26 @@ public class DebugMidi {
 
 	}
 
+
 	/**
 	 * Return the string representations of a MidiEvent.
 	 */
-	public static String midiEventToString(MidiEvent midiEvent)
+	public static StringBuilder midiEventToString(MidiEvent midiEvent)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
 		MidiMessage midiMessage = midiEvent.getMessage();
 
-		result += "Tick " + midiEvent.getTick() + "  (" + 
-			DebugMidi.eventTypeToString(midiMessage.getStatus()) 
-			+ ")";
+		result.append("Tick ");
+		result.append(midiEvent.getTick());
+		result.append("  (");
+		result.append(DebugMidi.eventTypeToString(midiMessage.getStatus()));
+		result.append(")");
 
-		result += "  " + 
-			DebugMidi.midiMessageToString(midiMessage.getStatus(), 
-					midiMessage.getLength(), 
-					midiMessage.getMessage());
-
-			//System.out.println("getStatus() = " + midiMessage.getStatus());
-			//System.out.println("getLength() = " + midiMessage.getLength());
-			//System.out.println("getMessage() = " + midiMessage.getMessage());
+		result.append("  ");
+		result.append(midiMessageToString(midiMessage.getStatus(), 
+						midiMessage.getLength(), 
+						midiMessage.getMessage()));
 
 		return result;
 	}
@@ -159,25 +183,24 @@ public class DebugMidi {
 	 * bytes.  bytes should be an array of bytes returned from
 	 * the getMessage() method of the MidiMessage class.
 	 */
-	public static String midiMessageToString(int value, int length, byte [] bytes)
+	public static StringBuilder midiMessageToString(int value, int length, byte [] bytes)
 	{
-		String result = "";
-
-
 		// this is the default result		
-		result = "[";
+		StringBuilder result = new StringBuilder("[");
 
 		if (length > 1)
 		{
-			result += bytes[1];
+			result.append(bytes[1]);
 
 			for (int k = 2; k < length; k++)
 			{
-				result += ", "  + bytes[k];
+				result.append(", "); 
+				result.append(bytes[k]);
+
 			}
 		}
 
-		result += "]";
+		result.append("]");
 
 		// Note Off
 		if (value >= 128 && value < 144)
@@ -229,15 +252,20 @@ public class DebugMidi {
 	/**
 	 * Return a string containing information about a Note event.
 	 */
-	protected static String getInfoNoteEvent(byte note, byte velocity)
+	protected static StringBuilder getInfoNoteEvent(byte note, byte velocity)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
-		result = "[";
-		result += "Note: " + note + " (" + MidiHelper.getNoteFromValue(note) + ")";
-		result += ", ";
-		result += "Velocity: " + velocity;
-		result += "]";
+		result.append("[");
+		result.append("Note: ");
+		result.append(note);
+		result.append(" (");
+		result.append(MidiHelper.getNoteFromValue(note));
+		result.append(")");
+		result.append(", ");
+		result.append("Velocity: ");
+		result.append(velocity);
+		result.append("]");
 
 		return result;
 	}
@@ -245,9 +273,9 @@ public class DebugMidi {
 	/** 
 	 * Return a string containing information about a controller event.
 	 */
-	protected static String getInfoControllerEvent(byte type, byte value)
+	protected static StringBuilder getInfoControllerEvent(byte type, byte value)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		String typeResult = "";
 
 
@@ -270,11 +298,13 @@ public class DebugMidi {
 				break;
 		}
 
-		result = "[";
-		result += "Controller Type: " + typeResult;
-		result += ", ";
-		result += "Value: " + value;
-		result += "]";
+		result.append("[");
+		result.append("Controller Type: ");
+		result.append(typeResult);
+		result.append(", ");
+		result.append("Value: ");
+		result.append(value);
+		result.append("]");
 
 
 		return result;
@@ -284,16 +314,17 @@ public class DebugMidi {
 	 * Return a string containing information about instrument.
 	 * (Right now it just returns the same byte).
 	 */
-	protected static String getInfoProgramChangeEvent(byte instrument)
+	protected static StringBuilder getInfoProgramChangeEvent(byte instrument)
 	{
-		String result = "";
+		StringBuilder result = new StringBuilder();
 
 		//Instrument tempInstrument = 
 		//	synth.getDefaultSoundbank().getInstruments()[instrument];
 
-		result = "[";
-		result += "Instrument: " + instrument;
-		result += "]";
+		result.append("[");
+		result.append("Instrument: ");
+		result.append(instrument);
+		result.append("]");
 
 
 		return result;
@@ -305,9 +336,9 @@ public class DebugMidi {
 	 * of the MidiMessage class. length should be the length
 	 * of bytes.
 	 */
-	protected static String getInfoMetaEvent(int length, byte [] bytes)
+	protected static StringBuilder getInfoMetaEvent(int length, byte [] bytes)
 	{
-		String metaString = "";
+		StringBuilder metaString = new StringBuilder();
 		
 		int metaEvent = bytes[1];
 
@@ -318,8 +349,8 @@ public class DebugMidi {
 				// Make sure the lengths we know are the same.
 				// Some thing is weird if this is not the case.
 				assert (bytes[2] == length - 3);
-				metaString = "Copyright notice: ";
-				metaString += new String(bytes, 3, bytes[2]);
+				metaString.append("Copyright notice: ");
+				metaString.append(new String(bytes, 3, bytes[2]));
 				break;
 
 			// Name
@@ -327,8 +358,8 @@ public class DebugMidi {
 				// Make sure the lengths we know are the same.
 				// Some thing is weird if this is not the case.
 				assert (bytes[2] == length - 3);
-				metaString = "Name: ";
-				metaString += new String(bytes, 3, bytes[2]);
+				metaString.append("Name: ");
+				metaString.append(new String(bytes, 3, bytes[2]));
 				break;
 
 			// Cue point
@@ -336,13 +367,13 @@ public class DebugMidi {
 				// Make sure the lengths we know are the same.
 				// Some thing is weird if this is not the case.
 				assert (bytes[2] == length - 3);
-				metaString = "Cue point: ";
-				metaString += new String(bytes, 3, bytes[2]);
+				metaString.append("Cue point: ");
+				metaString.append(new String(bytes, 3, bytes[2]));
 				break;
 
 			// End of Track
 			case 47:
-				metaString = "End of Track";
+				metaString.append("End of Track");
 				break;
 
 			// Set Tempo
@@ -350,8 +381,8 @@ public class DebugMidi {
 				// System.out.println(java.util.Arrays.toString(bytes));
 				// Make sure the length is 3
 				assert (bytes[2] == 3);
-				metaString = "Set Tempo (BPM): ";
-				metaString += MICROSECONDS_PER_MINUTE / byteArrayToLong(bytes, 3, 3);
+				metaString.append("Set Tempo (BPM): ");
+				metaString.append(MICROSECONDS_PER_MINUTE / byteArrayToLong(bytes, 3, 3));
 				break;
 
 			// Set Time Signature
@@ -359,10 +390,20 @@ public class DebugMidi {
 				//System.out.println(java.util.Arrays.toString(bytes));
 				// Make sure the length is 4
 				assert (bytes[2] == 4);
-				metaString += "Numerator: " + bytes[3] + ", ";
-				metaString += "Denominator: " + (int) Math.pow(bytes[4], 2) + ", ";
-				metaString += "Metronome Pulse: " + bytes[5] + ", ";
-				metaString += "32nd Notes Per Quarter Note: " + bytes[6];
+				metaString.append("Numerator: ");
+				metaString.append(bytes[3]);
+				metaString.append(", ");
+
+				metaString.append("Denominator: ");
+				metaString.append((int) Math.pow(bytes[4], 2));
+				metaString.append(", ");
+
+				metaString.append("Metronome Pulse: ");
+				metaString.append(bytes[5]);
+				metaString.append(", ");
+
+				metaString.append("32nd Notes Per Quarter Note: ");
+				metaString.append(bytes[6]);
 				break;
 
 
@@ -370,16 +411,19 @@ public class DebugMidi {
 			default:
 				if (length > 1)
 				{
-					metaString += bytes[1];
+					metaString.append(bytes[1]);
 					for (int k = 2; k < length; k++)
 					{
-						metaString += ", "  + bytes[k];
+						metaString.append(", ");
+						metaString.append(bytes[k]);
 					}
 				}
 				break;
 		}
 	
-		return "[" + metaString + "]";
+		metaString.insert(0, "[");
+		metaString.append("]");
+		return metaString;
 	}
 
 	/** 
