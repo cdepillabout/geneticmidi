@@ -191,7 +191,7 @@ public class IdealSequence {
 
 		while (MidiHelper.isPlaying())
 		{
-			// pass
+			System.out.print("");
 		}
 
 		MidiHelper.closeSequencer();

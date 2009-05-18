@@ -2,11 +2,11 @@
 
 javac *.java && \
 echo "Running MidiHelper..." && \
-java geneticmidi.MidiHelper && \
+java -ea -server geneticmidi.MidiHelper && \
 echo "Running MidiIndividualTrack..." && \
-java geneticmidi.MidiIndividualTrack && \
+java -ea -server geneticmidi.MidiIndividualTrack && \
 echo "Running MidiIndividual..." && \
-java geneticmidi.MidiIndividual && \
+java -ea -server geneticmidi.MidiIndividual && \
 echo "Running IdealSequence..." && \
-java geneticmidi.IdealSequence
+java -ea -server geneticmidi.IdealSequence
 

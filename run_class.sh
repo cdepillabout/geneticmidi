@@ -13,4 +13,4 @@ basenameOfFile=${filename%.*}
 
 javac *.java && \
 echo "Running $basenameOfFile..." && \
-java geneticmidi.$basenameOfFile
+java -ea -server geneticmidi.$basenameOfFile

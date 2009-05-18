@@ -449,7 +449,8 @@ public class MidiHelper {
 	 */
 	public static int getVelocity(MidiEvent noteOnOff)
 	{
-		assert isNoteOnEvent(noteOnOff) || isNoteOffEvent(noteOnOff);
+		// I can't check for this because isNoteOnMessage calls getVelocity
+		//assert isNoteOnEvent(noteOnOff) || isNoteOffEvent(noteOnOff);
 
 		return getVelocity(noteOnOff.getMessage());
 	}
@@ -459,7 +460,8 @@ public class MidiHelper {
 	 */
 	public static int getVelocity(MidiMessage noteOnOff)
 	{
-		assert isNoteOnMessage(noteOnOff) || isNoteOffMessage(noteOnOff);
+		// I can't check for this because isNoteOnMessage calls getVelocity
+		//assert isNoteOnMessage(noteOnOff) || isNoteOffMessage(noteOnOff);
 
 		return noteOnOff.getMessage()[2];
 	}
