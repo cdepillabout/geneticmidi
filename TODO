@@ -8,9 +8,6 @@
   order.  That is, when I sort by fitness, the highest fitness ones should be at
   the top.
 
-* Make PopulationListPanel.java multi-threaded.  So, when the evolve button is clicked,
-  you don't have to wait until all the evolutions are finished.
-
 * In PopulationViewer.java, it would be nice to add a file dialog to open the midi file
   we want to evolve into.  
 

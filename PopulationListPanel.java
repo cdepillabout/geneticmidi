@@ -7,6 +7,8 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.util.concurrent.locks.*;
+
 //import javax.sound.midi.Sequence;
 
 
@@ -134,6 +136,8 @@ public class PopulationListPanel extends JPanel
 	private class EvolveAction implements ActionListener
 	{
 		private int evolutions;
+		private Lock lock = new ReentrantLock(); // lock so that two threads can't 
+												 // evolve at the same time
 
 		public EvolveAction(int evolutions)
 		{
@@ -142,32 +146,82 @@ public class PopulationListPanel extends JPanel
 
 		public void actionPerformed(ActionEvent event)
 		{
-			// set mouse cursor
-			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			// this calls the runnable which in turn calls the 
+			// evolve method.  This is needed because something
+			// has to lock the runnable out so that it does not
+			// call evolve concurrently, each one has to wait for it's
+			// turn.
 
-			// TODO: make this multithreaded
-			// (pg. 1 in core java volume 2)
+			Runnable r = new EvolveRunnable(evolutions, this);
+			System.out.println("Runnable: " + r);
+			Thread t = new Thread(r);
+			System.out.println("thread: " + t);
+			t.start();
+		}
 
-			MidiIndividual best = null;
+		public void evolve(int evolution)
+		{
+			// this lock cannot actually be called from within 
+			// the runnable, because it locks some block of code that
+			// the runnable trys to access, not 
+			lock.lock();
 
-			for (int i = 0; i < evolutions; i++)
+			try
 			{
-				pop.evolve();
-				best = pop.bestIndividual();
-				System.out.println(pop);
+				System.out.println("Evolving " + evolutions + " times from generation " + 
+						pop.getGeneration() + " on thread " + Thread.currentThread());
+
+
+				// set mouse cursor
+				getParent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				MidiIndividual best = null;
+
+				for (int i = 0; i < evolutions; i++)
+				{
+					pop.evolve();
+					best = pop.bestIndividual();
+					System.out.println("generation " + pop.getGeneration());
+					//System.out.println(pop);
+
+					assert best != null;
+
+					// set best individual sequence for playuer
+					bestIndividualPlayer.setSequence(best.getSequence());
+					bestIndividualPlayer.setName("Generation " + pop.getGeneration() + 
+							" -- Best Individual");
+
+					getParent().repaint();
+				}
+
+				getParent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+			}
+			finally
+			{
+				lock.unlock();
 			}
 
-			assert best != null;
+		}
 
-			// set best individual sequence for playuer
-			bestIndividualPlayer.setSequence(best.getSequence());
-			bestIndividualPlayer.setName("Generation " + pop.getGeneration() + 
-					" -- Best Individual");
+		class EvolveRunnable implements Runnable
+		{
+			int evolutions;
+			ActionListener listener;
+
+			public EvolveRunnable(int evolutions, ActionListener listener)
+			{
+				this.evolutions = evolutions;
+				this.listener = listener;
+			}
+
+			public void run()
+			{
+				evolve(evolutions);
+
+			}
 
 
-			getParent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-			getParent().repaint();
 		}
 	}
 

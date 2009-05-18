@@ -36,14 +36,21 @@ public class PopulationViewer extends JFrame
 
 	public static void main(String [] args)
 	{
-		Population<MidiIndividual> pop = new Population<MidiIndividual>(
-				new MidiIndividual());
 
-		System.out.println(pop);
+		EventQueue.invokeLater(new Runnable() 
+				{
+					public void run()
+					{
+						Population<MidiIndividual> pop = new Population<MidiIndividual>(
+							new MidiIndividual());
 
-		PopulationViewer frame = new PopulationViewer(pop);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+						System.out.println(pop);
+
+						PopulationViewer frame = new PopulationViewer(pop);
+						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.setVisible(true);
+					}
+				});
 	}
 
 	public PopulationViewer(Population<MidiIndividual> pop)
